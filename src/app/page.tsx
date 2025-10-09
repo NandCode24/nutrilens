@@ -54,13 +54,13 @@ export default function Page() {
             {/* CTAs */}
             <div className="flex items-center gap-3">
               <Link
-                href="/auth/login"
+                href="/auth/signin"
                 className="hidden md:inline-flex rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
               >
                 Sign in
               </Link>
               <Link
-                href="/auth/register"
+                href="/auth/signup"
                 className="inline-flex items-center rounded-full bg-[#22C55E] px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-[#16A34A]"
               >
                 Get Started Free
@@ -89,7 +89,7 @@ export default function Page() {
 
               <div className="mt-8 flex items-center gap-4">
                 <Link
-                  href="/auth/register"
+                  href="/auth/signup"
                   className="inline-flex items-center rounded-full bg-[#22C55E] px-6 py-3 text-base font-semibold text-white shadow hover:bg-[#16A34A] transition"
                 >
                   Create Free Account
@@ -489,7 +489,7 @@ export default function Page() {
           </p>
           <div className="mt-6">
             <Link
-              href="/auth/register"
+              href="/auth/signup"
               className="inline-flex items-center rounded-full bg-[#22C55E] px-6 py-3 text-base font-semibold text-white shadow hover:bg-[#16A34A]"
             >
               Get Started for Free
