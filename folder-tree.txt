@@ -12,6 +12,16 @@
     │   ├── 📄 routes-manifest.json
     │   ├── 📁 server
     │   │   ├── 📁 app
+    │   │   │   ├── 📁 _not-found
+    │   │   │   │   ├── 📁 page
+    │   │   │   │   │   ├── 📄 app-build-manifest.json
+    │   │   │   │   │   ├── 📄 app-paths-manifest.json
+    │   │   │   │   │   ├── 📄 next-font-manifest.json
+    │   │   │   │   │   ├── 📄 react-loadable-manifest.json
+    │   │   │   │   │   └── 📄 server-reference-manifest.json
+    │   │   │   │   ├── 📄 page.js
+    │   │   │   │   ├── 📄 page.js.map
+    │   │   │   │   └── 📄 page_client-reference-manifest.js
     │   │   │   ├── 📁 api
     │   │   │   │   └── 📁 auth
     │   │   │   │       └── 📁 signup
@@ -22,6 +32,37 @@
     │   │   │   │           ├── 📄 route.js
     │   │   │   │           ├── 📄 route.js.map
     │   │   │   │           └── 📄 route_client-reference-manifest.js
+    │   │   │   ├── 📁 auth
+    │   │   │   │   ├── 📁 signin
+    │   │   │   │   │   ├── 📁 page
+    │   │   │   │   │   │   ├── 📄 app-build-manifest.json
+    │   │   │   │   │   │   ├── 📄 app-paths-manifest.json
+    │   │   │   │   │   │   ├── 📄 next-font-manifest.json
+    │   │   │   │   │   │   ├── 📄 react-loadable-manifest.json
+    │   │   │   │   │   │   └── 📄 server-reference-manifest.json
+    │   │   │   │   │   ├── 📄 page.js
+    │   │   │   │   │   ├── 📄 page.js.map
+    │   │   │   │   │   └── 📄 page_client-reference-manifest.js
+    │   │   │   │   └── 📁 signup
+    │   │   │   │       ├── 📁 page
+    │   │   │   │       │   ├── 📄 app-build-manifest.json
+    │   │   │   │       │   ├── 📄 app-paths-manifest.json
+    │   │   │   │       │   ├── 📄 next-font-manifest.json
+    │   │   │   │       │   ├── 📄 react-loadable-manifest.json
+    │   │   │   │       │   └── 📄 server-reference-manifest.json
+    │   │   │   │       ├── 📄 page.js
+    │   │   │   │       ├── 📄 page.js.map
+    │   │   │   │       └── 📄 page_client-reference-manifest.js
+    │   │   │   ├── 📁 dashboard
+    │   │   │   │   ├── 📁 page
+    │   │   │   │   │   ├── 📄 app-build-manifest.json
+    │   │   │   │   │   ├── 📄 app-paths-manifest.json
+    │   │   │   │   │   ├── 📄 next-font-manifest.json
+    │   │   │   │   │   ├── 📄 react-loadable-manifest.json
+    │   │   │   │   │   └── 📄 server-reference-manifest.json
+    │   │   │   │   ├── 📄 page.js
+    │   │   │   │   ├── 📄 page.js.map
+    │   │   │   │   └── 📄 page_client-reference-manifest.js
     │   │   │   ├── 📁 favicon.ico
     │   │   │   │   ├── 📁 route
     │   │   │   │   │   ├── 📄 app-build-manifest.json
@@ -36,7 +77,17 @@
     │   │   │   │   └── 📄 server-reference-manifest.json
     │   │   │   ├── 📄 page.js
     │   │   │   ├── 📄 page.js.map
-    │   │   │   └── 📄 page_client-reference-manifest.js
+    │   │   │   ├── 📄 page_client-reference-manifest.js
+    │   │   │   └── 📁 profile
+    │   │   │       ├── 📁 page
+    │   │   │       │   ├── 📄 app-build-manifest.json
+    │   │   │       │   ├── 📄 app-paths-manifest.json
+    │   │   │       │   ├── 📄 next-font-manifest.json
+    │   │   │       │   ├── 📄 react-loadable-manifest.json
+    │   │   │       │   └── 📄 server-reference-manifest.json
+    │   │   │       ├── 📄 page.js
+    │   │   │       ├── 📄 page.js.map
+    │   │   │       └── 📄 page_client-reference-manifest.js
     │   │   ├── 📄 app-paths-manifest.json
     │   │   ├── 📁 chunks
     │   │   │   ├── 📄 [root-of-the-server]__554fbc4d._.js
@@ -50,20 +101,44 @@
     │   │   │       ├── 📄 [externals]_next_dist_compiled_next-server_app-page-turbo_runtime_dev_062c5159.js.map
     │   │   │       ├── 📄 [externals]_next_dist_shared_lib_no-fallback-error_external_59b92b38.js
     │   │   │       ├── 📄 [externals]_next_dist_shared_lib_no-fallback-error_external_59b92b38.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__0f31d5cb._.js
+    │   │   │       ├── 📄 [root-of-the-server]__0f31d5cb._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__2bab9166._.js
+    │   │   │       ├── 📄 [root-of-the-server]__2bab9166._.js.map
     │   │   │       ├── 📄 [root-of-the-server]__38b19390._.js
     │   │   │       ├── 📄 [root-of-the-server]__38b19390._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__41cb6c17._.js
+    │   │   │       ├── 📄 [root-of-the-server]__41cb6c17._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__51c49bf6._.js
+    │   │   │       ├── 📄 [root-of-the-server]__51c49bf6._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__635c42b0._.js
+    │   │   │       ├── 📄 [root-of-the-server]__635c42b0._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__6797adcc._.js
+    │   │   │       ├── 📄 [root-of-the-server]__6797adcc._.js.map
     │   │   │       ├── 📄 [root-of-the-server]__70a73b34._.js
     │   │   │       ├── 📄 [root-of-the-server]__70a73b34._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__8678845a._.js
+    │   │   │       ├── 📄 [root-of-the-server]__8678845a._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__957db225._.js
+    │   │   │       ├── 📄 [root-of-the-server]__957db225._.js.map
     │   │   │       ├── 📄 [root-of-the-server]__a8ab9a0d._.js
     │   │   │       ├── 📄 [root-of-the-server]__a8ab9a0d._.js.map
     │   │   │       ├── 📄 [root-of-the-server]__a9fea3fa._.js
     │   │   │       ├── 📄 [root-of-the-server]__a9fea3fa._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__b5fa3909._.js
+    │   │   │       ├── 📄 [root-of-the-server]__b5fa3909._.js.map
     │   │   │       ├── 📄 [root-of-the-server]__c80f7c8f._.js
     │   │   │       ├── 📄 [root-of-the-server]__c80f7c8f._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__e269f91c._.js
+    │   │   │       ├── 📄 [root-of-the-server]__e269f91c._.js.map
     │   │   │       ├── 📄 [root-of-the-server]__e6a4d965._.js
     │   │   │       ├── 📄 [root-of-the-server]__e6a4d965._.js.map
     │   │   │       ├── 📄 [root-of-the-server]__e8a2741f._.js
     │   │   │       ├── 📄 [root-of-the-server]__e8a2741f._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__f34c8c90._.js
+    │   │   │       ├── 📄 [root-of-the-server]__f34c8c90._.js.map
+    │   │   │       ├── 📄 [root-of-the-server]__f57600d8._.js
+    │   │   │       ├── 📄 [root-of-the-server]__f57600d8._.js.map
     │   │   │       ├── 📄 [turbopack]_runtime.js
     │   │   │       ├── 📄 [turbopack]_runtime.js.map
     │   │   │       ├── 📄 src_app_ca777385._.js
@@ -127,11 +202,25 @@
     │   │   │   ├── 📄 pages__app_63a81fd1._.js.map
     │   │   │   ├── 📄 pages__error_18aa0e75._.js.map
     │   │   │   ├── 📄 pages__error_2da965e7._.js
+    │   │   │   ├── 📄 src_74d2ae52._.js
+    │   │   │   ├── 📄 src_74d2ae52._.js.map
+    │   │   │   ├── 📄 src_app_auth_signin_page_tsx_43f62962._.js
+    │   │   │   ├── 📄 src_app_auth_signin_page_tsx_43f62962._.js.map
+    │   │   │   ├── 📄 src_app_auth_signin_page_tsx_f8fdd2d5._.js
+    │   │   │   ├── 📄 src_app_auth_signup_page_tsx_195d14da._.js
+    │   │   │   ├── 📄 src_app_auth_signup_page_tsx_195d14da._.js.map
+    │   │   │   ├── 📄 src_app_auth_signup_page_tsx_f8fdd2d5._.js
+    │   │   │   ├── 📄 src_app_dashboard_page_tsx_833bd81f._.js
+    │   │   │   ├── 📄 src_app_dashboard_page_tsx_833bd81f._.js.map
+    │   │   │   ├── 📄 src_app_dashboard_page_tsx_f8fdd2d5._.js
     │   │   │   ├── 📄 src_app_favicon_ico_mjs_243aa161._.js
     │   │   │   ├── 📄 src_app_globals_css_bad6b30c._.single.css
     │   │   │   ├── 📄 src_app_globals_css_bad6b30c._.single.css.map
     │   │   │   ├── 📄 src_app_layout_tsx_0a548d63._.js
     │   │   │   ├── 📄 src_app_page_tsx_f8fdd2d5._.js
+    │   │   │   ├── 📄 src_app_profile_page_tsx_96d5bd20._.js
+    │   │   │   ├── 📄 src_app_profile_page_tsx_96d5bd20._.js.map
+    │   │   │   ├── 📄 src_app_profile_page_tsx_f8fdd2d5._.js
     │   │   │   ├── 📄 turbopack-_cdba956c._.js
     │   │   │   ├── 📄 turbopack-pages__app_63a81fd1._.js
     │   │   │   └── 📄 turbopack-pages__error_18aa0e75._.js
@@ -151,8 +240,42 @@
     │   └── 📁 types
     │       ├── 📄 routes.d.ts
     │       └── 📄 validator.ts
+    ├── 📁 Nutrilens_Designs
+    │   ├── 📁 authentication_sign_up
+    │   │   ├── 📄 code.html
+    │   │   └── 📄 screen.png
+    │   ├── 📁 dashboard_
+    │   │   └── 📁 _home
+    │   │       ├── 📄 code.html
+    │   │       └── 📄 screen.png
+    │   ├── 📁 find_your_medicine
+    │   │   ├── 📄 code.html
+    │   │   └── 📄 screen.png
+    │   ├── 📁 ingredient_label_scanner
+    │   │   ├── 📄 code.html
+    │   │   └── 📄 screen.png
+    │   ├── 📁 library_screen
+    │   │   ├── 📄 code.html
+    │   │   └── 📄 screen.png
+    │   ├── 📁 nutrilens_splash_screen
+    │   │   ├── 📄 code.html
+    │   │   └── 📄 screen.png
+    │   ├── 📁 onboarding_scan_ingredients
+    │   │   ├── 📄 code.html
+    │   │   └── 📄 screen.png
+    │   ├── 📁 personalized_diet_planner
+    │   │   ├── 📄 code.html
+    │   │   └── 📄 screen.png
+    │   ├── 📁 profile_setup_
+    │   │   └── 📁 _personal_info
+    │   │       ├── 📄 code.html
+    │   │       └── 📄 screen.png
+    │   └── 📁 symptom_checker_screen
+    │       ├── 📄 code.html
+    │       └── 📄 screen.png
     ├── 📄 README.md
     ├── 📄 eslint.config.mjs
+    ├── 📄 folder-tree.txt
     ├── 📄 next.config.ts
     ├── 📄 package-lock.json
     ├── 📄 package.json
@@ -179,24 +302,42 @@
     │   │   │   │   └── 📁 signup
     │   │   │   │       └── 📄 route.ts
     │   │   │   ├── 📁 history
+    │   │   │   │   └── 📄 route.ts
     │   │   │   ├── 📁 ingredient
+    │   │   │   │   └── 📄 route.ts
     │   │   │   ├── 📁 medicine
+    │   │   │   │   └── 📄 route.ts
     │   │   │   ├── 📁 profile
+    │   │   │   │   └── 📄 route.ts
     │   │   │   └── 📁 tips
+    │   │   │       └── 📄 route.ts
     │   │   ├── 📁 auth
+    │   │   │   ├── 📁 signin
+    │   │   │   │   └── 📄 page.tsx
+    │   │   │   └── 📁 signup
+    │   │   │       └── 📄 page.tsx
     │   │   ├── 📁 dashboard
+    │   │   │   └── 📄 page.tsx
     │   │   ├── 📄 favicon.ico
     │   │   ├── 📄 globals.css
     │   │   ├── 📁 history
+    │   │   │   └── 📄 page.tsx
     │   │   ├── 📁 ingredient
+    │   │   │   └── 📄 page.tsx
     │   │   ├── 📄 layout.tsx
     │   │   ├── 📁 library
+    │   │   │   └── 📄 page.tsx
     │   │   ├── 📁 medicine
+    │   │   │   └── 📄 page.tsx
     │   │   ├── 📁 onboarding
+    │   │   │   └── 📄 page.tsx
     │   │   ├── 📄 page.tsx
     │   │   ├── 📁 profile
+    │   │   │   └── 📄 page.tsx
     │   │   └── 📁 splash
+    │   │       └── 📄 page.tsx
     │   ├── 📁 components
+    │   │   └── 📄 BottomNav.tsx
     │   ├── 📁 generated
     │   │   └── 📁 prisma
     │   │       ├── 📄 client.d.ts

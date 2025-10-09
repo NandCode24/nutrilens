@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NutriLens - AI Nutrition Assistant</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#22C55E",
+              secondary: "#16A34A",
+              accent: "#DCFCE7",
+              "text-primary": "#111827",
+              "text-secondary": "#4B5563",
+              background: "#F9FCF9",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            maxWidth: {
+              "screen-xl": "1200px",
+            },
+          },
+        },
+      };
+    </script>
+<style>
+      .gradient-bg {
+        background-image: linear-gradient(
+          to right,
+          theme("colors.primary"),
+          theme("colors.secondary")
+        );
+      }
+    </style>
+</head>
+<body class="font-sans bg-background text-text-primary">
+<div class="min-h-screen flex flex-col">
+<header class="bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b border-accent">
+<nav class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between h-20">
+<a class="flex items-center gap-2" href="#">
+<svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+<span class="text-2xl font-bold text-text-primary">NutriLens</span>
+</a>
+<div class="hidden md:flex items-center gap-8 text-text-secondary font-medium">
+<a class="hover:text-primary transition-colors" href="#features">Features</a>
+<a class="hover:text-primary transition-colors" href="#how-it-works">How It Works</a>
+<a class="hover:text-primary transition-colors" href="#personalization">Personalization</a>
+<a class="hover:text-primary transition-colors" href="#testimonials">Testimonials</a>
+</div>
+<div class="hidden md:flex items-center gap-4">
+<a class="px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-inset ring-primary rounded-lg hover:bg-accent transition-colors" href="#">Sign In</a>
+<a class="px-5 py-2.5 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-secondary transition-colors" href="#">Get Started Free</a>
+</div>
+<button class="md:hidden text-text-primary">
+<svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<line x1="4" x2="20" y1="12" y2="12"></line>
+<line x1="4" x2="20" y1="6" y2="6"></line>
+<line x1="4" x2="20" y1="18" y2="18"></line>
+</svg>
+</button>
+</nav>
+</header>
+<main class="flex-grow">
+<section class="py-20">
+<div class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20 grid md:grid-cols-2 gap-12 items-center">
+<div class="flex flex-col gap-6 items-start">
+<h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-tight">
+                Understand What You Eat,
+                <span class="text-primary">Effortlessly.</span>
+</h1>
+<p class="text-lg text-text-secondary">
+                NutriLens uses AI to analyze your food intake, providing
+                personalized insights and recommendations to help you achieve
+                your health goals.
+              </p>
+<div class="flex flex-wrap gap-4 mt-4">
+<a class="px-8 py-3.5 text-base font-semibold text-white bg-primary rounded-lg hover:bg-secondary transition-all transform hover:scale-105" href="#">Create Free Account</a>
+<a class="px-8 py-3.5 text-base font-semibold text-primary ring-1 ring-inset ring-primary rounded-lg hover:bg-accent transition-colors" href="#">Learn More</a>
+</div>
+</div>
+<div class="relative">
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-3xl -z-10"></div>
+<img alt="NutriLens app illustration showing food analysis" class="w-full h-auto rounded-xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgWIO9-Kf5xVJkQiu1nrw61ixIVQigUCv3gxyRJHv6DoOCQ0dwifwnpHfXeDri1pmFX6FCmKF054chfHGLSiw4uuviAHLuoy0Ea9hPNYTpsDp99fo8_8u2EP0gCo3EHK-tR50Eu4C_TaUjkiZ95-asjCYE4DRuwDNsYWpLsdVVwi28NsQzbhIavW9bSNDpVGR3g0YkE0btE7o-FRyzo2QvoLEf5FynnEkgj8k_hUliDD2VBYENclI04aSs5zTiFSTUJRF_mMFghNZI"/>
+</div>
+</div>
+</section>
+<section class="py-20 bg-accent/50" id="features">
+<div class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20">
+<div class="text-center max-w-3xl mx-auto mb-12">
+<h2 class="text-3xl md:text-4xl font-bold text-text-primary">
+                Your All-in-One Nutrition Companion
+              </h2>
+<p class="mt-4 text-lg text-text-secondary">
+                NutriLens offers a comprehensive suite of tools to help you
+                manage your nutrition and wellness effectively.
+              </p>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="bg-background p-6 rounded-xl border border-accent flex flex-col gap-4 text-center items-center">
+<div class="bg-accent p-3 rounded-full text-primary">
+<svg fill="none" height="28" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="m15.5 7.5 3 3L8 21l-4 1 1-4Z"></path>
+<path d="M14 6.5a3 3 0 1 1 4 4"></path>
+</svg>
+</div>
+<h3 class="text-xl font-semibold text-text-primary">
+                  AI-Powered Food Analysis
+                </h3>
+<p class="text-text-secondary">
+                  Our AI analyzes your food intake from photos or manual
+                  entries, providing detailed nutritional information.
+                </p>
+</div>
+<div class="bg-background p-6 rounded-xl border border-accent flex flex-col gap-4 text-center items-center">
+<div class="bg-accent p-3 rounded-full text-primary">
+<svg fill="none" height="28" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+<line x1="12" x2="12" y1="20" y2="10"></line>
+<line x1="18" x2="18" y1="20" y2="4"></line>
+<line x1="6" x2="6" y1="20" y2="16"></line>
+</svg>
+</div>
+<h3 class="text-xl font-semibold text-text-primary">
+                  Personalized Insights
+                </h3>
+<p class="text-text-secondary">
+                  Receive tailored recommendations based on your dietary habits,
+                  health goals, and preferences.
+                </p>
+</div>
+<div class="bg-background p-6 rounded-xl border border-accent flex flex-col gap-4 text-center items-center">
+<div class="bg-accent p-3 rounded-full text-primary">
+<svg fill="none" height="28" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+<circle cx="9" cy="7" r="4"></circle>
+<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</svg>
+</div>
+<h3 class="text-xl font-semibold text-text-primary">
+                  Community Support
+                </h3>
+<p class="text-text-secondary">
+                  Connect with a community of like-minded individuals for
+                  support, motivation, and shared experiences.
+                </p>
+</div>
+<div class="bg-background p-6 rounded-xl border border-accent flex flex-col gap-4 text-center items-center">
+<div class="bg-accent p-3 rounded-full text-primary">
+<svg fill="none" height="28" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+<path d="m9 12 2 2 4-4"></path>
+</svg>
+</div>
+<h3 class="text-xl font-semibold text-text-primary">
+                  Data Privacy &amp; Security
+                </h3>
+<p class="text-text-secondary">
+                  Your data is protected with state-of-the-art security
+                  measures, ensuring your privacy.
+                </p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20" id="how-it-works">
+<div class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20">
+<div class="text-center max-w-3xl mx-auto mb-12">
+<h2 class="text-3xl md:text-4xl font-bold text-text-primary">
+                Get Started in 3 Simple Steps
+              </h2>
+<p class="mt-4 text-lg text-text-secondary">
+                Tracking your nutrition has never been this easy. Follow these
+                steps to begin your journey to better health.
+              </p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 md:gap-4 items-start relative">
+<div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 -mt-10">
+<svg class="text-accent" fill="none" height="2" viewBox="0 0 100 2" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1H99" stroke="currentColor" stroke-dasharray="8 8" stroke-width="2"></path>
+</svg>
+</div>
+<div class="flex flex-col items-center text-center z-10">
+<div class="w-16 h-16 bg-accent text-primary rounded-full flex items-center justify-center font-bold text-2xl border-4 border-background">
+                  1
+                </div>
+<h3 class="mt-6 text-xl font-semibold text-text-primary">
+                  Snap a Photo
+                </h3>
+<p class="mt-2 text-text-secondary">
+                  Take a picture of your meal or snack using the NutriLens app.
+                </p>
+</div>
+<div class="flex flex-col items-center text-center z-10">
+<div class="w-16 h-16 bg-accent text-primary rounded-full flex items-center justify-center font-bold text-2xl border-4 border-background">
+                  2
+                </div>
+<h3 class="mt-6 text-xl font-semibold text-text-primary">
+                  Get Instant Analysis
+                </h3>
+<p class="mt-2 text-text-secondary">
+                  Our AI identifies the food and provides detailed nutritional
+                  information.
+                </p>
+</div>
+<div class="flex flex-col items-center text-center z-10">
+<div class="w-16 h-16 bg-accent text-primary rounded-full flex items-center justify-center font-bold text-2xl border-4 border-background">
+                  3
+                </div>
+<h3 class="mt-6 text-xl font-semibold text-text-primary">
+                  Achieve Your Goals
+                </h3>
+<p class="mt-2 text-text-secondary">
+                  Track your progress, adjust your diet, and reach your
+                  wellness objectives.
+                </p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 overflow-hidden" id="personalization">
+<div class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20 grid md:grid-cols-2 gap-12 items-center">
+<div class="md:pr-12">
+<h2 class="text-3xl md:text-4xl font-bold text-text-primary">
+                Your Health at a Glance
+              </h2>
+<p class="mt-4 text-lg text-text-secondary">
+                NutriLens provides a comprehensive dashboard to help you stay
+                on top of your nutrition and wellness journey. Track your daily
+                intake, monitor your progress, and receive personalized
+                recommendations to keep you on track.
+              </p>
+<ul class="mt-6 space-y-4">
+<li class="flex items-start gap-3">
+<svg class="w-6 h-6 text-primary flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+<span class="text-text-secondary"><strong class="text-text-primary">Calorie Tracking:</strong>
+                    Effortlessly log meals and monitor your daily calorie
+                    consumption.</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="w-6 h-6 text-primary flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+<span class="text-text-secondary"><strong class="text-text-primary">Macronutrient Breakdown:</strong>
+                    Visualize your protein, carb, and fat intake to ensure a
+                    balanced diet.</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="w-6 h-6 text-primary flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+<span class="text-text-secondary"><strong class="text-text-primary">Progress Reports:</strong>
+                    Get weekly and monthly summaries to see how far you've
+                    come.</span>
+</li>
+</ul>
+</div>
+<div>
+<img alt="NutriLens dashboard mockup showing charts and data" class="rounded-xl shadow-2xl ring-1 ring-black/5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN2AU1aJ-PRmyczfCZGUMvh0acAjAcH7ShO-xNz3_reyU1JP4IB5-JfNJM4yLkaquHsrEXg0POaeOzEcuAr4v1sVGNzO_QCHcRpPzX42HWi0cMhOcvPbOFe2y_Y5zamm-7tyi6OFUjJ1OjxaEdZCFLozkMauLJYdfkyU1NOCMhodz1n1wfDscRnHW8qkoooN94POe8LuAH_IaeJ-c4wUMGIHbObyMg8jMc2Oy8Hi6WC9posE0JP7APFdDci4_lWDMlMAaUDEV0trRn"/>
+</div>
+</div>
+</section>
+<section class="py-20 bg-accent/50" id="testimonials">
+<div class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20">
+<div class="text-center max-w-3xl mx-auto mb-12">
+<h2 class="text-3xl md:text-4xl font-bold text-text-primary">
+                Loved by Health Enthusiasts
+              </h2>
+<p class="mt-4 text-lg text-text-secondary">
+                Don't just take our word for it. Hear what our users have to
+                say about their journey with NutriLens.
+              </p>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="bg-background p-8 rounded-xl border border-accent flex flex-col">
+<p class="text-text-secondary flex-grow">
+                  "NutriLens has completely transformed my approach to
+                  nutrition. The AI analysis is incredibly accurate, and the
+                  personalized insights have helped me make healthier choices
+                  effortlessly."
+                </p>
+<div class="flex items-center gap-4 mt-6">
+<img alt="Sarah M." class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqQYmeHeIhkrqBNl6D04KcK4lh2PRdgAz9x-3L92-FbBO_pAWRURQdmKFBFT_SgCO-rA2up-kboCSATti3uZfjV5x24UecQr0Gp0gkQCcXfKR2okEAD_UU-_zRbYSzZy6i9Ii0bFPasB7I6CdsEWUdQo6hBfrSyjL0Gq6UfUYrr06O5H47Vps_2TgI_3HLJz24N3_XnBU65IjIJtY7r08suK8pM1ORgX9bo9v-BHmRe_rfrJD_Zuw8JfmxiKsVtFbfzJ6bgdsjZZjy"/>
+<div>
+<p class="font-semibold text-text-primary">Sarah M.</p>
+<p class="text-sm text-text-secondary">Fitness Blogger</p>
+</div>
+</div>
+</div>
+<div class="bg-background p-8 rounded-xl border border-accent flex flex-col">
+<p class="text-text-secondary flex-grow">
+                  "I've tried numerous diet apps, but NutriLens stands out. The
+                  community support is fantastic, and the privacy features give
+                  me peace of mind. Highly recommended!"
+                </p>
+<div class="flex items-center gap-4 mt-6">
+<img alt="David L." class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBglnjk9IqeFWq74lztUAi6lLhzd9OA9nWBd_lDSKIVpaQ7961N844Uttkz-wxpMz8VS9uXvMiaRB4yq13_BKViPSWSaVJX_hgjSOjiqJ-1vWFmRWamwHDpznlfTbrtABp3N0WAjQhpDU_nEqL_fi3RNTsNWB2R1ToFn2YMNXB5iI10xyjyYZGT1kJuSI7Wd-mPCuu9SXCErRm7h6i4tv2egxvAOHnfsvPhq4fB4j8x6fbMPYMDx1yop2ItnVLZJjtXTrSGmqYnnv9J"/>
+<div>
+<p class="font-semibold text-text-primary">David L.</p>
+<p class="text-sm text-text-secondary">Working Professional</p>
+</div>
+</div>
+</div>
+<div class="bg-background p-8 rounded-xl border border-accent flex flex-col">
+<p class="text-text-secondary flex-grow">
+                  "The dashboard is so intuitive and easy to use. I can quickly
+                  track my progress and see the impact of my dietary changes.
+                  NutriLens has been a game-changer for my wellness journey."
+                </p>
+<div class="flex items-center gap-4 mt-6">
+<img alt="Emily R." class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcJpaO75L2tK95w44dLEgfAKTr1LIe5Q661LpYl6PjOlWVbQo4B_phJleByqsykJLlqMgRqQuezLQLE-QChdX5_efv4fNq_nXGIIHoZeFFGQiJGAVOn86e2ONSa9sr0rloNxbp5N1ugLkpD_IE0b1BERum-nXwelQNu7heB_LlYPqRLF9uFjlzZ_HdogpvduuCSCBkuls2WMX5p2EQf9BziSOFGLu82OHf1wzDsqn40piN_2q6BPTUCoF7bJpWn-VUo0fPxh4a563k"/>
+<div>
+<p class="font-semibold text-text-primary">Emily R.</p>
+<p class="text-sm text-text-secondary">Marathon Runner</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20">
+<div class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20">
+<div class="gradient-bg rounded-xl p-12 text-center flex flex-col items-center">
+<h2 class="text-3xl md:text-4xl font-bold text-white">
+                Ready to Transform Your Health?
+              </h2>
+<p class="mt-4 text-lg text-white/80 max-w-2xl">
+                Join thousands of users who are achieving their health goals
+                with NutriLens. Sign up for free and start your journey today.
+              </p>
+<a class="mt-8 px-8 py-3.5 text-base font-semibold text-primary bg-white rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105" href="#">Get Started for Free</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-accent/50">
+<div class="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20 py-12">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-2">
+<svg class="w-7 h-7 text-primary" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+<span class="text-xl font-bold text-text-primary">NutriLens</span>
+</div>
+<div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-text-secondary">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Us</a>
+</div>
+<p class="text-text-secondary text-center md:text-left">
+              © 2024 NutriLens. All rights reserved.
+            </p>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>
