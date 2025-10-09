@@ -75,7 +75,7 @@ export default function RegisterPage() {
           Already have an account?{" "}
           <button
             type="button"
-            onClick={() => router.push("/auth/login")}
+            onClick={() => router.push("/auth/signin")}
             className="text-green-600 font-medium hover:underline"
           >
             Login
