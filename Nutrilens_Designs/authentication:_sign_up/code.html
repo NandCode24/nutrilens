@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NutriLens - Sign Up</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4CAF50",
+                        "background-light": "#F7FDF7",
+                        "background-dark": "#101810",
+                        "foreground-light": "#1C241C",
+                        "foreground-dark": "#E3EFE3",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#182618",
+                        "muted-light": "#6B7A6B",
+                        "muted-dark": "#9EAD9E",
+                        "border-light": "#E3EFE3",
+                        "border-dark": "#2E3B2E"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .gradient-bg {
+            background-image: linear-gradient(120deg, theme('colors.card-light'), theme('colors.background-light'));
+        }
+        .dark .gradient-bg {
+            background-image: linear-gradient(120deg, theme('colors.card-dark'), theme('colors.background-dark'));
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-foreground-light dark:text-foreground-dark">
+<div class="flex items-center justify-center min-h-screen p-4">
+<div class="w-full max-w-md p-8 space-y-6 bg-card-light dark:bg-card-dark rounded-xl shadow-xl gradient-bg">
+<div class="text-center">
+<h1 class="text-3xl font-bold text-foreground-light dark:text-foreground-dark">Create an Account</h1>
+<p class="text-muted-light dark:text-muted-dark mt-2">Start your journey with NutriLens</p>
+</div>
+<div class="space-y-4">
+<div>
+<label class="sr-only" for="email">Email</label>
+<input class="w-full px-4 py-3 bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary placeholder-muted-light dark:placeholder-muted-dark" id="email" name="email" placeholder="Email address" type="email"/>
+</div>
+<div>
+<label class="sr-only" for="password">Password</label>
+<input class="w-full px-4 py-3 bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-lg focus:ring-primary focus:border-primary placeholder-muted-light dark:placeholder-muted-dark" id="password" name="password" placeholder="Password" type="password"/>
+</div>
+</div>
+<div class="space-y-4">
+<button class="w-full py-3 text-white bg-primary rounded-lg font-semibold hover:bg-opacity-90 active:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-card-dark transition-all">
+                    Sign Up
+                </button>
+<div class="relative">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-border-light dark:border-border-dark"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-2 bg-card-light dark:bg-card-dark text-muted-light dark:text-muted-dark">Or continue with</span>
+</div>
+</div>
+<div class="flex items-center justify-center space-x-4">
+<button class="flex items-center justify-center w-12 h-12 border border-border-light dark:border-border-dark rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-colors">
+<svg class="h-6 w-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"> <path d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" fill="#FFC107"></path><path d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z" fill="#FF3D00"></path><path d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.223 0-9.657-3.657-11.303-8H2.747v9.09C6.012 41.022 14.438 44 24 44z" fill="#4CAF50"></path><path d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 36.417 44 30.561 44 24c0-1.341-.138-2.65-.389-3.917z" fill="#1976D2"></path> </svg>
+</button>
+<button class="flex items-center justify-center w-12 h-12 border border-border-light dark:border-border-dark rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-colors">
+<svg class="h-6 w-6 text-foreground-light dark:text-foreground-dark" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.01,2.05c-3.16,0-4.7,1.96-5.98,4.6c-1.74,3.6-0.6,8.7,1.82,11.36c1.13,1.25,2.4,2.05,3.95,2.05c1.4,0,2.33-0.64,3.87-2.07c2.72-2.52,3.8-7.34,1.82-10.96c-1.21-2.27-2.76-4-5.48-4.98C12,2.02,12.01,2.05,12.01,2.05z M11.13,0.05C7.4,0.3,4.3,3.48,4.3,7.26c0,2.1,0.9,4.2,2.37,5.83c1.47,1.6,3.3,2.85,5.4,2.85c2.25,0,3.92-1.12,5.28-2.68c1.48-1.7,2.28-3.9,2.28-6.08c0-3.37-2.45-6.28-5.78-6.95C13.25,0.1,11.75,0,11.13,0.05z"></path></svg>
+</button>
+</div>
+</div>
+<p class="text-center text-sm text-muted-light dark:text-muted-dark">
+                Already have an account? 
+                <a class="font-semibold text-primary hover:underline" href="#">Login</a>
+</p>
+</div>
+</div>
+
+</body></html>

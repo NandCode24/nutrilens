@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NutriLens - Scan Ingredients</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#20df2d",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#112112",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="flex flex-col min-h-screen">
+<header class="flex items-center justify-between px-6 py-4 border-b border-primary/20">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white">camera</span>
+</div>
+<h1 class="text-xl font-bold text-gray-900 dark:text-white">NutriLens</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-primary/10 dark:hover:bg-primary/20 text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">help</span>
+</button>
+<img alt="User profile picture" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkvJktY7aI08RET_wuIeyH4oleFW7iBVnZft8BrwDnkmyxyZGM100nq5frI1UQF0FK7GpVCqF8__qJUYAcdrMO8WWl21iRMQa1liAVFNWoQ3TUayfGk99crsO8xLn51yb__OHX2GbBGsd60ve1bMFAcfLaKaC68aW726GfTv5wMosLwpM1uXDL6UE8AuMhsJCo1tqkBDWtgnHE_eDp8hbrr4z2N7AuvJ5kIsZ1XdhxQ3mZSjyYKVcr6Jl0Qe-ij639kIxlbcxBwb_r"/>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+<div class="w-full max-w-md text-center">
+<h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Scan Ingredient Label</h2>
+<p class="text-gray-600 dark:text-gray-400 mb-8">Center the label in the frame for the best results.</p>
+<div class="relative aspect-[3/4] w-full bg-background-light dark:bg-background-dark border-2 border-dashed border-primary/40 dark:border-primary/60 rounded-xl flex flex-col items-center justify-center overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center opacity-20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxnQCCTl0srCRgNcyEfdlkaXwqAErAHeFgTJQCefjsd9G8eiZi747-9biQ5_p5sF4CXZJXyunAX_M9gSUN0G23ug_11QNqqxFmikPHZpeCp7_0jmfMUzS25qlcoIC6KL4tnxDeZl4be_EChfLNxIqYKcFCIoOmLiNujDSJ-cJ43h5rkkJ6PpICWDeAU6KHWBVfGdNVqRIZvjQl7gjKdn3Rvd5B6kMRSupzHdhGfJqb6_OnqL6O12ZyjRPy4BUe2pBlRJ2EXVGPzpLb");'></div>
+<div class="relative z-10 flex flex-col items-center justify-center gap-4 text-center">
+<button class="bg-white/80 dark:bg-black/50 backdrop-blur-sm p-5 rounded-full shadow-lg transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-5xl text-primary">photo_camera</span>
+</button>
+<p class="font-semibold text-gray-700 dark:text-gray-300">Tap to capture</p>
+</div>
+</div>
+<div class="flex items-center my-6">
+<hr class="flex-grow border-t border-primary/20"/>
+<span class="px-4 text-sm text-gray-500 dark:text-gray-400">OR</span>
+<hr class="flex-grow border-t border-primary/20"/>
+</div>
+<button class="w-full h-12 flex items-center justify-center gap-2 bg-primary/20 dark:bg-primary/30 hover:bg-primary/30 dark:hover:bg-primary/40 text-primary font-bold rounded-lg transition-colors">
+<span class="material-symbols-outlined">upload_file</span>
+<span>Upload Image</span>
+</button>
+</div>
+</main>
+<footer class="p-4 sm:p-6 lg:p-8 sticky bottom-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-t border-primary/20">
+<div class="max-w-md mx-auto">
+<button class="w-full h-14 bg-primary text-white font-bold rounded-xl shadow-lg hover:shadow-primary/50 transition-all duration-300 transform hover:-translate-y-1 text-lg">
+                    Scan Now
+                </button>
+</div>
+</footer>
+</div>
+
+</body></html>

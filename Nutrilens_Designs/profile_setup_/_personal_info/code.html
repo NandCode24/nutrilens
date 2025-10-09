@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NutriLens - Personal Details</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4CAF50",
+                        "background-light": "#F9FAFB",
+                        "background-dark": "#111827",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1F2937",
+                        "text-primary-light": "#1F2937",
+                        "text-primary-dark": "#F9FAFB",
+                        "text-secondary-light": "#4B5563",
+                        "text-secondary-dark": "#9CA3AF",
+                        "border-light": "#E5E7EB",
+                        "border-dark": "#374151",
+                        "input-bg-light": "#FFFFFF",
+                        "input-bg-dark": "#374151",
+                        "placeholder-light": "#9CA3AF",
+                        "placeholder-dark": "#6B7280",
+                        "secondary-button-bg-light": "#E5E7EB",
+                        "secondary-button-bg-dark": "#374151",
+                        "secondary-button-text-light": "#1F2937",
+                        "secondary-button-text-dark": "#F9FAFB",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'subtle': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .dark .form-select {
+             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased">
+<div class="flex flex-col items-center min-h-screen p-6 md:p-12">
+<div class="w-full max-w-2xl mx-auto space-y-6">
+<header class="text-center">
+<h1 class="text-2xl font-semibold text-text-primary-light dark:text-text-primary-dark">Tell us about yourself</h1>
+<p class="mt-2 text-base text-text-secondary-light dark:text-text-secondary-dark">This helps us provide personalized diet plans and recommendations.</p>
+</header>
+<div class="bg-card-light dark:bg-card-dark rounded-lg shadow-subtle p-6 md:p-8 space-y-6">
+<h2 class="text-lg font-semibold text-text-primary-light dark:text-text-primary-dark">Personal Details</h2>
+<form class="space-y-6">
+<div class="grid grid-cols-1 gap-6">
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="name">Name</label>
+<input class="mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder-placeholder-light dark:placeholder-placeholder-dark focus:ring-primary focus:border-primary" id="name" placeholder="Enter your name" type="text"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="age">Age</label>
+<input class="mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder-placeholder-light dark:placeholder-placeholder-dark focus:ring-primary focus:border-primary" id="age" placeholder="Enter your age" type="number"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="gender">Gender</label>
+<select class="form-select mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark focus:ring-primary focus:border-primary" id="gender">
+<option>Select gender</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="height">Height (cm)</label>
+<input class="mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder-placeholder-light dark:placeholder-placeholder-dark focus:ring-primary focus:border-primary" id="height" placeholder="Enter your height" type="number"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="weight">Weight (kg)</label>
+<input class="mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder-placeholder-light dark:placeholder-placeholder-dark focus:ring-primary focus:border-primary" id="weight" placeholder="Enter your weight" type="number"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="medications">Medications</label>
+<input class="mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder-placeholder-light dark:placeholder-placeholder-dark focus:ring-primary focus:border-primary" id="medications" placeholder="List any medications you are taking" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="goal">Health Goal</label>
+<select class="form-select mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark focus:ring-primary focus:border-primary" id="goal">
+<option>Select your health goal</option>
+<option>Weight Loss</option>
+<option>Muscle Gain</option>
+<option>Maintenance</option>
+<option>Improve Overall Health</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="allergies">Allergies/Dietary Restrictions</label>
+<textarea class="mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder-placeholder-light dark:placeholder-placeholder-dark focus:ring-primary focus:border-primary" id="allergies" placeholder="List any allergies or dietary restrictions" rows="3"></textarea>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark" for="additional-info">Additional Info</label>
+<textarea class="mt-1 block w-full rounded-lg border-border-light dark:border-border-dark bg-input-bg-light dark:bg-input-bg-dark text-text-primary-light dark:text-text-primary-dark placeholder-placeholder-light dark:placeholder-placeholder-dark focus:ring-primary focus:border-primary" id="additional-info" placeholder="Any additional information you'd like to share" rows="3"></textarea>
+</div>
+</div>
+</form>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-lg shadow-subtle p-6 flex items-center space-x-4">
+<div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-full">
+<span class="material-symbols-outlined text-primary text-2xl">local_fire_department</span>
+</div>
+<div>
+<h3 class="font-semibold text-text-primary-light dark:text-text-primary-dark">Basal Metabolic Rate (BMR)</h3>
+<p class="text-xl font-bold text-primary">1500 kcal / day</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">This is an estimate of the calories you burn at rest.</p>
+</div>
+</div>
+<div class="space-y-4">
+<button class="w-full bg-primary text-white font-semibold py-3 px-4 rounded-lg shadow-subtle hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-colors duration-200">
+                    Save &amp; Continue
+                </button>
+<button class="w-full bg-secondary-button-bg-light dark:bg-secondary-button-bg-dark text-secondary-button-text-light dark:text-secondary-button-text-dark font-semibold py-3 px-4 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-offset-background-dark transition-colors duration-200">
+                    Skip for now
+                </button>
+</div>
+</div>
+</div>
+
+</body></html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NutriLens Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#20df2d",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#112112",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .magic-card {
+            position: relative;
+            background: transparent;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .magic-card:hover {
+            transform: scale(1.02);
+        }
+        .magic-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(32, 223, 45, 0.2), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+        .magic-card:hover::before {
+            opacity: 1;
+        }
+        .magic-card > * {
+            position: relative;
+            z-index: 2;
+        }
+        .shadow-glow {
+           box-shadow: 0 0 15px rgba(32, 223, 45, 0), 0 0 20px rgba(32, 223, 45, 0);
+           transition: box-shadow 0.3s ease;
+        }
+        .magic-card:hover .shadow-glow {
+            box-shadow: 0 0 25px rgba(32, 223, 45, 0.3), 0 0 40px rgba(32, 223, 45, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="flex flex-col min-h-screen">
+<header class="sticky top-0 z-30 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between py-4">
+<div class="flex items-center gap-2">
+<svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C13.2435 2 14.4377 2.47411 15.3129 3.26262C16.1881 4.05114 16.6991 5.12596 16.795 6.262L16.996 9.041L19.576 6.46C20.1223 5.91372 20.8682 5.61051 21.655 5.61051C22.4418 5.61051 23.1877 5.91372 23.734 6.46C24.2803 7.00628 24.5835 7.75218 24.5835 8.539C24.5835 9.32582 24.2803 10.0717 23.734 10.618L20.893 13.459L22.469 18.041C22.793 19.047 22.569 20.147 21.894 20.822C21.219 21.497 20.119 21.721 19.113 21.397L14.532 19.821L14.738 22.531C14.869 24.16 13.593 25.562 12 25.562C10.407 25.562 9.131 24.16 9.262 22.531L9.468 19.821L4.887 21.397C3.881 21.721 2.781 21.497 2.106 20.822C1.431 20.147 1.207 19.047 1.531 18.041L3.107 13.459L0.266 10.618C-0.280281 10.0717 -0.583495 9.32582 -0.583495 8.539C-0.583495 7.75218 -0.280281 7.00628 0.266 6.46C0.812281 5.91372 1.55819 5.61051 2.345 5.61051C3.13181 5.61051 3.87772 5.91372 4.424 6.46L7.004 9.041L7.205 6.262C7.30094 5.12596 7.81188 4.05114 8.6871 3.26262C9.56232 2.47411 10.7565 2 12 2ZM12 4C11.2044 4 10.4413 4.31607 9.87868 4.87868C9.31607 5.44129 9 6.20435 9 7V9.586L6.414 12.172C5.633 12.953 5.633 14.22 6.414 15L9 17.586L7.414 22.172C7.121 23.056 7.643 24 8.586 24L12 22.586L15.414 24C16.357 24 16.879 23.056 16.586 22.172L15 17.586L17.586 15C18.367 14.22 18.367 12.953 17.586 12.172L15 9.586V7C15 6.20435 14.6839 5.44129 14.1213 4.87868C13.5587 4.31607 12.7956 4 12 4Z"></path>
+</svg>
+<h1 class="text-xl font-bold text-gray-900 dark:text-white">NutriLens</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-center bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJfFV-zXTxITPTsXyjYK2KeGN9A0QQF-1VvIN9-PSWTsNrF4AH03zdTC2W5cgxcuD91RjLSKeWMfiA0qs7bhHn9OVLXpSTuyK35W-vGEY_VlNg58HygXxJwsDAqIfIQdKAorGwDCVnT-5bcWJ4I1ANsT5j93dlF_f0gmXZVswsjPmdkIZgdQ2gzjor5d6Ca_-oNHSqobNZa5h84dIKxC3vykDTSvf7yiEuus8SDrXf6k8Ef4Lx7rRg4IpQxUK2UH9W3rwShImvaQkS');"></div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Welcome back, Sarah</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8">
+<div class="magic-card bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col items-center text-center shadow-glow">
+<div class="p-4 rounded-full bg-primary/20 mb-4">
+<svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Scan Label</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400">Quickly analyze food labels for nutritional information.</p>
+</div>
+<div class="magic-card bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col items-center text-center shadow-glow">
+<div class="p-4 rounded-full bg-primary/20 mb-4">
+<svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Diet Planner</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400">Create personalized meal plans based on your dietary needs.</p>
+</div>
+<div class="magic-card bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col items-center text-center shadow-glow">
+<div class="p-4 rounded-full bg-primary/20 mb-4">
+<svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Symptom Checker</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400">Identify potential health issues based on your symptoms.</p>
+</div>
+<div class="magic-card bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col items-center text-center shadow-glow">
+<div class="p-4 rounded-full bg-primary/20 mb-4">
+<svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M17.707 3.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-10 10a1 1 0 01-.39.242l-5 2a1 1 0 01-1.213-1.212l2-5a1 1 0 01.242-.391l10-10zM16 7.414l-9 9L6.414 18l9-9L16 7.414z" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M5 19a1 1 0 01-1-1v-2a1 1 0 112 0v2a1 1 0 01-1 1z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Medicine Lookup</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400">Find information about medications and their interactions.</p>
+</div>
+</div>
+</main>
+<footer class="sticky bottom-0 z-30 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800">
+<nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-around">
+<a class="flex flex-col items-center justify-center flex-1 py-3 text-primary border-t-2 border-primary" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+</svg>
+<span class="text-xs font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center flex-1 py-3 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors duration-200" href="#">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xs font-medium">Saved</span>
+</a>
+<a class="flex flex-col items-center justify-center flex-1 py-3 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors duration-200" href="#">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xs font-medium">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center flex-1 py-3 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors duration-200" href="#">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xs font-medium">Settings</span>
+</a>
+</div>
+</nav>
+</footer>
+</div>
+<script>
+        document.addEventListener('mousemove', function (e) {
+            const cards = document.querySelectorAll('.magic-card');
+            for(let card of cards) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }
+        });
+    </script>
+
+</body></html>

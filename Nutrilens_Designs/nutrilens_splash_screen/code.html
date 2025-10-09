@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NutriLens Splash Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 1.5s ease-in-out;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#20df2d",
+            "background-light": "#f6f8f6",
+            "background-dark": "#112112",
+          },
+          fontFamily: {
+            "display": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex items-center justify-center min-h-screen">
+<div class="text-center animate-fadeIn">
+<div class="w-32 h-32 mx-auto mb-6">
+<svg class="w-full h-full text-primary" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM11.18 8.82C10.82 8.46 10.2 8.46 9.84 8.82L6.29 12.37C5.93 12.73 5.93 13.35 6.29 13.71C6.65 14.07 7.27 14.07 7.63 13.71L10.51 10.83L13.39 13.71C13.75 14.07 14.37 14.07 14.73 13.71C15.09 13.35 15.09 12.73 14.73 12.37L11.18 8.82ZM16.34 7.66C15.89 7.21 15.16 7.21 14.71 7.66L12.65 9.72L14.28 11.35L16.34 9.29C16.79 8.84 16.79 8.11 16.34 7.66ZM17.71 10.71L15.65 8.65L14.96 9.34L17.02 11.4C17.38 11.76 18 11.76 18.36 11.4C18.72 11.04 18.72 10.42 18.36 10.06L17.71 10.71Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h1 class="text-4xl font-bold text-background-dark dark:text-background-light">NutriLens</h1>
+<p class="mt-2 text-lg text-background-dark/70 dark:text-background-light/70">Scan, Plan &amp; Track Your Nutrition.</p>
+</div>
+</div>
+<script>
+    // Auto-redirect after a few seconds
+    setTimeout(() => {
+       // window.location.href = '/onboarding'; // Uncomment and set your onboarding route
+       console.log("Redirecting to onboarding...");
+    }, 3000);
+  </script>
+
+</body></html>
