@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+url = "postgresql://postgres:BitByBit0116@db.imyfdfigzpfvktbykuae.supabase.co:5432/postgres"
+}
+
+// ────────────────────────────────
+//  USER MODEL — Authentication + Profile
+// ────────────────────────────────
+model User {
+  id          String   @id @default(uuid())
+  name        String?
+  email       String   @unique
+  password    String
+  age         Int?
+  gender      String?
+  heightCm    Float?
+  weightKg    Float?
+  allergies   String[]        // stored as text[] in Postgres
+  healthGoals String?
+  bmr         Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  foodScans   FoodScan[]
+  medicines   Medicine[]
+  libraries   Library[]
+  tips        Tip[]
+}
+
+// ────────────────────────────────
+//  FOOD SCAN MODEL — OCR + Nutritional Info
+// ────────────────────────────────
+model FoodScan {
+  id              String   @id @default(uuid())
+  userId          String
+  imageUrl        String?
+  ingredientsText String
+  nutritionData   Json     // AI/Gemini result
+  rating          Float    // 0–10 rating score
+  createdAt       DateTime @default(now())
+
+  // Relations
+  user       User     @relation(fields: [userId], references: [id])
+  libraries  Library[]
+}
+
+// ────────────────────────────────
+//  MEDICINE MODEL — OCR + Medicine Details
+// ────────────────────────────────
+model Medicine {
+  id           String   @id @default(uuid())
+  userId       String
+  name         String
+  brand        String?
+  imageUrl     String?
+  dosage       String?
+  uses         String?
+  precautions  String?
+  createdAt    DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  libraries Library[]
+}
+
+// ────────────────────────────────
+//  LIBRARY MODEL — Saved Items
+// ────────────────────────────────
+model Library {
+  id              String   @id @default(uuid())
+  userId          String
+  foodScanId      String?
+  medicineId      String?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  foodScan  FoodScan? @relation(fields: [foodScanId], references: [id])
+  medicine  Medicine? @relation(fields: [medicineId], references: [id])
+}
+
+// ────────────────────────────────
+//  TIP MODEL — Daily Health Tips
+// ────────────────────────────────
+model Tip {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  createdAt   DateTime @default(now())
+  createdById String?
+  createdBy   User?    @relation(fields: [createdById], references: [id])
+}
