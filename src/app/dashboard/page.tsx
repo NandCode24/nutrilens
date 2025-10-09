@@ -13,7 +13,7 @@ export default function DashboardPage() {
       title: "Scan Label",
       description: "Quickly analyze food labels for nutritional information.",
       icon: <FiCamera className="w-9 h-9 text-green-500" />,
-      path: "/scan/ingredient",
+      path: "/ingredient",
     },
     {
       title: "Diet Planner",
