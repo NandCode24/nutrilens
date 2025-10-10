@@ -66,7 +66,7 @@ if (
             Profile
           </span>
         </Link>
-
+{/* 
         <button
           onClick={() => {
             localStorage.removeItem("user");
@@ -74,7 +74,7 @@ if (
           }}
             className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 hover:text-gray-900 transition-all duration-200"        >
           Logout
-        </button>
+        </button> */}
       </div>
     </header>
   );
