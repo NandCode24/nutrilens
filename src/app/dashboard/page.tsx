@@ -38,17 +38,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6fdf6] relative pb-20">
-      <header className="flex justify-between items-center px-8 py-6 bg-[#f6fdf6]">
-        <div className="flex items-center space-x-2">
-          <img src="/next.svg" alt="NutriLens Logo" className="w-8 h-8" />
-          <span className="text-xl font-semibold text-gray-800">NutriLens</span>
-        </div>
-        <img
-          src="https://i.pravatar.cc/40"
-          alt="Profile"
-          className="w-11 h-11 rounded-full object-cover border border-gray-200 shadow-sm"
-        />
-      </header>
+
 
       <div className="px-8 mt-4 mb-6">
         <h1 className="text-3xl font-semibold text-gray-900">
