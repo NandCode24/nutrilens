@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    await prisma.user.create({
+    const created = await prisma.user.create({
       data: {
         name,
         email,
@@ -35,9 +35,11 @@ export async function POST(req: Request) {
       },
     });
 
+    // Optional: return created user basic info (id/name/email) if you want client to auto-login
     return NextResponse.json({
       success: true,
       message: "Account created successfully",
+      user: { id: created.id, name: created.name, email: created.email },
     });
   } catch (error) {
     console.error("Signup error:", error);

@@ -14,10 +14,23 @@ export default function DashboardPage() {
     if (!storedUser) {
       router.push("/auth/signin");
     } else {
-      const user = JSON.parse(storedUser);
-      setUserName(user.name || "User");
+      try {
+        const user = JSON.parse(storedUser);
+        setUserName(user.name || "User");
+      } catch {
+        // If stored data is corrupted, clear it and redirect to signin
+        localStorage.removeItem("user");
+        router.push("/auth/signin");
+      }
     }
   }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    // Clear cookie (set expiry in the past) and include path + SameSite
+    document.cookie = "isLoggedIn=; Max-Age=0; path=/; SameSite=Lax; Secure";
+    router.push("/auth/signin");
+  };
 
   const menuItems = [
     {
@@ -49,12 +62,9 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6fdf6] relative pb-20">
-      {/* 🔹 Optional Logout Button */}
+      {/* 🔹 Logout Button */}
       <button
-        onClick={() => {
-          localStorage.removeItem("user");
-          router.push("/auth/signin");
-        }}
+        onClick={handleLogout}
         className="absolute top-5 right-6 text-sm text-gray-600 hover:text-green-600"
       >
         Logout
