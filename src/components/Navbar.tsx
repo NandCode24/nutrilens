@@ -22,7 +22,7 @@ export default function Navbar() {
           <Image
             src={logo}
             alt="NutriLens Logo"
-            className="object-contain w-auto h-14"
+            className="object-contain w-auto h-15"
           />
           {/* <span className="text-lg font-semibold text-slate-900 group-hover:text-[#22C55E] transition-colors">
             NutriLens

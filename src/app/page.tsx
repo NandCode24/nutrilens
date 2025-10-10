@@ -27,7 +27,7 @@ export default function Page() {
                 { label: "Features", href: "#features" },
                 { label: "How It Works", href: "#how" },
                 { label: "Personalization", href: "#personalization" },
-                { label: "Testimonials", href: "#testimonials" },
+                // { label: "Testimonials", href: "#testimonials" },
               ].map((item) => (
                 <Link
                   key={item.href}
@@ -151,7 +151,7 @@ export default function Page() {
       </section>
 
       {/* ---------- FEATURES ---------- */}
-      <section id="features" className="bg-[#F7FFF7]">
+      <section id="features" className="bg-[#F7FFF7] scroll-mt-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20">
           {/* Heading */}
           <div className="text-center max-w-3xl mx-auto mb-14">
@@ -296,7 +296,7 @@ export default function Page() {
       </section>
 
       {/* ---------- HOW IT WORKS ---------- */}
-      <section id="how" className="bg-white">
+      <section id="how" className="bg-white scroll-mt-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-slate-900">
@@ -420,7 +420,7 @@ export default function Page() {
       </section>
 
       {/* ---------- TESTIMONIALS ---------- */}
-      <section id="testimonials" className="bg-white">
+      {/* <section id="testimonials" className="bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-slate-900">
@@ -466,7 +466,7 @@ export default function Page() {
             </blockquote>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ---------- CTA BANNER ---------- */}
       <section className="bg-gradient-to-r from-[#E6FFE9] to-[#F9FFF9]">
