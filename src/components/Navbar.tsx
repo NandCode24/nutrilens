@@ -51,7 +51,8 @@ export default function Navbar() {
   const hideNavbar =
     pathname === "/" ||
     pathname === "/auth/signup" ||
-    pathname === "/auth/signin";
+    pathname === "/auth/signin" ||
+    pathname === "/onboarding";
 
   if (hideNavbar) return null;
 

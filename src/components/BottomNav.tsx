@@ -9,7 +9,7 @@ export default function BottomNav() {
 
   const navItems = [
     { name: "Home", icon: FiHome, path: "/dashboard" },
-    { name: "Saved", icon: FiBookmark, path: "/saved" },
+    { name: "History", icon: FiBookmark, path: "/history" },
     { name: "Profile", icon: FiUser, path: "/profile" },
     { name: "Settings", icon: FiSettings, path: "/settings" },
   ];
