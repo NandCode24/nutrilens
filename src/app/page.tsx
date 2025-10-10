@@ -1,67 +1,56 @@
 /* src/app/page.tsx */
 import Link from "next/link";
+import logo from "../../public/NutriLens.png"
 
 export default function Page() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
       {/* ---------- NAV ---------- */}
-      <header className="border-b border-slate-100">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3">
-              {/* simple SVG leaf + text logo */}
-              <svg
-                width="36"
-                height="36"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="flex-none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden
-              >
-                <rect width="24" height="24" rx="6" fill="#ECFDF6" />
-                <path
-                  d="M8.8 13.2c1.2-1.2 4.2-3 6.6-1.6 0 0 .6-3-2.2-4.8-2.6-1.6-6.6.6-6.6.6S8 9 8.8 13.2z"
-                  fill="#16A34A"
-                />
-                <path
-                  d="M13 14.2c.2.2.6.2.8 0 .2-.2.2-.6 0-.8-.2-.2-.6-.2-.8 0-.2.2-.2.6 0 .8z"
-                  fill="#22C55E"
-                />
-              </svg>
-              <span className="text-lg font-semibold tracking-tight">
+            <Link href="/" className="flex items-center gap-3 group">
+              <img
+                src={logo.src}
+                alt="NutriLens Logo"
+                className="h-15 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              {/* <span className="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-[#22C55E] transition-colors">
                 NutriLens
-              </span>
+              </span> */}
             </Link>
 
             {/* Nav Links */}
-            <nav className="hidden md:flex items-center gap-8 text-sm text-slate-600">
-              <Link href="#features" className="hover:text-slate-800">
-                Features
-              </Link>
-              <Link href="#how" className="hover:text-slate-800">
-                How It Works
-              </Link>
-              <Link href="#personalization" className="hover:text-slate-800">
-                Personalization
-              </Link>
-              <Link href="#testimonials" className="hover:text-slate-800">
-                Testimonials
-              </Link>
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-700">
+              {[
+                { label: "Features", href: "#features" },
+                { label: "How It Works", href: "#how" },
+                { label: "Personalization", href: "#personalization" },
+                { label: "Testimonials", href: "#testimonials" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="relative group transition-colors duration-200 hover:text-[#22C55E]"
+                >
+                  {item.label}
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#22C55E] transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              ))}
             </nav>
 
             {/* CTAs */}
             <div className="flex items-center gap-3">
               <Link
                 href="/auth/signin"
-                className="hidden md:inline-flex rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="hidden md:inline-flex rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-[#22C55E] hover:bg-slate-50 transition-all"
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center rounded-full bg-[#22C55E] px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-[#16A34A]"
+                className="inline-flex items-center rounded-full bg-[#22C55E] px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-[#16A34A] hover:shadow-lg transition-all"
               >
                 Get Started Free
               </Link>
@@ -69,6 +58,7 @@ export default function Page() {
           </div>
         </div>
       </header>
+
 
       {/* ---------- HERO ---------- */}
       <section className="bg-gradient-to-b from-white to-[#F9FCF9]">
