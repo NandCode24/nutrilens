@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NutriLens Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#22C55E",
+            "primary-darker": "#16A34A",
+            "background-light": "#F7FFF9",
+            "background-dark": "#1F2937",
+            "text-primary": "#1F2937",
+            "text-secondary": "#6B7280",
+            "text-light": "#FFFFFF",
+            "card-light": "#FFFFFF",
+            "card-dark": "#2d3748",
+            "soft-green-tint": "#ECFDF5",
+            "switch-track-light": "#E5E7EB",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "full": "9999px"
+          },
+          boxShadow: {
+            'soft': '0 2px 8px rgba(0,0,0,0.05)',
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .switch-thumb:checked+label {
+      transform: translateX(20px);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary dark:text-text-light transition-colors duration-150">
+<div class="mx-auto max-w-[1100px] px-8">
+<header class="mt-[60px] mb-[30px]">
+<h1 class="text-3xl font-bold text-text-primary dark:text-text-light">My Profile</h1>
+<p class="text-sm text-text-secondary">Manage your personal information and health details.</p>
+</header>
+<div class="flex flex-col gap-6">
+<section class="flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-5">
+<div class="relative">
+<div class="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700 ring-4 ring-primary/50">
+</div>
+</div>
+<div>
+<h2 class="text-xl font-semibold text-text-primary dark:text-text-light">Sophia Bennett</h2>
+<p class="text-sm text-text-secondary">sophia.bennett@email.com</p>
+</div>
+</div>
+<button class="bg-primary text-text-light font-medium py-2.5 px-6 rounded-full hover:bg-primary-darker transition-colors duration-150 ease-in-out w-full md:w-auto">
+          Edit Profile
+        </button>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 space-y-6">
+<div class="bg-card-light dark:bg-card-dark p-6 rounded-DEFAULT shadow-soft">
+<h3 class="text-lg font-semibold text-text-primary dark:text-text-light mb-4">Personal Details</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+<div>
+<label class="text-xs uppercase text-text-secondary">Name</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">Sophia Bennett</p>
+</div>
+<div>
+<label class="text-xs uppercase text-text-secondary">Age</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">30</p>
+</div>
+<div>
+<label class="text-xs uppercase text-text-secondary">Gender</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">Female</p>
+</div>
+<div>
+<label class="text-xs uppercase text-text-secondary">Height</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">165 cm</p>
+</div>
+<div>
+<label class="text-xs uppercase text-text-secondary">Weight</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">60 kg</p>
+</div>
+<div>
+<label class="text-xs uppercase text-text-secondary">BMI</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">22.0</p>
+</div>
+<div class="md:col-span-2">
+<label class="text-xs uppercase text-text-secondary">Basal Metabolic Rate (BMR)</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">1400 kcal</p>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark p-6 rounded-DEFAULT shadow-soft">
+<h3 class="text-lg font-semibold text-text-primary dark:text-text-light mb-4">Health &amp; Lifestyle Info</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5">restaurant_menu</span>
+<div>
+<label class="text-xs uppercase text-text-secondary">Diet Type</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">Balanced</p>
+</div>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5">flag</span>
+<div>
+<label class="text-xs uppercase text-text-secondary">Health Goals</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">Weight Management</p>
+</div>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5">medical_services</span>
+<div>
+<label class="text-xs uppercase text-text-secondary">Medical History</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">None</p>
+</div>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5">allergy</span>
+<div>
+<label class="text-xs uppercase text-text-secondary">Allergies</label>
+<p class="text-base font-medium text-text-primary dark:text-text-light">None</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark p-6 rounded-DEFAULT shadow-soft">
+<h3 class="text-lg font-semibold text-text-primary dark:text-text-light mb-4">App Preferences</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-text-primary dark:text-text-light">Notifications</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-switch-track-light rounded-full peer peer-focus:ring-2 peer-focus:ring-primary/50 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-text-primary dark:text-text-light">Dark Mode</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-switch-track-light rounded-full peer peer-focus:ring-2 peer-focus:ring-primary/50 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1 space-y-6">
+<div class="bg-soft-green-tint dark:bg-primary/10 p-5 rounded-DEFAULT text-center">
+<div class="relative w-40 h-40 mx-auto">
+<svg class="w-full h-full" viewBox="0 0 100 100">
+<circle class="text-green-200 dark:text-primary/20" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-dasharray="282.74" stroke-dashoffset="calc(282.74 - (282.74 * 75) / 100)" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-bold text-primary">75%</span>
+</div>
+</div>
+<p class="text-lg font-semibold text-text-primary dark:text-text-light mt-3">Goal Completion</p>
+</div>
+</div>
+</div>
+<footer class="mt-8 mb-6 text-center">
+<p class="text-xs text-text-secondary dark:text-gray-400">© 2025 NutriLens — Empowering Smarter Nutrition.</p>
+</footer>
+</div>
+</div>
+
+</body></html>
