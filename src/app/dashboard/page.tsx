@@ -29,7 +29,7 @@ export default function DashboardPage() {
     localStorage.removeItem("user");
     // Clear cookie (set expiry in the past) and include path + SameSite
     document.cookie = "isLoggedIn=; Max-Age=0; path=/; SameSite=Lax; Secure";
-    router.push("/auth/signin");
+    router.push("/");
   };
 
   const menuItems = [

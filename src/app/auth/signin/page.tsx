@@ -4,6 +4,8 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image"; // ✅ for logo
+import logo from "../../../../public/NutriLens.png"; // ✅ use your brand logo
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,7 +39,7 @@ export default function LoginPage() {
         document.cookie = "isLoggedIn=true; path=/; max-age=604800"; // valid for 7 days
 
         setMessage("✅ Login successful!");
-        setShowTransition(true); // show the rotating N animation
+        setShowTransition(true); // ✨ trigger logo animation
 
         // Wait for animation, then redirect
         setTimeout(() => router.push("/dashboard"), 1800);
@@ -147,9 +149,15 @@ export default function LoginPage() {
               initial={{ scale: 0 }}
               animate={{ scale: 1.2, rotate: 360 }}
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="w-24 h-24 rounded-full bg-green-500 flex items-center justify-center"
+              className="w-28 h-28 rounded-full bg-white shadow-md flex items-center justify-center"
             >
-              <span className="text-white text-xl font-bold">N</span>
+              <Image
+                src={logo}
+                alt="NutriLens Logo"
+                width={80}
+                height={80}
+                className="rounded-full object-contain"
+              />
             </motion.div>
           </motion.div>
         )}
