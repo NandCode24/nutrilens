@@ -7,45 +7,50 @@ interface SymptomResult {
   condition: string;
   description: string;
   severity: "Self-care" | "Consult doctor" | "Emergency";
+  probability?: number;
+  advice?: string;
+  warning_signs?: string;
 }
 
 export default function SymptomChecker() {
   const [symptoms, setSymptoms] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [results, setResults] = useState<SymptomResult[]>([]);
 
-  // Dummy submission handler for now
+  // Handle symptom submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!symptoms.trim()) return;
 
     setLoading(true);
-    setResults([]); // clear previous results
+    setError("");
+    setResults([]);
 
-    // Simulate API delay for now
-    setTimeout(() => {
-      setResults([
-        {
-          condition: "Dehydration",
-          description:
-            "Occurs when you use or lose more fluid than you take in, and your body doesn't have enough water and other fluids to carry out its normal functions.",
-          severity: "Self-care",
-        },
-        {
-          condition: "Common Cold",
-          description:
-            "A mild viral infection of your nose and throat. It's usually harmless, although it might not feel that way.",
-          severity: "Consult doctor",
-        },
-        {
-          condition: "Allergic Reaction",
-          description:
-            "A condition in which the immune system reacts abnormally to a foreign substance. Severe reactions can be life-threatening.",
-          severity: "Emergency",
-        },
-      ]);
+    try {
+      const res = await fetch("/api/symptom-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ symptoms }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      if (Array.isArray(data)) {
+        setResults(data);
+      } else {
+        throw new Error("Unexpected response format");
+      }
+    } catch (err: any) {
+      console.error("❌ API Error:", err);
+      setError(err.message || "Failed to analyze symptoms. Try again.");
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   const getSeverityColor = (severity: string) => {
@@ -59,6 +64,13 @@ export default function SymptomChecker() {
       default:
         return "bg-gray-50 text-gray-600";
     }
+  };
+
+  const getConfidenceLabel = (prob?: number) => {
+    if (prob === undefined) return null;
+    if (prob >= 0.75) return "High confidence";
+    if (prob >= 0.5) return "Moderate confidence";
+    return "Low confidence";
   };
 
   return (
@@ -124,7 +136,11 @@ export default function SymptomChecker() {
           </p>
         )}
 
-        {!loading && results.length > 0 && (
+        {error && (
+          <p className="text-center text-red-500 mt-6">{error}</p>
+        )}
+
+        {!loading && !error && results.length > 0 && (
           <>
             {results.map((item, idx) => (
               <div
@@ -143,9 +159,29 @@ export default function SymptomChecker() {
                     {item.severity}
                   </span>
                 </div>
+
                 <p className="text-gray-600 text-sm leading-relaxed">
                   {item.description}
                 </p>
+
+                {item.probability !== undefined && (
+                  <p className="text-xs text-gray-500">
+                    {getConfidenceLabel(item.probability)} (
+                    {(item.probability * 100).toFixed(0)}%)
+                  </p>
+                )}
+
+                {item.advice && (
+                  <p className="text-sm text-green-700 mt-1">
+                    💡 <strong>Advice:</strong> {item.advice}
+                  </p>
+                )}
+
+                {item.warning_signs && (
+                  <p className="text-sm text-red-600 mt-1">
+                    ⚠️ <strong>Warning:</strong> {item.warning_signs}
+                  </p>
+                )}
 
                 <div className="flex space-x-4 text-gray-400 text-sm mt-2">
                   <button className="flex items-center space-x-1 hover:text-gray-600">
@@ -160,6 +196,13 @@ export default function SymptomChecker() {
           </>
         )}
       </div>
+
+      {/* Disclaimer */}
+      <p className="text-xs text-gray-400 mt-8 text-center max-w-md">
+        ⚠️ This tool does not provide medical advice. It is for informational
+        purposes only and should not replace consultation with a licensed
+        healthcare professional.
+      </p>
     </div>
   );
 }
