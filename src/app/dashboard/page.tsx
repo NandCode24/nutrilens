@@ -50,7 +50,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#f6fdf6] relative pb-20">
       {/* 🔹 Optional Logout Button */}
-      <button
+      {/* <button
         onClick={() => {
           localStorage.removeItem("user");
           router.push("/auth/signin");
@@ -58,7 +58,7 @@ export default function DashboardPage() {
         className="absolute top-5 right-6 text-sm text-gray-600 hover:text-green-600"
       >
         Logout
-      </button>
+      </button> */}
 
       <div className="px-8 mt-4 mb-6">
         <h1 className="text-3xl font-semibold text-gray-900">

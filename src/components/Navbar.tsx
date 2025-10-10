@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logo from "../../public/NutriLens.png";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   // Hide Navbar on landing page
   if (pathname === "/") return null;
@@ -44,7 +46,7 @@ export default function Navbar() {
               strokeWidth="1.6"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-6 h-6 text-[#16A34A]"
+              className="w-5 h-5 text-[#16A34A]"
             >
               <circle cx="12" cy="8" r="4" stroke="currentColor" />
               <path
@@ -54,10 +56,19 @@ export default function Navbar() {
             </svg>
           </div>
 
-          <span className="text-lg font-medium text-slate-700 group-hover:text-[#22C55E] transition-colors">
+          <span className="text-lg font-medium text-slate-700 group-hover:text-[#22C55E] transition-colors font-sans">
             Profile
           </span>
         </Link>
+
+        <button
+          onClick={() => {
+            localStorage.removeItem("user");
+            router.push("/auth/signin");
+          }}
+            className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 hover:text-gray-900 transition-all duration-200"        >
+          Logout
+        </button>
       </div>
     </header>
   );
