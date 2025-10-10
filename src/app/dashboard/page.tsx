@@ -72,13 +72,7 @@ export default function DashboardPage() {
   return (
     <>
       <div className="min-h-screen flex flex-col bg-[#f6fdf6] relative pb-20">
-        {/* 🔹 Logout Button */}
-        <button
-          onClick={handleLogout}
-          className="absolute top-5 right-6 text-sm text-gray-600 hover:text-green-600 transition"
-        >
-          Logout
-        </button>
+   
 
         {/* 🔹 Welcome Section */}
         <div className="px-8 mt-4 mb-6">
