@@ -494,7 +494,7 @@ export default function Page() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               {/* small logo */}
-              <svg
+              {/* <svg
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
@@ -518,7 +518,7 @@ export default function Page() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-              </svg>
+              </svg> */}
               <div>
                 <div className="font-semibold">NutriLens</div>
                 <div className="text-sm text-slate-600">

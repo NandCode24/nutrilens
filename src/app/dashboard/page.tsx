@@ -1,12 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/BottomNav";
 import { FiCamera, FiClipboard, FiHelpCircle, FiEdit3 } from "react-icons/fi";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const userName = "Sarah"; // replace with real data later
+  const [userName, setUserName] = useState<string>("");
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      router.push("/auth/signin");
+    } else {
+      const user = JSON.parse(storedUser);
+      setUserName(user.name || "User");
+    }
+  }, [router]);
 
   const menuItems = [
     {
@@ -38,7 +49,16 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6fdf6] relative pb-20">
-
+      {/* 🔹 Optional Logout Button */}
+      <button
+        onClick={() => {
+          localStorage.removeItem("user");
+          router.push("/auth/signin");
+        }}
+        className="absolute top-5 right-6 text-sm text-gray-600 hover:text-green-600"
+      >
+        Logout
+      </button>
 
       <div className="px-8 mt-4 mb-6">
         <h1 className="text-3xl font-semibold text-gray-900">
