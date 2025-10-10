@@ -16,6 +16,15 @@ export default function ScanIngredient() {
     }
   };
 
+  const handleScan = () => {
+    if (!image) {
+      alert("Please capture or upload an ingredient label first!");
+      return;
+    }
+    // later this will call Gemini API
+    alert("Analyzing the ingredient label...");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center overflow-y-auto pb-10">
       {/* Header */}
@@ -72,22 +81,21 @@ export default function ScanIngredient() {
 
       {/* Buttons */}
       <div className="mt-8 w-80 flex flex-col space-y-4">
-        <div className="flex items-center justify-center text-gray-400 text-sm">
+        <button
+          onClick={handleScan}
+          className="bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-600 transition-all"
+        >
+          Scan Now
+        </button>
+
+        {/* Divider */}
+        {/* <div className="flex items-center justify-center text-gray-400 text-sm">
           <span className="border-t border-gray-200 w-16"></span>
           <span className="px-3">OR</span>
           <span className="border-t border-gray-200 w-16"></span>
-        </div>
+        </div> */}
 
-        <label className="bg-green-100 text-green-700 py-3 rounded-xl font-medium flex items-center justify-center space-x-2 cursor-pointer hover:bg-green-200 transition-all">
-          <Camera className="w-5 h-5" />
-          <span>Upload Image</span>
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleUpload}
-          />
-        </label>
+        {/* Removed Upload Image Button */}
       </div>
     </div>
   );

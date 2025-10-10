@@ -32,7 +32,7 @@ export default function DashboardPage() {
       title: "Medicine Lookup",
       description: "Find information about medications and their interactions.",
       icon: <FiEdit3 className="w-9 h-9 text-green-500" />,
-      path: "/scan/medicine",
+      path: "/medicine",
     },
   ];
 
