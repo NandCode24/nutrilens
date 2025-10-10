@@ -11,7 +11,7 @@ export default function BottomNav() {
     { name: "Home", icon: FiHome, path: "/dashboard" },
     { name: "Saved", icon: FiBookmark, path: "/saved" },
     { name: "Profile", icon: FiUser, path: "/profile" },
-    { name: "Settings", icon: FiSettings, path: "/settings" },
+    // { name: "Settings", icon: FiSettings, path: "/settings" },
   ];
 
   return (
