@@ -6,12 +6,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// ✅ Schema
+// ✅ Schema Validation
 const formSchema = z.object({
   name: z.string().min(2, { message: "Please enter your name" }),
-  gender: z.enum(["Male", "Female"]).refine((val) => !!val, {
-    message: "Select gender",
-  }),
+  email: z.string().email({ message: "Enter a valid email" }),
+  gender: z
+    .enum(["Male", "Female"])
+    .refine((val) => val === "Male" || val === "Female", {
+      message: "Select gender",
+    }),
   age: z
     .union([z.string(), z.number()])
     .refine((val) => Number(val) > 0, { message: "Enter valid age" }),
@@ -27,11 +30,14 @@ const formSchema = z.object({
   info: z.string().optional(),
 });
 
+
 type FormData = z.infer<typeof formSchema>;
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [bmr, setBmr] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -47,6 +53,7 @@ export default function OnboardingPage() {
   const age = watch("age");
   const gender = watch("gender");
 
+  // ✅ Auto-calculate BMR dynamically
   useEffect(() => {
     if (weight && height && age && gender) {
       const w = Number(weight);
@@ -62,14 +69,52 @@ export default function OnboardingPage() {
     }
   }, [weight, height, age, gender]);
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form Submitted:", data);
-    router.push("/dashboard");
+  // ✅ Handle form submission
+  const onSubmit = async (data: FormData) => {
+    try {
+      setLoading(true);
+      setMessage(null);
+
+      const res = await fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          name: data.name,
+          age: Number(data.age),
+          gender: data.gender,
+          heightCm: Number(data.height),
+          weightKg: Number(data.weight),
+          dietType: "Balanced",
+          healthGoals: data.goal,
+          medicalHistory: data.medications
+            ? data.medications.split(",").map((m) => m.trim())
+            : [],
+          allergies: data.allergies
+            ? data.allergies.split(",").map((a) => a.trim())
+            : [],
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to save onboarding details");
+      }
+
+      setMessage("✅ Onboarding details saved successfully!");
+      setTimeout(() => router.push("/dashboard"), 1000);
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
+      setMessage(`❌ ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start py-10 px-4">
-      {/* 🔹 Heading outside the form box */}
+      {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-2xl font-semibold text-gray-900">
           Tell us about yourself
@@ -79,27 +124,44 @@ export default function OnboardingPage() {
         </p>
       </div>
 
-      {/* 🔹 Form Card */}
+      {/* Form Card */}
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-sm p-8">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Section Title */}
+          {/* Personal Details */}
           <h2 className="text-base font-medium text-gray-800 mb-4">
             Personal Details
           </h2>
 
-          {/* Name */}
-          <div>
-            <label className="text-sm font-medium text-gray-700 mb-1 block">
-              Name
-            </label>
-            <input
-              {...register("name")}
-              placeholder="Enter your name"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600  focus:ring-2 focus:ring-green-500 focus:outline-none"
-            />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-            )}
+          {/* Name + Email */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-1 block">
+                Name
+              </label>
+              <input
+                {...register("name")}
+                placeholder="Enter your name"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-1 block">
+                Email
+              </label>
+              <input
+                type="email"
+                {...register("email")}
+                placeholder="Enter your email"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              )}
+            </div>
           </div>
 
           {/* Age + Gender */}
@@ -112,7 +174,7 @@ export default function OnboardingPage() {
                 type="number"
                 {...register("age")}
                 placeholder="Enter your age"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600  focus:ring-2 focus:ring-green-500 focus:outline-none"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
               {errors.age && (
                 <p className="text-red-500 text-sm mt-1">
@@ -150,7 +212,7 @@ export default function OnboardingPage() {
                 type="number"
                 {...register("height")}
                 placeholder="Enter your height"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600  focus:ring-2 focus:ring-green-500 focus:outline-none"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
             </div>
             <div>
@@ -161,7 +223,7 @@ export default function OnboardingPage() {
                 type="number"
                 {...register("weight")}
                 placeholder="Enter your weight"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600  focus:ring-2 focus:ring-green-500 focus:outline-none"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
             </div>
           </div>
@@ -173,8 +235,8 @@ export default function OnboardingPage() {
             </label>
             <input
               {...register("medications")}
-              placeholder="List any medications you are taking"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600  focus:ring-2 focus:ring-green-500 focus:outline-none"
+              placeholder="List any medications you are taking (comma separated)"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
             />
           </div>
 
@@ -197,13 +259,13 @@ export default function OnboardingPage() {
           {/* Allergies */}
           <div>
             <label className="text-sm font-medium text-gray-700 mb-1 block">
-              Allergies/Dietary Restrictions
+              Allergies / Dietary Restrictions
             </label>
             <textarea
               {...register("allergies")}
-              placeholder="List any allergies or dietary restrictions"
+              placeholder="List any allergies or dietary restrictions (comma separated)"
               rows={2}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600  focus:ring-2 focus:ring-green-500 focus:outline-none"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
             />
           </div>
 
@@ -216,17 +278,18 @@ export default function OnboardingPage() {
               {...register("info")}
               placeholder="Any additional information you'd like to share"
               rows={2}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600  focus:ring-2 focus:ring-green-500 focus:outline-none"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
             />
           </div>
 
-          {/* Buttons */}
+          {/* Submit Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button
               type="submit"
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-md font-medium transition"
+              disabled={loading}
+              className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-md font-medium transition disabled:opacity-70"
             >
-              Save & Continue
+              {loading ? "Saving..." : "Save & Continue"}
             </button>
             <button
               type="button"
@@ -236,10 +299,21 @@ export default function OnboardingPage() {
               Skip for now
             </button>
           </div>
+
+          {/* Message */}
+          {message && (
+            <p
+              className={`text-center text-sm mt-3 ${
+                message.startsWith("✅") ? "text-green-600" : "text-red-500"
+              }`}
+            >
+              {message}
+            </p>
+          )}
         </form>
       </div>
 
-      {/* 🔹 BMR Section Below the Form (as in image) */}
+      {/* BMR Display */}
       {bmr && (
         <div className="w-full max-w-2xl mt-6 bg-green-50 border border-green-200 rounded-lg px-5 py-4">
           <p className="text-sm font-medium text-green-700">
