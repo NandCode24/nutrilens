@@ -42,7 +42,7 @@ export default function LoginPage() {
         setShowTransition(true); // ✨ trigger logo animation
 
         // Wait for animation, then redirect
-        setTimeout(() => router.push("/dashboard"), 1800);
+        setTimeout(() => router.push("/onboarding"), 1800);
       } else {
         setMessage(`❌ ${data.error || "Invalid credentials"}`);
       }
