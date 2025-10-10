@@ -11,7 +11,7 @@ export default function Navbar() {
   const router = useRouter();
 
   // Hide Navbar on landing page
-  if (pathname === "/") return null;
+  if (pathname === "/" || "/auth/signup" || "/auth/signin") return null;
 
   return (
     <header className="w-full bg-[#F9FCF9] border-b border-slate-100 sticky top-0 z-50">
