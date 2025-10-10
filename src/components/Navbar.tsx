@@ -53,7 +53,6 @@ export default function Navbar() {
     pathname === "/auth/signup" ||
     pathname === "/auth/signin" ||
     pathname === "/onboarding";
-
   if (hideNavbar) return null;
 
   return (
