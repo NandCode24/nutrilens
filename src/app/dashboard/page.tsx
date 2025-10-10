@@ -53,7 +53,7 @@ export default function DashboardPage() {
       description:
         "Get personalized health and nutrition tips to stay fit.",
       icon: <FiClipboard className="w-9 h-9 text-green-500" />,
-      path: "/planner",
+      path: "/tips",
     },
     {
       title: "Symptom Checker",
