@@ -37,7 +37,7 @@ export default function DashboardPage() {
     // ✅ Show animation before redirect
     setShowTransition(true);
     setTimeout(() => {
-      router.push("/auth/signin");
+      router.push("/");
     }, 1500);
   };
 
