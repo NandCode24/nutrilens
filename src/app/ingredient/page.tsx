@@ -18,19 +18,7 @@ export default function ScanIngredient() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center overflow-y-auto pb-10">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-10 bg-white flex justify-between items-center px-8 py-4 border-b border-gray-100 shadow-sm">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-            N
-          </div>
-          <span className="text-lg font-semibold text-gray-800">NutriLens</span>
-        </div>
-        <div className="flex items-center space-x-4">
-          <button className="text-gray-500 hover:text-gray-700 text-sm">?</button>
-          <div className="w-8 h-8 rounded-full bg-gray-200"></div>
-        </div>
-      </header>
+
 
       {/* Main Section */}
       <div className="mt-28 text-center">

@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-url = "postgresql://postgres:BitByBit0116@db.imyfdfigzpfvktbykuae.supabase.co:5432/postgres"
+url = env("DATABASE_URL")
 }
 
 // ────────────────────────────────
@@ -100,4 +100,11 @@ model Tip {
   createdAt   DateTime @default(now())
   createdById String?
   createdBy   User?    @relation(fields: [createdById], references: [id])
+}
+  model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
 }
