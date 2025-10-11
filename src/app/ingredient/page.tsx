@@ -197,7 +197,7 @@ export default function ScanIngredient() {
 
           {isGeneric && (
             <p className="text-green-600 text-sm font-medium text-center mb-3">
-                ✅ Personalized data found — showing personal health rating.
+              ✅ Personalized data found — showing personal health rating.
             </p>
           )}
 

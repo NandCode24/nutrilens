@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 
     // Use Gemini OCR (no Tesseract)
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       generationConfig: {
         temperature: 0, // 🔒 Stable deterministic output
         topP: 0.1,
