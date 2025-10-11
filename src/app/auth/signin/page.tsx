@@ -4,8 +4,10 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image"; // ✅ for logo
-import logo from "../../../../public/NutriLens.png"; // ✅ use your brand logo
+import Image from "next/image";
+import logo from "../../../../public/NutriLens.png";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "@/lib/firebase";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +17,7 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [showTransition, setShowTransition] = useState(false);
 
+  // ✅ Email/Password Login
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -30,24 +33,57 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // ✅ Save user in localStorage
-        if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-        }
+        localStorage.setItem("user", JSON.stringify(data.user));
+        document.cookie = "isLoggedIn=true; path=/; max-age=604800";
+        setShowTransition(true);
 
-        // ✅ Set login cookie (for middleware protection)
-        document.cookie = "isLoggedIn=true; path=/; max-age=604800"; // valid for 7 days
-
-        setMessage("✅ Login successful!");
-        setShowTransition(true); // ✨ trigger logo animation
-
-        // Wait for animation, then redirect
-        setTimeout(() => router.push("/onboarding"), 1800);
+        // Email users go to onboarding next
+        setTimeout(() => router.push("/onboarding"), 1500);
       } else {
         setMessage(`❌ ${data.error || "Invalid credentials"}`);
       }
-    } catch (error) {
+    } catch {
       setMessage("❌ Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Google Login
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          uid: user.uid,
+        })
+      );
+
+      await fetch("/api/auth/firebase-sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          password: "google-auth",
+        }),
+      });
+
+      document.cookie = "isLoggedIn=true; path=/; max-age=604800";
+      setShowTransition(true);
+
+      // Google users also go directly to onboarding
+      setTimeout(() => router.push("/onboarding"), 1500);
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      alert("Failed to sign in with Google.");
     } finally {
       setLoading(false);
     }
@@ -65,28 +101,24 @@ export default function LoginPage() {
             <span className="font-medium">NutriLens</span> journey
           </p>
 
+          {/* Email Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <input
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
+              required
+            />
 
             <button
               type="submit"
@@ -97,28 +129,21 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {message && (
-            <p
-              className={`text-center mt-4 text-sm ${
-                message.startsWith("✅") ? "text-green-600" : "text-red-500"
-              }`}
-            >
-              {message}
-            </p>
-          )}
-
+          {/* Divider */}
           <div className="flex items-center my-6">
             <hr className="flex-grow border-gray-300" />
             <span className="px-2 text-gray-400 text-sm">Or continue with</span>
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          <div className="flex justify-center space-x-4">
-            <button className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 transition">
+          {/* Google Button */}
+          <div className="flex justify-center">
+            <button
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 transition disabled:opacity-50"
+            >
               <FcGoogle className="w-6 h-6" />
-            </button>
-            <button className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 transition">
-              <div className="w-6 h-6 bg-black rounded-full"></div>
             </button>
           </div>
 
@@ -135,7 +160,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ✨ Animated Overlay Transition */}
+      {/* Transition Animation */}
       <AnimatePresence>
         {showTransition && (
           <motion.div

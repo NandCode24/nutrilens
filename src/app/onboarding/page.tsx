@@ -30,7 +30,6 @@ const formSchema = z.object({
   info: z.string().optional(),
 });
 
-
 type FormData = z.infer<typeof formSchema>;
 
 export default function OnboardingPage() {
@@ -52,6 +51,18 @@ export default function OnboardingPage() {
   const height = watch("height");
   const age = watch("age");
   const gender = watch("gender");
+
+  // ✅ Protect Onboarding Page (must be logged in)
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      // Fallback guest user to prevent redirect loop
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ name: "Guest User", email: "guest@nutrilens.ai" })
+      );
+    }
+  }, []);
 
   // ✅ Auto-calculate BMR dynamically
   useEffect(() => {
@@ -112,6 +123,18 @@ export default function OnboardingPage() {
     }
   };
 
+  // ✅ Handle “Skip for Now” — Always go to dashboard safely
+  const handleSkip = () => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ name: "Guest User", email: "guest@nutrilens.ai" })
+      );
+    }
+    router.push("/dashboard");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start py-10 px-4">
       {/* Header */}
@@ -144,7 +167,9 @@ export default function OnboardingPage() {
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -159,7 +184,9 @@ export default function OnboardingPage() {
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
           </div>
@@ -235,7 +262,7 @@ export default function OnboardingPage() {
             </label>
             <input
               {...register("medications")}
-              placeholder="List any medications you are taking (comma separated)"
+              placeholder="List any medications (comma separated)"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
             />
           </div>
@@ -263,7 +290,7 @@ export default function OnboardingPage() {
             </label>
             <textarea
               {...register("allergies")}
-              placeholder="List any allergies or dietary restrictions (comma separated)"
+              placeholder="List any allergies or restrictions (comma separated)"
               rows={2}
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
             />
@@ -282,7 +309,7 @@ export default function OnboardingPage() {
             />
           </div>
 
-          {/* Submit Buttons */}
+          {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button
               type="submit"
@@ -293,7 +320,7 @@ export default function OnboardingPage() {
             </button>
             <button
               type="button"
-              onClick={() => router.push("/dashboard")}
+              onClick={handleSkip}
               className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-md font-medium transition"
             >
               Skip for now

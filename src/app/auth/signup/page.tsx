@@ -4,8 +4,10 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image"; // ✅ for brand logo
-import logo from "../../../../public/NutriLens.png"; // ✅ your existing logo
+import Image from "next/image";
+import logo from "../../../../public/NutriLens.png";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "@/lib/firebase";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -16,6 +18,7 @@ export default function RegisterPage() {
   const [message, setMessage] = useState("");
   const [showTransition, setShowTransition] = useState(false);
 
+  // ✅ Manual Email Signup
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -33,17 +36,56 @@ export default function RegisterPage() {
       if (res.ok) {
         setMessage("✅ Account created successfully!");
         setShowTransition(true);
-        setName("");
-        setEmail("");
-        setPassword("");
 
-        // Wait for animation before redirect
+        // Wait then redirect to signin (email-password flow)
         setTimeout(() => router.push("/auth/signin"), 1800);
       } else {
         setMessage(`❌ ${data.error || "Signup failed."}`);
       }
-    } catch (error) {
+    } catch {
       setMessage("❌ Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Google Signup
+  const handleGoogleSignUp = async () => {
+    try {
+      setLoading(true);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      // Save user locally
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          uid: user.uid,
+        })
+      );
+
+      // Sync with DB
+      await fetch("/api/auth/firebase-sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          password: "google-auth",
+        }),
+      });
+
+      document.cookie = "isLoggedIn=true; path=/; max-age=604800";
+      setShowTransition(true);
+
+      // Google users go directly to onboarding
+      setTimeout(() => router.push("/onboarding"), 1500);
+    } catch (error) {
+      console.error("Google Sign-Up Error:", error);
+      alert("Failed to sign up with Google. Try again.");
     } finally {
       setLoading(false);
     }
@@ -61,39 +103,32 @@ export default function RegisterPage() {
             <span className="font-medium">NutriLens</span>
           </p>
 
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <input
-                type="text"
-                placeholder="Full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="Full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
+              required
+            />
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
+              required
+            />
 
             <button
               type="submit"
@@ -104,28 +139,20 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          {message && (
-            <p
-              className={`text-center mt-4 text-sm ${
-                message.startsWith("✅") ? "text-green-600" : "text-red-500"
-              }`}
-            >
-              {message}
-            </p>
-          )}
-
+          {/* Google Option */}
           <div className="flex items-center my-6">
             <hr className="flex-grow border-gray-300" />
             <span className="px-2 text-gray-400 text-sm">Or continue with</span>
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          <div className="flex justify-center space-x-4">
-            <button className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 transition">
+          <div className="flex justify-center">
+            <button
+              onClick={handleGoogleSignUp}
+              disabled={loading}
+              className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 transition disabled:opacity-50"
+            >
               <FcGoogle className="w-6 h-6" />
-            </button>
-            <button className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 transition">
-              <div className="w-6 h-6 bg-black rounded-full"></div>
             </button>
           </div>
 
@@ -142,7 +169,7 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* ✨ Animated Overlay Transition */}
+      {/* Transition Animation */}
       <AnimatePresence>
         {showTransition && (
           <motion.div
