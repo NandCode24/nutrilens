@@ -47,15 +47,11 @@ export default function TipsPage() {
           </button>
         </div>
 
-        <p className="mt-4 text-gray-500 text-sm">
-          Tip {currentTip + 1} of {healthTips.length}
-        </p>
+      
       </div>
 
       {/* Footer note */}
-      <p className="mt-10 text-gray-400 text-xs text-center">
-        Updated daily with expert-backed wellness tips.
-      </p>
+     
     </div>
   );
 }
