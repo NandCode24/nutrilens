@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { healthTips } from "@/app/tips/healthtip";
+import { healthTips } from "@/app/tips/healthtips";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
