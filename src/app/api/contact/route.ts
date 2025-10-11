@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     // 1️⃣ Save to Neon DB (Contact table)
-    await prisma.Contact.create({
+    await prisma.contact.create({
       data: { name, email, message },
     });
 
