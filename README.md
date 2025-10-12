@@ -1,3 +1,13 @@
+Perfect ✅ — this will guarantee that all images render everywhere (VS Code, GitHub, and PDF exports).
+
+Here’s your fully corrected, copy-paste-ready README.md, with
+✔️ all images converted to raw.githubusercontent.com links
+✔️ consistent styling and spacing
+✔️ ready to push to your GitHub repo.
+
+⸻
+
+
 <h1 align="center">🌿 NutriLens — AI-Powered Nutrition & Wellness Assistant</h1>
 
 <p align="center">
@@ -7,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/homescreen.png" alt="NutriLens Home" width="600" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/homescreen.png" alt="NutriLens Home" width="600" />
 </p>
 
 <p align="center">
@@ -228,7 +238,7 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 
 
 <p align="center">
-  <img src="assets/homescreen.png" alt="NutriLens Home" width="600" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/homescreen.png" alt="NutriLens Home" width="600" />
 </p>
 
 
@@ -238,8 +248,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🧾 Authentication Flow
 
 <p align="center">
-  <img src="assets/signup.png" alt="Signup" width="360" style="margin:6px;" />
-  <img src="assets/signin.png" alt="Signin" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/signup.png" alt="Signup" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/signin.png" alt="Signin" width="360" style="margin:6px;" />
 </p>
 
 
@@ -249,7 +259,7 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 👤 Onboarding
 
 <p align="center">
-  <img src="assets/onboarding.png" alt="Onboarding" width="760" style="margin:8px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/onboarding.png" alt="Onboarding" width="760" style="margin:8px;" />
 </p>
 
 
@@ -259,10 +269,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🥗 Ingredient Scanner
 
 <p align="center">
-
-  <img src="assets/scaningredient.png" alt="Scan Ingredient" width="360" style="margin:6px;" />
-
-  <img src="assets/ingredientoutput.png" alt="Ingredient Output" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scaningredient.png" alt="Scan Ingredient" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/ingredientoutput.png" alt="Ingredient Output" width="360" style="margin:6px;" />
 </p>
 
 
@@ -272,8 +280,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 💊 Medicine Analyzer
 
 <p align="center">
-  <img src="assets/scanmedicine.png" alt="Scan Medicine" width="360" style="margin:6px;" />
-  <img src="assets/medicineoutput.png" alt="Medicine Output" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scanmedicine.png" alt="Scan Medicine" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/medicineoutput.png" alt="Medicine Output" width="360" style="margin:6px;" />
 </p>
 
 
@@ -283,8 +291,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🧠 Symptom Checker
 
 <p align="center">
-  <img src="assets/symptomchecker.png" alt="Symptom Checker" width="360" style="margin:6px;" />
-  <img src="assets/scoutput.png" alt="Symptom Checker Output" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/symptomchecker.png" alt="Symptom Checker" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scoutput.png" alt="Symptom Checker Output" width="360" style="margin:6px;" />
 </p>
 
 
@@ -294,7 +302,7 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🌿 Health Tips
 
 <p align="center">
-  <img src="assets/healthtips.png" alt="Health Tips" width="760" style="margin:8px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/healthtips.png" alt="Health Tips" width="760" style="margin:8px;" />
 </p>
 
 
@@ -304,8 +312,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 👤 Profile & 🕒 History
 
 <p align="center">
-  <img src="assets/profile.png" alt="Profile" width="360" style="margin:6px;" />
-  <img src="assets/history.png" alt="History" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/profile.png" alt="Profile" width="360" style="margin:6px;" />
+  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/history.png" alt="History" width="360" style="margin:6px;" />
 </p>
 
 
@@ -315,4 +323,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 
 <h3 align="center">Made with 💚 by <b>Team BitByBit (TM180)</b> — Empowering Smarter, Healthier Living.</h3>
 ```
+
+
+
+⸻
 
