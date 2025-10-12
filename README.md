@@ -1,36 +1,305 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🥦 NutriLens – Your Personal AI Health & Nutrition Assistant
 
-## Getting Started
+> **Team ID:** TM180  
+> **Team Name:** BitByBit  
 
-First, run the development server:
+NutriLens is an AI-powered web application designed to help users make informed food and medicine choices through image-based and text-based analysis.  
+With the power of **Google Gemini AI**, **Next.js**, and **Neon Database**, NutriLens scans ingredients or medicine labels, provides nutritional insights, health ratings, and personalized recommendations — all in a simple, user-friendly dashboard.
 
+---
+
+## 🚀 Tech Stack
+
+| Layer | Technology |
+|--------|-------------|
+| **Frontend** | Next.js 15 (App Router, React 19) |
+| **Backend** | Next.js API Routes (Node.js Runtime) |
+| **Database** | NeonDB (PostgreSQL + Prisma ORM) |
+| **Auth** | Firebase Authentication (Google Sign-In + Email) |
+| **AI Model** | Google Gemini API (Generative AI) |
+| **Styling** | Tailwind CSS + Shadcn UI |
+| **Deployment** | Vercel |
+| **Language** | TypeScript |
+
+---
+
+## ⚙️ Features Overview
+
+### 👤 User Management
+- Secure Firebase Authentication (Google Sign-In, Email Sign-Up)
+- Profile setup with personal details, health goals, and preferences
+- Persistent onboarding flow with dynamic redirection
+
+### 🧠 AI-Powered Food Label Analysis
+- Upload an image of any **food or ingredient label**
+- Gemini AI extracts and analyzes the text (OCR built-in)
+- Detects:
+  - Ingredients  
+  - Allergens  
+  - Additives & preservatives (with side effects)  
+  - Nutritional summary  
+  - Health rating (0–10)  
+  - Personalized recommendation (based on user profile)
+
+### 💊 Medicine Analysis
+- Upload an image or type medicine name
+- AI identifies active ingredients, uses, side effects, and precautions
+- Personalized compatibility score based on user health profile
+
+### 🩺 Symptom Checker
+- Input health symptoms
+- AI analyzes and provides probable conditions with advice & warning signs
+
+### 📜 Health Tips
+- Personalized wellness and nutrition tips fetched via AI
+
+### 📚 History Dashboard
+- Tracks all AI scans — Food & Medicine — tied to each user
+- Allows deleting records dynamically
+- Data synced with NeonDB via Prisma ORM
+
+### 🌓 Theme Support
+- Global dark/light mode toggle with persistent user preference
+
+### 🌍 Scalable Architecture
+- Next.js App Router structure  
+- Prisma for data layer abstraction  
+- Ready for multilingual support (future-ready for Hindi, Gujarati, etc.)
+
+---
+
+## 🧩 Folder Structure
+
+nutrilens/
+├── prisma/
+│   ├── schema.prisma        # Database schema definition
+├── src/
+│   ├── app/
+│   │   ├── api/             # API routes (server-side)
+│   │   │   ├── ingredient/route.ts
+│   │   │   ├── medicine/route.ts
+│   │   │   ├── symptom-check/route.ts
+│   │   │   ├── history/route.ts
+│   │   │   ├── profile/route.ts
+│   │   └── (frontend pages)
+│   ├── lib/
+│   │   ├── prisma.ts        # Prisma client instance
+│   │   ├── firebase.ts      # Firebase config
+│   ├── components/          # UI components
+│   ├── context/             # Global context providers
+│   └── styles/              # Tailwind styles
+├── .env                     # Environment variables
+├── package.json
+└── README.md
+
+---
+
+## ⚙️ Installation Guide
+
+### 1️⃣ Clone the Repository
 ```bash
+git clone https://github.com/NandCode24/nutrilens.git
+cd nutrilens
+
+2️⃣ Install Dependencies
+
+npm install
+
+3️⃣ Setup Environment Variables
+
+Create a .env file in the root directory and configure it as follows:
+
+# Prisma / Neon DB
+DATABASE_URL="postgresql://<username>:<password>@<neon-host>/<db>?sslmode=require"
+
+# Google Gemini AI Key
+GEMINI_API_KEY=your_gemini_api_key
+
+# Firebase Auth
+FIREBASE_API_KEY=your_firebase_api_key
+FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+FIREBASE_PROJECT_ID=your_firebase_project_id
+FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+FIREBASE_APP_ID=your_app_id
+
+# Next Auth URL
+NEXTAUTH_URL=http://localhost:3000
+
+# Optional: Production URL (for Vercel)
+NEXT_PUBLIC_APP_URL=https://nutrilens-yourproject.vercel.app
+
+4️⃣ Generate Prisma Client
+
+npx prisma generate
+
+5️⃣ Push Database Schema
+
+npx prisma db push
+
+6️⃣ Run Development Server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs locally at:
+👉 http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+⸻
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🚀 Deployment Guide (Vercel)
+	1.	Push your repo to GitHub.
+	2.	Visit Vercel Dashboard.
+	3.	Import your project from GitHub.
+	4.	Add the same .env variables in Vercel → Project Settings → Environment Variables.
+	5.	Hit Deploy.
+	6.	Once deployed, update:
 
-## Learn More
+NEXTAUTH_URL=https://your-vercel-app-url.vercel.app
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+	7.	Redeploy to apply final settings.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+⸻
 
-## Deploy on Vercel
+💾 Database Schema (Prisma)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+User
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Field	Type	Description
+id	UUID	Primary Key
+name	String	User’s name
+email	String	Unique email
+age	Int	Age
+gender	String	Gender
+heightCm	Float	Height (cm)
+weightKg	Float	Weight (kg)
+allergies	String[]	Known allergies
+healthGoals	String	User’s goal
+dietType	String	Diet preference
+bmr	Float	Calculated Basal Metabolic Rate
+createdAt	DateTime	Record timestamp
+
+FoodScan
+
+Field	Type	Description
+id	UUID	Primary Key
+userId	UUID	Linked to User
+ingredients	String[]	Parsed ingredients
+allergens	String[]	Allergens detected
+nutritionSummary	String	Short nutrition description
+rating	Int	0–10 health score
+recommendation	String	AI advice
+nutritionData	JSON	Full Gemini output
+
+Medicine
+
+Field	Type	Description
+id	UUID	Primary Key
+userId	UUID	Linked to User
+name	String	Medicine name
+brand	String	Brand name
+dosage	String	Active ingredients
+uses	String	Use case
+precautions	String	Precautions list
+
+
+⸻
+
+📦 Available Scripts
+
+Command	Description
+npm run dev	Start dev server
+npm run build	Build Next.js for production
+npm start	Start production server
+npx prisma studio	Open database viewer
+npx prisma db push	Sync schema to Neon DB
+
+
+⸻
+
+✨ Future Enhancements
+	•	🌍 Multi-language support (Hindi, Gujarati)
+	•	📈 Nutrition tracking over time
+	•	🧬 AI-generated meal planning
+	•	💬 In-app chatbot for health queries
+	•	📲 Mobile app version (React Native)
+
+⸻
+
+👨‍💻 Contributors
+
+BitByBit Team	Design, Architecture, Coding & Testing
+
+
+⸻
+
+🛡️ License
+
+This project is licensed under the MIT License.
+
+⸻
+
+💚 Acknowledgements
+	•	Google Gemini API
+	•	Next.js
+	•	NeonDB
+	•	Firebase Authentication
+	•	Vercel
+	•	Prisma ORM
+
+⸻
+
+## 📸 Application Screenshots
+
+### Home Page
+![Home](./assets/homescreen.png)
+
+### Signup
+![Signup](./assets/signup.png)
+
+### Signin
+![Signin](./assets/signin.png)
+
+### Onboarding
+![Dashboard](./assets/onboarding.png)
+
+### Scan Ingrident Label
+![Scan Ingredient Label](./assets/scaningredient.png)
+
+### Scan Ingredient Label Output
+![Scan Ingredient Label Output](./assets/ingredientoutput.png)
+
+### Scan Medicine 
+![Scan Medicine ](./assets/scanmedicine.png)
+
+### Scan Medicine Output
+![Scan Medicine ](./assets/medicineoutput.png)
+
+### Symphtom Checker
+![Symphtom Checker](./assets/symphtomchecker.png)
+
+### Symphtom Checker Output
+![Symphtom Checker](./assets/scoutput.png)
+
+### Health Tips
+![Health Tips](./assets/healthtips.png)
+
+### Profile
+![Profile](./assets/profile.png)
+
+### history
+![history](./assets/history.png)
+
+Made with 💚 by Team BitByBit (TM180) — Empowering Smarter, Healthier Living.
+
+---
+
+✅ **How to use it**
+1. Create a file in your repo root named `README.md`.
+2. Paste the entire content above.
+3. Commit & push:
+   ```bash
+   git add README.md
+   git commit -m "Added detailed project README"
+   git push origin main
+
