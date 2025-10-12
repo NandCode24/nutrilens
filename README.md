@@ -251,55 +251,47 @@ This project is licensed under the MIT License.
 
 ## 📸 Application Screenshots
 
-### Home Page
-![Home](./assets/homescreen.png)
+### 🏠 Home Page
+![Home](https://github.com/NandCode24/nutrilens/raw/main/assets/homescreen.png)
 
-### Signup
-![Signup](./assets/signup.png)
+### 🧾 Signup
+![Signup](https://github.com/NandCode24/nutrilens/raw/main/assets/signup.png)
 
-### Signin
-![Signin](./assets/signin.png)
+### 🔑 Signin
+![Signin](https://github.com/NandCode24/nutrilens/raw/main/assets/signin.png)
 
-### Onboarding
-![Dashboard](./assets/onboarding.png)
+### 👤 Onboarding
+![Onboarding](https://github.com/NandCode24/nutrilens/raw/main/assets/onboarding.png)
 
-### Scan Ingrident Label
-![Scan Ingredient Label](./assets/scaningredient.png)
+### 🥗 Scan Ingredient Label
+![Scan Ingredient Label](https://github.com/NandCode24/nutrilens/raw/main/assets/scaningredient.png)
 
-### Scan Ingredient Label Output
-![Scan Ingredient Label Output](./assets/ingredientoutput.png)
+### 📊 Ingredient Analysis Output
+![Ingredient Output](https://github.com/NandCode24/nutrilens/raw/main/assets/ingredientoutput.png)
 
-### Scan Medicine 
-![Scan Medicine ](./assets/scanmedicine.png)
+### 💊 Medicine Lookup
+![Scan Medicine](https://github.com/NandCode24/nutrilens/raw/main/assets/scanmedicine.png)
 
-### Scan Medicine Output
-![Scan Medicine ](./assets/medicineoutput.png)
+### 💊 Medicine Output
+![Medicine Output](https://github.com/NandCode24/nutrilens/raw/main/assets/medicineoutput.png)
 
-### Symphtom Checker
-![Symphtom Checker](./assets/symphtomchecker.png)
+### 🤒 Symptom Checker
+![Symptom Checker](https://github.com/NandCode24/nutrilens/raw/main/assets/symptomchecker.png)
 
-### Symphtom Checker Output
-![Symphtom Checker](./assets/scoutput.png)
+### 🤕 Symptom Checker Output
+![Symptom Checker Output](https://github.com/NandCode24/nutrilens/raw/main/assets/scoutput.png)
 
-### Health Tips
-![Health Tips](./assets/healthtips.png)
+### 🌿 Health Tips
+![Health Tips](https://github.com/NandCode24/nutrilens/raw/main/assets/healthtips.png)
 
-### Profile
-![Profile](./assets/profile.png)
+### 👤 Profile
+![Profile](https://github.com/NandCode24/nutrilens/raw/main/assets/profile.png)
 
-### history
-![history](./assets/history.png)
+### 🕒 History
+![History](https://github.com/NandCode24/nutrilens/raw/main/assets/history.png)
 
 Made with 💚 by Team BitByBit (TM180) — Empowering Smarter, Healthier Living.
 
 ---
 
-✅ **How to use it**
-1. Create a file in your repo root named `README.md`.
-2. Paste the entire content above.
-3. Commit & push:
-   ```bash
-   git add README.md
-   git commit -m "Added detailed project README"
-   git push origin main
 
