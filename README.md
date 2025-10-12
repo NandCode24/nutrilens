@@ -1,19 +1,3 @@
-Perfect 😎 — below is your fully merged, beautifully styled, and GitHub-ready README.md.
-
-✅ Includes:
-	•	decorative header
-	•	badges
-	•	table of contents
-	•	your detailed feature + setup sections
-	•	fixed & centered image gallery (loads correctly from /assets)
-	•	consistent spacing and emojis
-
-You can copy this file as-is into your repository root (README.md).
-Just make sure your /assets folder with screenshots is pushed (filenames exactly match what’s written here).
-
-⸻
-
-
 <h1 align="center">🌿 NutriLens — AI-Powered Nutrition & Wellness Assistant</h1>
 
 <p align="center">
@@ -23,7 +7,7 @@ Just make sure your /assets folder with screenshots is pushed (filenames exactly
 </p>
 
 <p align="center">
-  <img src="./assets/homescreen.png" alt="NutriLens Home" width="600" />
+  <img src="assets/homescreen.png" alt="NutriLens Home" width="600" />
 </p>
 
 <p align="center">
@@ -71,7 +55,7 @@ Just make sure your /assets folder with screenshots is pushed (filenames exactly
 
 ### 👤 User Management
 - 🔐 Secure Firebase Authentication (Google Sign-In, Email Sign-Up)  
-- 🧾 Profile setup with personal details, health goals and preferences  
+- 🧾 Profile setup with personal details, health goals, and preferences  
 - 🔁 Persistent onboarding with dynamic redirect  
 
 ### 🧠 AI-Powered Food Label Analysis
@@ -138,7 +122,7 @@ cd nutrilens
 # 2️⃣ Install dependencies
 npm install
 
-Create a .env file:
+Create a .env file in the root directory:
 
 DATABASE_URL="postgresql://<username>:<password>@<neon-host>/<db>?sslmode=require"
 GEMINI_API_KEY=your_gemini_api_key
@@ -169,9 +153,9 @@ npm run dev
 🚀 Deployment Guide (Vercel)
 	1.	Push repo to GitHub
 	2.	Import project → Vercel Dashboard
-	3.	Add same .env variables → Project Settings → Environment Variables
+	3.	Add same .env variables under Project Settings → Environment Variables
 	4.	Deploy
-	5.	Update
+	5.	Update:
 
 NEXTAUTH_URL=https://your-vercel-app-url.vercel.app
 
@@ -183,9 +167,9 @@ NEXTAUTH_URL=https://your-vercel-app-url.vercel.app
 💾 Database Schema (Prisma)
 
 Table	Key Fields	Purpose
-User	id, name, email, age, gender, heightCm, weightKg, allergies []	Stores profile data
-FoodScan	id, userId, ingredients [], allergens [], nutritionSummary, rating, recommendation	Stores AI food label analysis
-Medicine	id, userId, name, dosage, uses, precautions	Stores AI medicine lookup
+User	id, name, email, age, gender, heightCm, weightKg, allergies[]	Stores profile data
+FoodScan	id, userId, ingredients[], allergens[], nutritionSummary, rating, recommendation	AI food label analysis
+Medicine	id, userId, name, dosage, uses, precautions	AI medicine lookup
 
 
 ⸻
@@ -196,7 +180,7 @@ Command	Description
 npm run dev	Start development server
 npm run build	Build for production
 npm start	Start production server
-npx prisma studio	Open DB viewer
+npx prisma studio	Open database viewer
 npx prisma db push	Sync schema to NeonDB
 
 
@@ -240,8 +224,11 @@ Licensed under the MIT License.
 
 Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 
+⸻
+
+
 <p align="center">
-  <img src="./assets/homescreen.png" alt="Home" width="520" style="margin:8px;" />
+  <img src="assets/homescreen.png" alt="NutriLens Home" width="600" />
 </p>
 
 
@@ -251,8 +238,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🧾 Authentication Flow
 
 <p align="center">
-  <img src="./assets/signup.png" alt="Signup" width="360" style="margin:6px;" />
-  <img src="./assets/signin.png" alt="Signin" width="360" style="margin:6px;" />
+  <img src="assets/signup.png" alt="Signup" width="360" style="margin:6px;" />
+  <img src="assets/signin.png" alt="Signin" width="360" style="margin:6px;" />
 </p>
 
 
@@ -262,7 +249,7 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 👤 Onboarding
 
 <p align="center">
-  <img src="./assets/onboarding.png" alt="Onboarding" width="760" style="margin:8px;" />
+  <img src="assets/onboarding.png" alt="Onboarding" width="760" style="margin:8px;" />
 </p>
 
 
@@ -272,8 +259,10 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🥗 Ingredient Scanner
 
 <p align="center">
-  <img src="./assets/scaningredient.png" alt="Scan Ingredient" width="360" style="margin:6px;" />
-  <img src="./assets/ingredientoutput.png" alt="Ingredient Output" width="360" style="margin:6px;" />
+
+  <img src="assets/scaningredient.png" alt="Scan Ingredient" width="360" style="margin:6px;" />
+
+  <img src="assets/ingredientoutput.png" alt="Ingredient Output" width="360" style="margin:6px;" />
 </p>
 
 
@@ -283,8 +272,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 💊 Medicine Analyzer
 
 <p align="center">
-  <img src="./assets/scanmedicine.png" alt="Scan Medicine" width="360" style="margin:6px;" />
-  <img src="./assets/medicineoutput.png" alt="Medicine Output" width="360" style="margin:6px;" />
+  <img src="assets/scanmedicine.png" alt="Scan Medicine" width="360" style="margin:6px;" />
+  <img src="assets/medicineoutput.png" alt="Medicine Output" width="360" style="margin:6px;" />
 </p>
 
 
@@ -294,8 +283,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🧠 Symptom Checker
 
 <p align="center">
-  <img src="./assets/symptomchecker.png" alt="Symptom Checker" width="360" style="margin:6px;" />
-  <img src="./assets/scoutput.png" alt="Symptom Checker Output" width="360" style="margin:6px;" />
+  <img src="assets/symptomchecker.png" alt="Symptom Checker" width="360" style="margin:6px;" />
+  <img src="assets/scoutput.png" alt="Symptom Checker Output" width="360" style="margin:6px;" />
 </p>
 
 
@@ -305,7 +294,7 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 🌿 Health Tips
 
 <p align="center">
-  <img src="./assets/healthtips.png" alt="Health Tips" width="760" style="margin:8px;" />
+  <img src="assets/healthtips.png" alt="Health Tips" width="760" style="margin:8px;" />
 </p>
 
 
@@ -315,8 +304,8 @@ Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 👤 Profile & 🕒 History
 
 <p align="center">
-  <img src="./assets/profile.png" alt="Profile" width="360" style="margin:6px;" />
-  <img src="./assets/history.png" alt="History" width="360" style="margin:6px;" />
+  <img src="assets/profile.png" alt="Profile" width="360" style="margin:6px;" />
+  <img src="assets/history.png" alt="History" width="360" style="margin:6px;" />
 </p>
 
 
