@@ -252,43 +252,43 @@ This project is licensed under the MIT License.
 ## 📸 Application Screenshots
 
 ### 🏠 Home Page
-![Home](https://github.com/NandCode24/nutrilens/raw/main/assets/homescreen.png)
+![Home](https://github.com/NandCode24/nutrilens/assets/homescreen.png)
 
 ### 🧾 Signup
-![Signup](https://github.com/NandCode24/nutrilens/raw/main/assets/signup.png)
+![Signup](https://github.com/NandCode24/nutrilens/assets/signup.png)
 
 ### 🔑 Signin
-![Signin](https://github.com/NandCode24/nutrilens/raw/main/assets/signin.png)
+![Signin](https://github.com/NandCode24/nutrilens/assets/signin.png)
 
 ### 👤 Onboarding
-![Onboarding](https://github.com/NandCode24/nutrilens/raw/main/assets/onboarding.png)
+![Onboarding](https://github.com/NandCode24/nutrilens/assets/onboarding.png)
 
 ### 🥗 Scan Ingredient Label
-![Scan Ingredient Label](https://github.com/NandCode24/nutrilens/raw/main/assets/scaningredient.png)
+![Scan Ingredient Label](https://github.com/NandCode24/nutrilens/assets/scaningredient.png)
 
 ### 📊 Ingredient Analysis Output
-![Ingredient Output](https://github.com/NandCode24/nutrilens/raw/main/assets/ingredientoutput.png)
+![Ingredient Output](https://github.com/NandCode24/nutrilens/assets/ingredientoutput.png)
 
 ### 💊 Medicine Lookup
-![Scan Medicine](https://github.com/NandCode24/nutrilens/raw/main/assets/scanmedicine.png)
+![Scan Medicine](https://github.com/NandCode24/nutrilens/assets/scanmedicine.png)
 
 ### 💊 Medicine Output
-![Medicine Output](https://github.com/NandCode24/nutrilens/raw/main/assets/medicineoutput.png)
+![Medicine Output](https://github.com/NandCode24/nutrilens/assets/medicineoutput.png)
 
 ### 🤒 Symptom Checker
-![Symptom Checker](https://github.com/NandCode24/nutrilens/raw/main/assets/symptomchecker.png)
+![Symptom Checker](https://github.com/NandCode24/nutrilens/assets/symptomchecker.png)
 
 ### 🤕 Symptom Checker Output
-![Symptom Checker Output](https://github.com/NandCode24/nutrilens/raw/main/assets/scoutput.png)
+![Symptom Checker Output](https://github.com/NandCode24/nutrilens/assets/scoutput.png)
 
 ### 🌿 Health Tips
-![Health Tips](https://github.com/NandCode24/nutrilens/raw/main/assets/healthtips.png)
+![Health Tips](https://github.com/NandCode24/nutrilens/assets/healthtips.png)
 
 ### 👤 Profile
-![Profile](https://github.com/NandCode24/nutrilens/raw/main/assets/profile.png)
+![Profile](https://github.com/NandCode24/nutrilens/assets/profile.png)
 
 ### 🕒 History
-![History](https://github.com/NandCode24/nutrilens/raw/main/assets/history.png)
+![History](https://github.com/NandCode24/nutrilens/assets/history.png)
 
 Made with 💚 by Team BitByBit (TM180) — Empowering Smarter, Healthier Living.
 
