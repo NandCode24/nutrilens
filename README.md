@@ -1,10 +1,54 @@
-# 🥦 NutriLens – Your Personal AI Health & Nutrition Assistant
+Perfect 😎 — below is your fully merged, beautifully styled, and GitHub-ready README.md.
 
-> **Team ID:** TM180  
-> **Team Name:** BitByBit  
+✅ Includes:
+	•	decorative header
+	•	badges
+	•	table of contents
+	•	your detailed feature + setup sections
+	•	fixed & centered image gallery (loads correctly from /assets)
+	•	consistent spacing and emojis
 
-NutriLens is an AI-powered web application designed to help users make informed food and medicine choices through image-based and text-based analysis.  
-With the power of **Google Gemini AI**, **Next.js**, and **Neon Database**, NutriLens scans ingredients or medicine labels, provides nutritional insights, health ratings, and personalized recommendations — all in a simple, user-friendly dashboard.
+You can copy this file as-is into your repository root (README.md).
+Just make sure your /assets folder with screenshots is pushed (filenames exactly match what’s written here).
+
+⸻
+
+
+<h1 align="center">🌿 NutriLens — AI-Powered Nutrition & Wellness Assistant</h1>
+
+<p align="center">
+  <strong>Team ID:</strong> TM180 · <strong>Team Name:</strong> BitByBit  
+  <br>
+  Empowering smarter, healthier living through AI.
+</p>
+
+<p align="center">
+  <img src="./assets/homescreen.png" alt="NutriLens Home" width="600" />
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" /></a>
+  <img src="https://img.shields.io/badge/deploy-vercel-black?logo=vercel" />
+  <img src="https://img.shields.io/badge/Next.js-15.5.4-black?logo=next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript" />
+  <img src="https://img.shields.io/badge/Database-NeonDB-lightgrey?logo=postgresql" />
+</p>
+
+---
+
+## 🗂️ Table of Contents
+- [🚀 Tech Stack](#-tech-stack)
+- [⚙️ Features Overview](#️-features-overview)
+- [🧩 Folder Structure](#-folder-structure)
+- [⚙️ Installation Guide](#️-installation-guide)
+- [🚀 Deployment Guide (Vercel)](#-deployment-guide-vercel)
+- [💾 Database Schema](#-database-schema-prisma)
+- [📦 Available Scripts](#-available-scripts)
+- [✨ Future Enhancements](#-future-enhancements)
+- [👨‍💻 Contributors](#-contributors)
+- [🛡️ License](#️-license)
+- [💚 Acknowledgements](#-acknowledgements)
+- [🎨 Application Showcase](#-application-showcase)
 
 ---
 
@@ -26,45 +70,35 @@ With the power of **Google Gemini AI**, **Next.js**, and **Neon Database**, Nutr
 ## ⚙️ Features Overview
 
 ### 👤 User Management
-- Secure Firebase Authentication (Google Sign-In, Email Sign-Up)
-- Profile setup with personal details, health goals, and preferences
-- Persistent onboarding flow with dynamic redirection
+- 🔐 Secure Firebase Authentication (Google Sign-In, Email Sign-Up)  
+- 🧾 Profile setup with personal details, health goals and preferences  
+- 🔁 Persistent onboarding with dynamic redirect  
 
 ### 🧠 AI-Powered Food Label Analysis
-- Upload an image of any **food or ingredient label**
-- Gemini AI extracts and analyzes the text (OCR built-in)
-- Detects:
-  - Ingredients  
-  - Allergens  
-  - Additives & preservatives (with side effects)  
-  - Nutritional summary  
-  - Health rating (0–10)  
-  - Personalized recommendation (based on user profile)
+- 📸 Upload food or ingredient labels  
+- 🤖 Gemini AI extracts and analyzes text (OCR built-in)  
+- Detects ingredients, allergens, additives, nutrition, health score (0–10), and recommendations  
 
 ### 💊 Medicine Analysis
-- Upload an image or type medicine name
-- AI identifies active ingredients, uses, side effects, and precautions
-- Personalized compatibility score based on user health profile
+- Upload an image or type medicine name  
+- AI identifies active ingredients, uses, side effects & precautions  
+- Personalized compatibility score based on profile  
 
 ### 🩺 Symptom Checker
-- Input health symptoms
-- AI analyzes and provides probable conditions with advice & warning signs
+- Enter symptoms → AI returns probable conditions & advice  
 
 ### 📜 Health Tips
-- Personalized wellness and nutrition tips fetched via AI
+- Daily wellness tips generated via AI  
 
 ### 📚 History Dashboard
-- Tracks all AI scans — Food & Medicine — tied to each user
-- Allows deleting records dynamically
-- Data synced with NeonDB via Prisma ORM
+- View and delete past AI analyses synced with NeonDB  
 
 ### 🌓 Theme Support
-- Global dark/light mode toggle with persistent user preference
+- Global dark/light theme toggle (persistent per user)  
 
 ### 🌍 Scalable Architecture
-- Next.js App Router structure  
-- Prisma for data layer abstraction  
-- Ready for multilingual support (future-ready for Hindi, Gujarati, etc.)
+- Next.js App Router + Prisma ORM + NeonDB  
+- Future-ready for multilingual support (Hindi, Gujarati)  
 
 ---
 
@@ -72,23 +106,23 @@ With the power of **Google Gemini AI**, **Next.js**, and **Neon Database**, Nutr
 
 nutrilens/
 ├── prisma/
-│   ├── schema.prisma        # Database schema definition
+│   └── schema.prisma
 ├── src/
 │   ├── app/
-│   │   ├── api/             # API routes (server-side)
+│   │   ├── api/
 │   │   │   ├── ingredient/route.ts
 │   │   │   ├── medicine/route.ts
 │   │   │   ├── symptom-check/route.ts
 │   │   │   ├── history/route.ts
-│   │   │   ├── profile/route.ts
+│   │   │   └── profile/route.ts
 │   │   └── (frontend pages)
 │   ├── lib/
-│   │   ├── prisma.ts        # Prisma client instance
-│   │   ├── firebase.ts      # Firebase config
-│   ├── components/          # UI components
-│   ├── context/             # Global context providers
-│   └── styles/              # Tailwind styles
-├── .env                     # Environment variables
+│   │   ├── prisma.ts
+│   │   └── firebase.ts
+│   ├── components/
+│   ├── context/
+│   └── styles/
+├── .env
 ├── package.json
 └── README.md
 
@@ -96,26 +130,19 @@ nutrilens/
 
 ## ⚙️ Installation Guide
 
-### 1️⃣ Clone the Repository
 ```bash
+# 1️⃣ Clone repository
 git clone https://github.com/NandCode24/nutrilens.git
 cd nutrilens
 
-2️⃣ Install Dependencies
-
+# 2️⃣ Install dependencies
 npm install
 
-3️⃣ Setup Environment Variables
+Create a .env file:
 
-Create a .env file in the root directory and configure it as follows:
-
-# Prisma / Neon DB
 DATABASE_URL="postgresql://<username>:<password>@<neon-host>/<db>?sslmode=require"
-
-# Google Gemini AI Key
 GEMINI_API_KEY=your_gemini_api_key
 
-# Firebase Auth
 FIREBASE_API_KEY=your_firebase_api_key
 FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
 FIREBASE_PROJECT_ID=your_firebase_project_id
@@ -123,84 +150,42 @@ FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
 FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 FIREBASE_APP_ID=your_app_id
 
-# Next Auth URL
 NEXTAUTH_URL=http://localhost:3000
-
-# Optional: Production URL (for Vercel)
 NEXT_PUBLIC_APP_URL=https://nutrilens-yourproject.vercel.app
 
-4️⃣ Generate Prisma Client
-
+# 3️⃣ Generate Prisma client
 npx prisma generate
 
-5️⃣ Push Database Schema
-
+# 4️⃣ Push schema to DB
 npx prisma db push
 
-6️⃣ Run Development Server
-
+# 5️⃣ Start dev server
 npm run dev
 
-App runs locally at:
-👉 http://localhost:3000
+👉 App runs at http://localhost:3000
 
 ⸻
 
 🚀 Deployment Guide (Vercel)
-	1.	Push your repo to GitHub.
-	2.	Visit Vercel Dashboard.
-	3.	Import your project from GitHub.
-	4.	Add the same .env variables in Vercel → Project Settings → Environment Variables.
-	5.	Hit Deploy.
-	6.	Once deployed, update:
+	1.	Push repo to GitHub
+	2.	Import project → Vercel Dashboard
+	3.	Add same .env variables → Project Settings → Environment Variables
+	4.	Deploy
+	5.	Update
 
 NEXTAUTH_URL=https://your-vercel-app-url.vercel.app
 
 
-	7.	Redeploy to apply final settings.
+	6.	Redeploy
 
 ⸻
 
 💾 Database Schema (Prisma)
 
-User
-
-Field	Type	Description
-id	UUID	Primary Key
-name	String	User’s name
-email	String	Unique email
-age	Int	Age
-gender	String	Gender
-heightCm	Float	Height (cm)
-weightKg	Float	Weight (kg)
-allergies	String[]	Known allergies
-healthGoals	String	User’s goal
-dietType	String	Diet preference
-bmr	Float	Calculated Basal Metabolic Rate
-createdAt	DateTime	Record timestamp
-
-FoodScan
-
-Field	Type	Description
-id	UUID	Primary Key
-userId	UUID	Linked to User
-ingredients	String[]	Parsed ingredients
-allergens	String[]	Allergens detected
-nutritionSummary	String	Short nutrition description
-rating	Int	0–10 health score
-recommendation	String	AI advice
-nutritionData	JSON	Full Gemini output
-
-Medicine
-
-Field	Type	Description
-id	UUID	Primary Key
-userId	UUID	Linked to User
-name	String	Medicine name
-brand	String	Brand name
-dosage	String	Active ingredients
-uses	String	Use case
-precautions	String	Precautions list
+Table	Key Fields	Purpose
+User	id, name, email, age, gender, heightCm, weightKg, allergies []	Stores profile data
+FoodScan	id, userId, ingredients [], allergens [], nutritionSummary, rating, recommendation	Stores AI food label analysis
+Medicine	id, userId, name, dosage, uses, precautions	Stores AI medicine lookup
 
 
 ⸻
@@ -208,130 +193,137 @@ precautions	String	Precautions list
 📦 Available Scripts
 
 Command	Description
-npm run dev	Start dev server
-npm run build	Build Next.js for production
+npm run dev	Start development server
+npm run build	Build for production
 npm start	Start production server
-npx prisma studio	Open database viewer
-npx prisma db push	Sync schema to Neon DB
+npx prisma studio	Open DB viewer
+npx prisma db push	Sync schema to NeonDB
 
 
 ⸻
 
 ✨ Future Enhancements
-	•	🌍 Multi-language support (Hindi, Gujarati)
+	•	🌍 Multi-language support (Hindi & Gujarati)
 	•	📈 Nutrition tracking over time
-	•	🧬 AI-generated meal planning
-	•	💬 In-app chatbot for health queries
-	•	📲 Mobile app version (React Native)
+	•	🧬 AI meal planning
+	•	💬 Health chatbot
+	•	📲 Mobile App (React Native)
 
 ⸻
 
 👨‍💻 Contributors
 
-BitByBit Team	Design, Architecture, Coding & Testing
-
+Team BitByBit (TM180)
+Design · Architecture · Coding · Testing
+GitHub → @NandCode24
 
 ⸻
 
 🛡️ License
 
-This project is licensed under the MIT License.
+Licensed under the MIT License.
 
 ⸻
 
 💚 Acknowledgements
-	•	Google Gemini API
-	•	Next.js
-	•	NeonDB
-	•	Firebase Authentication
-	•	Vercel
-	•	Prisma ORM
+	•	🤖 Google Gemini API
+	•	⚛️ Next.js
+	•	🗄️ NeonDB
+	•	🔥 Firebase Auth
+	•	🎨 Tailwind CSS
+	•	🚀 Vercel
+	•	🧩 Prisma ORM
 
 ⸻
 
-## 🎨✨ Application Showcase
+🎨 Application Showcase
 
-Experience NutriLens in action — from intelligent onboarding to AI-powered nutrition analysis, all wrapped in a beautiful UI 🌿  
+Experience NutriLens in action — AI-powered nutrition with a beautiful UI 🌿
 
----
+<p align="center">
+  <img src="./assets/homescreen.png" alt="Home" width="520" style="margin:8px;" />
+</p>
 
-### 🏠 Home Interface
-> The welcoming dashboard introducing NutriLens — your AI-powered health companion.
-![Home](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/homescreen.png)
 
----
 
-### 🧾 User Authentication
+⸻
 
-| Signup | Signin |
-|--------|---------|
-| ![Signup](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/signup.png) | ![Signin](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/signin.png) |
+🧾 Authentication Flow
 
-> Seamless user authentication flow — powered by Firebase Auth.
+<p align="center">
+  <img src="./assets/signup.png" alt="Signup" width="360" style="margin:6px;" />
+  <img src="./assets/signin.png" alt="Signin" width="360" style="margin:6px;" />
+</p>
 
----
 
-### 👤 Personalized Onboarding
-> Collects user health goals, allergies, and fitness objectives to personalize AI responses.
-![Onboarding](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/onboarding.png)
 
----
+⸻
 
-### 🥗 Ingredient Scanner
+👤 Onboarding
 
-| Upload Ingredient Label | AI-Generated Analysis |
-|--------------------------|-----------------------|
-| ![Scan Ingredient Label](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scaningredient.png) | ![Ingredient Output](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/ingredientoutput.png) |
+<p align="center">
+  <img src="./assets/onboarding.png" alt="Onboarding" width="760" style="margin:8px;" />
+</p>
 
-> NutriLens analyzes ingredient labels using **Google Gemini AI** to detect additives, allergens, and nutritional scores.
 
----
 
-### 💊 Medicine Analyzer
+⸻
 
-| Upload Medicine Label | AI-Powered Medicine Report |
-|------------------------|-----------------------------|
-| ![Scan Medicine](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scanmedicine.png) | ![Medicine Output](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/medicineoutput.png) |
+🥗 Ingredient Scanner
 
-> Get detailed medical insights, active ingredients, side effects, and safety checks based on your profile.
+<p align="center">
+  <img src="./assets/scaningredient.png" alt="Scan Ingredient" width="360" style="margin:6px;" />
+  <img src="./assets/ingredientoutput.png" alt="Ingredient Output" width="360" style="margin:6px;" />
+</p>
 
----
 
-### 🧠 Smart Symptom Checker
 
-| Symptom Input | AI Diagnosis Output |
-|----------------|----------------------|
-| ![Symptom Checker](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/symptomchecker.png) | ![Symptom Checker Output](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scoutput.png) |
+⸻
 
-> Describe your symptoms — and NutriLens provides possible conditions, severity levels, and advice 💡
+💊 Medicine Analyzer
 
----
+<p align="center">
+  <img src="./assets/scanmedicine.png" alt="Scan Medicine" width="360" style="margin:6px;" />
+  <img src="./assets/medicineoutput.png" alt="Medicine Output" width="360" style="margin:6px;" />
+</p>
 
-### 🌿 Daily Wellness Tips
-> Discover healthy habits, nutrition insights, and lifestyle recommendations generated dynamically.
-![Health Tips](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/healthtips.png)
 
----
 
-### 👤 Profile Management
-> Users can view or update their profile, preferences, and health data at any time.
-![Profile](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/profile.png)
+⸻
 
----
+🧠 Symptom Checker
 
-### 🕒 History Dashboard
-> A centralized place where users can revisit all scans and health analyses.
-![History](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/history.png)
+<p align="center">
+  <img src="./assets/symptomchecker.png" alt="Symptom Checker" width="360" style="margin:6px;" />
+  <img src="./assets/scoutput.png" alt="Symptom Checker Output" width="360" style="margin:6px;" />
+</p>
 
----
 
-> 🧩 **NutriLens** combines AI + HealthTech to deliver an all-in-one wellness assistant experience, built with  
-> 🖥️ Next.js • 🧠 Google Gemini API • 🗄️ NeonDB • 🔐 Firebase Auth • 🎨 Tailwind CSS  
 
----
+⸻
 
-Made with 💚 by Team BitByBit (TM180) — Empowering Smarter, Healthier Living.
+🌿 Health Tips
 
----
+<p align="center">
+  <img src="./assets/healthtips.png" alt="Health Tips" width="760" style="margin:8px;" />
+</p>
 
+
+
+⸻
+
+👤 Profile & 🕒 History
+
+<p align="center">
+  <img src="./assets/profile.png" alt="Profile" width="360" style="margin:6px;" />
+  <img src="./assets/history.png" alt="History" width="360" style="margin:6px;" />
+</p>
+
+
+
+⸻
+
+
+<h3 align="center">Made with 💚 by <b>Team BitByBit (TM180)</b> — Empowering Smarter, Healthier Living.</h3>
+```
 
