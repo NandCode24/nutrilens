@@ -249,46 +249,86 @@ This project is licensed under the MIT License.
 
 ⸻
 
-## 📸 Application Screenshots
+## 🎨✨ Application Showcase
 
-### 🏠 Home Page
-![Home](https://github.com/NandCode24/nutrilens/assets/homescreen.png)
+Experience NutriLens in action — from intelligent onboarding to AI-powered nutrition analysis, all wrapped in a beautiful UI 🌿  
 
-### 🧾 Signup
-![Signup](https://github.com/NandCode24/nutrilens/assets/signup.png)
+---
 
-### 🔑 Signin
-![Signin](https://github.com/NandCode24/nutrilens/assets/signin.png)
+### 🏠 Home Interface
+> The welcoming dashboard introducing NutriLens — your AI-powered health companion.
+![Home](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/homescreen.png)
 
-### 👤 Onboarding
-![Onboarding](https://github.com/NandCode24/nutrilens/assets/onboarding.png)
+---
 
-### 🥗 Scan Ingredient Label
-![Scan Ingredient Label](https://github.com/NandCode24/nutrilens/assets/scaningredient.png)
+### 🧾 User Authentication
 
-### 📊 Ingredient Analysis Output
-![Ingredient Output](https://github.com/NandCode24/nutrilens/assets/ingredientoutput.png)
+| Signup | Signin |
+|--------|---------|
+| ![Signup](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/signup.png) | ![Signin](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/signin.png) |
 
-### 💊 Medicine Lookup
-![Scan Medicine](https://github.com/NandCode24/nutrilens/assets/scanmedicine.png)
+> Seamless user authentication flow — powered by Firebase Auth.
 
-### 💊 Medicine Output
-![Medicine Output](https://github.com/NandCode24/nutrilens/assets/medicineoutput.png)
+---
 
-### 🤒 Symptom Checker
-![Symptom Checker](https://github.com/NandCode24/nutrilens/assets/symptomchecker.png)
+### 👤 Personalized Onboarding
+> Collects user health goals, allergies, and fitness objectives to personalize AI responses.
+![Onboarding](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/onboarding.png)
 
-### 🤕 Symptom Checker Output
-![Symptom Checker Output](https://github.com/NandCode24/nutrilens/assets/scoutput.png)
+---
 
-### 🌿 Health Tips
-![Health Tips](https://github.com/NandCode24/nutrilens/assets/healthtips.png)
+### 🥗 Ingredient Scanner
 
-### 👤 Profile
-![Profile](https://github.com/NandCode24/nutrilens/assets/profile.png)
+| Upload Ingredient Label | AI-Generated Analysis |
+|--------------------------|-----------------------|
+| ![Scan Ingredient Label](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scaningredient.png) | ![Ingredient Output](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/ingredientoutput.png) |
 
-### 🕒 History
-![History](https://github.com/NandCode24/nutrilens/assets/history.png)
+> NutriLens analyzes ingredient labels using **Google Gemini AI** to detect additives, allergens, and nutritional scores.
+
+---
+
+### 💊 Medicine Analyzer
+
+| Upload Medicine Label | AI-Powered Medicine Report |
+|------------------------|-----------------------------|
+| ![Scan Medicine](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scanmedicine.png) | ![Medicine Output](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/medicineoutput.png) |
+
+> Get detailed medical insights, active ingredients, side effects, and safety checks based on your profile.
+
+---
+
+### 🧠 Smart Symptom Checker
+
+| Symptom Input | AI Diagnosis Output |
+|----------------|----------------------|
+| ![Symptom Checker](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/symptomchecker.png) | ![Symptom Checker Output](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/scoutput.png) |
+
+> Describe your symptoms — and NutriLens provides possible conditions, severity levels, and advice 💡
+
+---
+
+### 🌿 Daily Wellness Tips
+> Discover healthy habits, nutrition insights, and lifestyle recommendations generated dynamically.
+![Health Tips](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/healthtips.png)
+
+---
+
+### 👤 Profile Management
+> Users can view or update their profile, preferences, and health data at any time.
+![Profile](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/profile.png)
+
+---
+
+### 🕒 History Dashboard
+> A centralized place where users can revisit all scans and health analyses.
+![History](https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/history.png)
+
+---
+
+> 🧩 **NutriLens** combines AI + HealthTech to deliver an all-in-one wellness assistant experience, built with  
+> 🖥️ Next.js • 🧠 Google Gemini API • 🗄️ NeonDB • 🔐 Firebase Auth • 🎨 Tailwind CSS  
+
+---
 
 Made with 💚 by Team BitByBit (TM180) — Empowering Smarter, Healthier Living.
 
