@@ -8,21 +8,19 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
-    // Detect content type (FormData for image, JSON for text search)
     const contentType = req.headers.get("content-type") || "";
 
     let imageBase64: string | null = null;
     let mimeType = "image/jpeg";
     let medicineName: string | null = null;
     let profile: Record<string, any> = {};
-    let userId: string | null = null;
+    let email: string | null = null;
 
     if (contentType.includes("multipart/form-data")) {
-      // 🖼️ Handle image-based input
       const form = await req.formData();
       const file = form.get("file") as Blob | null;
       const profileStr = form.get("profile") as string | null;
-      userId = form.get("userId") as string | null;
+      email = form.get("email") as string | null;
 
       if (profileStr) {
         try {
@@ -38,11 +36,10 @@ export async function POST(req: Request) {
         mimeType = (file as any).type || "image/jpeg";
       }
     } else if (contentType.includes("application/json")) {
-      // 🔍 Handle text-based lookup
       const body = await req.json();
       medicineName = body.medicineName || null;
       profile = body.profile || {};
-      userId = body.userId || null;
+      email = body.email || null;
 
       if (!medicineName)
         return NextResponse.json(
@@ -56,17 +53,32 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🧠 Choose Gemini model
-        const model = genAI.getGenerativeModel({
-          model: "gemini-2.5-flash",
-          generationConfig: {
-            temperature: 0, // 🔒 makes responses stable
-            topP: 0.1,
-            topK: 1,
-          },
-        });
+    if (!email) {
+      return NextResponse.json(
+        { error: "Missing user email" },
+        { status: 400 }
+      );
+    }
 
-    // 🧾 Dynamic prompt
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        temperature: 0,
+        topP: 0.1,
+        topK: 1,
+      },
+    });
+
+    // ✅ Fixed template literal (no nested backticks)
     const prompt = `
 You are NutriLens — an AI Health Assistant.
 Analyze this medicine information.
@@ -74,7 +86,9 @@ Analyze this medicine information.
 ${
   imageBase64
     ? "You are provided with an image of the medicine label. Extract and analyze it."
-    : `You are provided with a medicine name: "${medicineName}". Analyze it.`
+    : 'You are provided with a medicine name: "' +
+      medicineName +
+      '". Analyze it.'
 }
 
 User profile:
@@ -97,40 +111,32 @@ Return ONLY valid JSON in this format:
 }
     `.trim();
 
-    // 🚀 Generate response
     const input = imageBase64
-      ? [
-          { inlineData: { data: imageBase64, mimeType } },
-          { text: prompt },
-        ]
+      ? [{ inlineData: { data: imageBase64, mimeType } }, { text: prompt }]
       : [{ text: prompt }];
 
     const result = await model.generateContent(input);
     const text = result.response.text().trim();
 
-    // 🧩 Parse JSON
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : { raw_output: text };
 
-    // 💾 Optional: Save to DB
-    if (userId) {
-      await prisma.medicine.create({
-        data: {
-          userId,
-          name: parsed.medicine_name || medicineName || "Unknown",
-          imageUrl: null,
-          dosage: parsed.active_ingredients?.join(", ") || "",
-          uses: parsed.uses || "",
-          precautions: parsed.precautions?.join(", ") || "",
-        },
-      });
-    }
+    await prisma.medicine.create({
+      data: {
+        userId: user.id,
+        name: parsed.medicine_name || medicineName || "Unknown",
+        imageUrl: null,
+        dosage: parsed.active_ingredients?.join(", ") || "",
+        uses: parsed.uses || "",
+        precautions: parsed.precautions?.join(", ") || "",
+      },
+    });
 
     return NextResponse.json(parsed);
-  } catch (err) {
+  } catch (err: any) {
     console.error("💊 Medicine lookup error:", err);
     return NextResponse.json(
-      { error: "Failed to analyze medicine label" },
+      { error: err.message || "Failed to analyze medicine label" },
       { status: 500 }
     );
   }

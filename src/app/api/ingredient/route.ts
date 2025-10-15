@@ -1,4 +1,3 @@
-// src/app/api/ingredient/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -14,13 +13,30 @@ export async function POST(req: Request) {
     const form = await req.formData();
     const file = form.get("file") as Blob | null;
     const profileStr = form.get("profile") as string | null;
-    const userId = form.get("userId") as string | null;
+    const email = form.get("email") as string | null;
 
     if (!file) {
       return NextResponse.json(
         { error: "No image file provided" },
         { status: 400 }
       );
+    }
+
+    if (!email) {
+      return NextResponse.json(
+        { error: "Missing user email" },
+        { status: 400 }
+      );
+    }
+
+    // 🧍 Get userId from email
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Parse user profile
@@ -43,18 +59,16 @@ export async function POST(req: Request) {
     const imageHash = crypto.createHash("sha256").update(buffer).digest("hex");
 
     // 🟢 Check if this image was already analyzed
-    if (userId) {
-      const existing = await prisma.foodScan.findFirst({
-        where: {
-          userId,
-          ingredientsText: { contains: imageHash.slice(0, 32) },
-        },
-      });
+    const existing = await prisma.foodScan.findFirst({
+      where: {
+        userId: user.id,
+        ingredientsText: { contains: imageHash.slice(0, 32) },
+      },
+    });
 
-      if (existing) {
-        console.log("⚡ Returning cached Gemini result...");
-        return NextResponse.json(existing.nutritionData);
-      }
+    if (existing) {
+      console.log("⚡ Returning cached Gemini result...");
+      return NextResponse.json(existing.nutritionData);
     }
 
     console.log("🧠 Sending image to Gemini for OCR + nutrition analysis...");
@@ -63,13 +77,13 @@ export async function POST(req: Request) {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash",
       generationConfig: {
-        temperature: 0, // 🔒 Stable deterministic output
+        temperature: 0,
         topP: 0.1,
         topK: 1,
       },
     });
 
-    // ⚠️ Do NOT change prompt (kept identical to your version)
+    // ⚠️ Do NOT change prompt (kept identical)
     const prompt = `
 You are NutriLens — a professional AI nutritionist.
 
@@ -126,22 +140,20 @@ Return ONLY valid JSON in this format:
     console.log("✅ Gemini response parsed successfully.");
 
     // Save to Prisma (FoodScan)
-    if (userId) {
-      await prisma.foodScan.create({
-        data: {
-          userId,
-          imageUrl: null,
-          ingredientsText: imageHash.slice(0, 64), // 🧠 store hash for caching
-          ingredients: parsed.ingredients || [],
-          allergens: parsed.allergens || [],
-          nutritionSummary: parsed.nutrition_summary || "",
-          rating: parsed.personalized_score || 0,
-          reasoning: parsed.reasoning || "",
-          recommendation: parsed.recommendation || "",
-          nutritionData: parsed,
-        },
-      });
-    }
+    await prisma.foodScan.create({
+      data: {
+        userId: user.id,
+        imageUrl: null,
+        ingredientsText: imageHash.slice(0, 64),
+        ingredients: parsed.ingredients || [],
+        allergens: parsed.allergens || [],
+        nutritionSummary: parsed.nutrition_summary || "",
+        rating: parsed.personalized_score || 0,
+        reasoning: parsed.reasoning || "",
+        recommendation: parsed.recommendation || "",
+        nutritionData: parsed,
+      },
+    });
 
     return NextResponse.json(parsed);
   } catch (err: any) {

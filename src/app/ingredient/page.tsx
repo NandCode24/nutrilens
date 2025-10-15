@@ -95,7 +95,8 @@ export default function ScanIngredient() {
       const formData = new FormData();
       formData.append("file", blob, "label.jpg");
       formData.append("profile", JSON.stringify(profile || {}));
-      if (userId) formData.append("userId", userId);
+      const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+      if (storedUser?.email) formData.append("email", storedUser.email);
 
       const response = await fetch("/api/ingredient", {
         method: "POST",

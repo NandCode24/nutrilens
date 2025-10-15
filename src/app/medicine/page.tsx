@@ -11,16 +11,22 @@ export default function MedicineLookup() {
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState<any>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   // 🧍 Load user info + profile
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
       const storedProfile = localStorage.getItem("userProfile");
-      if (storedUser) setUserId(JSON.parse(storedUser)?.id);
-      if (storedProfile) setProfile(JSON.parse(storedProfile));
-      else
+
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        setUserEmail(parsed.email || null);
+      }
+
+      if (storedProfile) {
+        setProfile(JSON.parse(storedProfile));
+      } else {
         setProfile({
           age: "N/A",
           gender: "N/A",
@@ -28,6 +34,7 @@ export default function MedicineLookup() {
           medicalConditions: [],
           goal: "General wellness",
         });
+      }
     } catch {
       console.warn("⚠️ Failed to load profile");
     }
@@ -67,7 +74,7 @@ export default function MedicineLookup() {
       const formData = new FormData();
       formData.append("file", blob, "medicine.jpg");
       formData.append("profile", JSON.stringify(profile || {}));
-      if (userId) formData.append("userId", userId);
+      if (userEmail) formData.append("email", userEmail);
 
       const res = await fetch("/api/medicine", {
         method: "POST",
@@ -95,7 +102,7 @@ export default function MedicineLookup() {
     try {
       const res = await fetch("/api/medicine", {
         method: "POST",
-        body: JSON.stringify({ medicineName, profile, userId }),
+        body: JSON.stringify({ medicineName, profile, email: userEmail }),
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
