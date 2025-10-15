@@ -64,6 +64,29 @@ export default function OnboardingPage() {
     }
   }, []);
 
+  // ✅ Autofill Email + Name from LocalStorage User
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      if (user.email) {
+        const emailInput = document.querySelector(
+          'input[name="email"]'
+        ) as HTMLInputElement;
+        const nameInput = document.querySelector(
+          'input[name="name"]'
+        ) as HTMLInputElement;
+        if (emailInput) emailInput.value = user.email;
+        if (nameInput && user.name) nameInput.value = user.name;
+      }
+    } else {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ name: "Guest User", email: "guest@nutrilens.ai" })
+      );
+    }
+  }, []);
+
   // ✅ Auto-calculate BMR dynamically
   useEffect(() => {
     if (weight && height && age && gender) {
@@ -180,6 +203,7 @@ export default function OnboardingPage() {
               <input
                 type="email"
                 {...register("email")}
+                readOnly
                 placeholder="Enter your email"
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />

@@ -29,19 +29,28 @@ export default function RegisterPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
+
       });
 
       const data = await res.json();
 
-      if (res.ok) {
-        setMessage("✅ Account created successfully!");
-        setShowTransition(true);
+  if (res.ok) {
+    setMessage("✅ Account created successfully!");
+    setShowTransition(true);
 
-        // Wait then redirect to signin (email-password flow)
-        setTimeout(() => router.push("/auth/signin"), 1800);
-      } else {
-        setMessage(`❌ ${data.error || "Signup failed."}`);
-      }
+    // ✅ Save user info for onboarding autofill
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        name,
+        email,
+      })
+    );
+
+    setTimeout(() => router.push("/auth/signin"), 1800);
+  } else {
+    setMessage(`❌ ${data.error || "Signup failed."}`);
+  }
     } catch {
       setMessage("❌ Something went wrong. Try again.");
     } finally {
@@ -77,7 +86,15 @@ export default function RegisterPage() {
           password: "google-auth",
         }),
       });
-
+localStorage.setItem(
+  "user",
+  JSON.stringify({
+    name: user.displayName,
+    email: user.email,
+    photo: user.photoURL,
+    uid: user.uid,
+  })
+);
       document.cookie = "isLoggedIn=true; path=/; max-age=604800";
       setShowTransition(true);
 

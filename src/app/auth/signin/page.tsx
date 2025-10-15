@@ -32,16 +32,22 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      if (res.ok) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        document.cookie = "isLoggedIn=true; path=/; max-age=604800";
-        setShowTransition(true);
+     if (res.ok) {
+       // Save user data for onboarding autofill
+       localStorage.setItem(
+         "user",
+         JSON.stringify({
+           name: data.user.name,
+           email: data.user.email,
+         })
+       );
 
-        // Email users go to onboarding next
-        setTimeout(() => router.push("/onboarding"), 1500);
-      } else {
-        setMessage(`❌ ${data.error || "Invalid credentials"}`);
-      }
+       document.cookie = "isLoggedIn=true; path=/; max-age=604800";
+       setShowTransition(true);
+       setTimeout(() => router.push("/onboarding"), 1500);
+     } else {
+       setMessage(`❌ ${data.error || "Invalid credentials"}`);
+     }
     } catch {
       setMessage("❌ Something went wrong. Try again.");
     } finally {
@@ -55,6 +61,15 @@ export default function LoginPage() {
       setLoading(true);
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          uid: user.uid,
+        })
+      );
 
       localStorage.setItem(
         "user",
