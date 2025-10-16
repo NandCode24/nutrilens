@@ -136,6 +136,24 @@ export default function OnboardingPage() {
         throw new Error(result.error || "Failed to save onboarding details");
       }
 
+      // ✅ Save user profile locally for personalization
+      const profileData = {
+        name: data.name,
+        age: Number(data.age),
+        gender: data.gender,
+        heightCm: Number(data.height),
+        weightKg: Number(data.weight),
+        healthGoals: data.goal || "General wellness",
+        allergies: data.allergies
+          ? data.allergies.split(",").map((a) => a.trim())
+          : [],
+        medicalConditions: data.medications
+          ? data.medications.split(",").map((m) => m.trim())
+          : [],
+      };
+
+      localStorage.setItem("userProfile", JSON.stringify(profileData));
+
       setMessage("✅ Onboarding details saved successfully!");
       setTimeout(() => router.push("/dashboard"), 1000);
     } catch (error: any) {
@@ -205,7 +223,7 @@ export default function OnboardingPage() {
                 {...register("email")}
                 readOnly
                 placeholder="Enter your email"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-600 focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-100 cursor-not-allowed"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">

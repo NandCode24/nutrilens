@@ -13,7 +13,7 @@ export default function ScanIngredient() {
   const [userId, setUserId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // 🧍 Load user info + profile
+  // 🧍 Load user info + personalized profile from localStorage
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -25,7 +25,18 @@ export default function ScanIngredient() {
       }
 
       if (storedProfile) {
-        setProfile(JSON.parse(storedProfile));
+        const parsedProfile = JSON.parse(storedProfile);
+        const completeProfile = {
+          name: parsedProfile.name || "User",
+          age: parsedProfile.age || "N/A",
+          gender: parsedProfile.gender || "N/A",
+          heightCm: parsedProfile.heightCm || "N/A",
+          weightKg: parsedProfile.weightKg || "N/A",
+          allergies: parsedProfile.allergies || [],
+          medicalConditions: parsedProfile.medicalConditions || [],
+          healthGoals: parsedProfile.healthGoals || "General wellness",
+        };
+        setProfile(completeProfile);
         setIsGeneric(false);
       } else {
         // fallback: general profile
@@ -95,8 +106,13 @@ export default function ScanIngredient() {
       const formData = new FormData();
       formData.append("file", blob, "label.jpg");
       formData.append("profile", JSON.stringify(profile || {}));
+
       const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-      if (storedUser?.email) formData.append("email", storedUser.email);
+      if (storedUser?.email) {
+        formData.append("email", storedUser.email);
+      } else {
+        console.warn("⚠️ No email found in localStorage — using guest mode");
+      }
 
       const response = await fetch("/api/ingredient", {
         method: "POST",
@@ -187,7 +203,7 @@ export default function ScanIngredient() {
         )}
       </div>
 
-      {/* Analysis Result */}
+      {/* ✅ Analysis Result */}
       {result && (
         <div className="mt-10 w-11/12 md:w-3/5 bg-gradient-to-b from-white to-green-50 rounded-2xl shadow-xl p-6 border border-green-200 animate-fadeIn relative">
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-200 opacity-30 rounded-full blur-3xl" />
@@ -196,12 +212,17 @@ export default function ScanIngredient() {
             🍃 AI Nutrition Analysis
           </h2>
 
-          {isGeneric && (
+          {!isGeneric ? (
             <p className="text-green-600 text-sm font-medium text-center mb-3">
-              ✅ Personalized data found — showing personal health rating.
+              ✅ Personalized data loaded — health score tailored for you!
+            </p>
+          ) : (
+            <p className="text-yellow-600 text-sm font-medium text-center mb-3">
+              ⚠️ Showing general analysis (no personal data found)
             </p>
           )}
 
+          {/* Rest of UI untouched */}
           <div className="space-y-5 text-gray-700 relative z-10">
             {/* Ingredients */}
             <div>
@@ -269,7 +290,6 @@ export default function ScanIngredient() {
 
                 {/* Animated Score Circle */}
                 <div className="relative flex justify-center items-center">
-                  {/* Glowing ring */}
                   <div
                     className={`absolute w-36 h-36 rounded-full blur-2xl opacity-60 animate-pulse 
                       ${
@@ -280,8 +300,6 @@ export default function ScanIngredient() {
                             : "bg-red-400 animate-[shake_0.6s_ease-in-out_infinite]"
                       }`}
                   ></div>
-
-                  {/* Core Circle */}
                   <div
                     className={`relative z-10 flex flex-col items-center justify-center w-28 h-28 rounded-full shadow-xl text-3xl font-bold text-white transition-all duration-700
                       ${

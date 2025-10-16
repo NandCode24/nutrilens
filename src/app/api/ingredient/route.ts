@@ -9,11 +9,11 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
-    // Get FormData
+    // 🧩 Get FormData safely
     const form = await req.formData();
     const file = form.get("file") as Blob | null;
-    const profileStr = form.get("profile") as string | null;
-    const email = form.get("email") as string | null;
+    const profileStr = form.get("profile")?.toString() || "{}";
+    const email = form.get("email")?.toString() || "guest@nutrilens.ai";
 
     if (!file) {
       return NextResponse.json(
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🧍 Get userId from email
+    // 🧍 Fetch user from Prisma using email
     const user = await prisma.user.findUnique({
       where: { email },
       select: { id: true },
@@ -39,30 +39,38 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Parse user profile
+    // 🧠 Parse user profile safely
     let profile: Record<string, any> = {};
-    if (profileStr) {
-      try {
-        profile = JSON.parse(profileStr);
-      } catch {
-        profile = {};
-      }
+    try {
+      profile = JSON.parse(profileStr);
+      console.log("✅ Received user profile:", profile);
+    } catch (err) {
+      console.warn("⚠️ Failed to parse user profile, using general defaults.");
+      profile = {
+        age: "N/A",
+        gender: "N/A",
+        heightCm: "N/A",
+        weightKg: "N/A",
+        allergies: [],
+        healthGoals: "General wellness",
+        medicalConditions: [],
+      };
     }
 
-    // Convert image to base64
+    // 🖼️ Convert image to base64
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const base64Image = buffer.toString("base64");
     const mimeType = (file as any).type || "image/jpeg";
 
-    // 🧮 Generate image hash (for caching)
+    // 🔐 Generate image hash (for caching)
     const imageHash = crypto.createHash("sha256").update(buffer).digest("hex");
 
-    // 🟢 Check if this image was already analyzed
+    // ⚡ Check if analysis already exists (cache)
     const existing = await prisma.foodScan.findFirst({
       where: {
         userId: user.id,
-        ingredientsText: { contains: imageHash.slice(0, 32) },
+        imageUrl: imageHash,
       },
     });
 
@@ -73,7 +81,7 @@ export async function POST(req: Request) {
 
     console.log("🧠 Sending image to Gemini for OCR + nutrition analysis...");
 
-    // Use Gemini OCR (no Tesseract)
+    // 🧩 Prepare Gemini model
     const model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash",
       generationConfig: {
@@ -83,7 +91,19 @@ export async function POST(req: Request) {
       },
     });
 
-    // ⚠️ Do NOT change prompt (kept identical)
+    // 🧬 Personalized context string
+    const personalization = `
+User profile:
+- Age: ${profile.age ?? "N/A"}
+- Gender: ${profile.gender ?? "N/A"}
+- Height: ${profile.heightCm ?? "N/A"} cm
+- Weight: ${profile.weightKg ?? "N/A"} kg
+- Allergies: ${Array.isArray(profile.allergies) ? profile.allergies.join(", ") : "None"}
+- Health Goal: ${profile.healthGoals ?? "General wellness"}
+- Medical Conditions: ${Array.isArray(profile.medicalConditions) ? profile.medicalConditions.join(", ") : "None"}
+    `;
+
+    // 🧾 Gemini Prompt (enhanced with personalization)
     const prompt = `
 You are NutriLens — a professional AI nutritionist.
 
@@ -95,17 +115,10 @@ Tasks:
 3. Identify emulsifiers, preservatives, or additives (and briefly describe their potential side effects).
 4. Detect allergens.
 5. Summarize the nutritional quality (sugar, sodium, protein, etc.).
-6. Give a health score (0–10) based on the user’s profile.
+6. Give a health score (0–10) based on the user’s profile below.
 7. Provide reasoning and a short recommendation.
 
-User profile:
-- Age: ${profile.age ?? "N/A"}
-- Gender: ${profile.gender ?? "N/A"}
-- Height: ${profile.heightCm ?? "N/A"} cm
-- Weight: ${profile.weightKg ?? "N/A"} kg
-- Allergies: ${profile.allergies?.join(", ") ?? "None"}
-- Health Goal: ${profile.healthGoals ?? "General wellness"}
-- Medical Conditions: ${profile.medicalConditions?.join(", ") ?? "None"}
+${personalization}
 
 Return ONLY valid JSON in this format:
 {
@@ -125,7 +138,7 @@ Return ONLY valid JSON in this format:
 }
     `.trim();
 
-    // Generate with image + prompt
+    // 🚀 Send to Gemini with image + prompt
     const result = await model.generateContent([
       { inlineData: { data: base64Image, mimeType } },
       { text: prompt },
@@ -133,17 +146,17 @@ Return ONLY valid JSON in this format:
 
     const text = result.response.text().trim();
 
-    // Parse JSON safely
+    // 🧩 Parse JSON safely
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : { raw_output: text };
 
     console.log("✅ Gemini response parsed successfully.");
 
-    // Save to Prisma (FoodScan)
+    // 🗄️ Save to Prisma
     await prisma.foodScan.create({
       data: {
         userId: user.id,
-        imageUrl: null,
+        imageUrl: imageHash,
         ingredientsText: imageHash.slice(0, 64),
         ingredients: parsed.ingredients || [],
         allergens: parsed.allergens || [],
