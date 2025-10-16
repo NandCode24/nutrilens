@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Trash2, Eye } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import BackButton from "@/components/BackButton";
+import { useLoading } from "@/context/LoadingContext";
 
 
 export default function HistoryPage() {

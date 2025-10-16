@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Camera, Search, Loader2 } from "lucide-react";
 import BackButton from "@/components/BackButton";
+import { useLoading } from "@/context/LoadingContext";
 
 export default function MedicineLookup() {
   const [image, setImage] = useState<string | null>(null);
@@ -13,6 +14,7 @@ export default function MedicineLookup() {
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { showLoader, hideLoader } = useLoading(); // 🌿 global loader (used for routing only)
 
   // 🧍 Load user info + profile
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function MedicineLookup() {
     }
   };
 
-  // 🧠 Scan with Gemini API (via /api/medicine)
+  // 🧠 Scan with Gemini API (local spinner only)
   const handleScan = async () => {
     if (!image) return alert("Please capture or upload a label first!");
     setLoading(true);
@@ -72,6 +74,7 @@ export default function MedicineLookup() {
       const blob = image.startsWith("data:")
         ? dataUrlToBlob(image)
         : await (await fetch(image)).blob();
+
       const formData = new FormData();
       formData.append("file", blob, "medicine.jpg");
       formData.append("profile", JSON.stringify(profile || {}));
@@ -92,7 +95,7 @@ export default function MedicineLookup() {
     }
   };
 
-  // Manual text lookup
+  // Manual text lookup (local spinner only)
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!medicineName.trim()) return;
@@ -119,9 +122,21 @@ export default function MedicineLookup() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center pb-10">
-   <div className="absolute top-24 left-6 z-[60]">
+      {/* ✅ Back button triggers loader only for navigation */}
+      <div className="absolute top-24 left-6 z-[60]">
+        <button
+          onClick={() => {
+            showLoader();
+            setTimeout(() => {
+              hideLoader();
+              window.history.back();
+            }, 600);
+          }}
+        >
           <BackButton />
-        </div>
+        </button>
+      </div>
+
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-10 bg-white flex justify-between items-center px-8 py-4 border-b border-gray-100 shadow-sm">
         <div className="flex items-center space-x-2">
@@ -131,9 +146,7 @@ export default function MedicineLookup() {
           <span className="text-lg font-semibold text-gray-800">NutriLens</span>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="text-gray-500 hover:text-gray-700 text-sm">
-            ?
-          </button>
+          <button className="text-gray-500 hover:text-gray-700 text-sm">?</button>
           <div className="w-8 h-8 rounded-full bg-gray-200"></div>
         </div>
       </header>
@@ -152,20 +165,13 @@ export default function MedicineLookup() {
       {/* Scanner Frame */}
       <div className="relative mt-8 border-2 border-dashed border-green-400 rounded-2xl w-80 h-96 flex items-center justify-center overflow-hidden bg-white shadow-sm">
         {image ? (
-          <Image
-            src={image}
-            alt="Medicine Label"
-            fill
-            className="object-cover"
-          />
+          <Image src={image} alt="Medicine Label" fill className="object-cover" />
         ) : (
           <div className="flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
               <Camera className="text-green-500 w-8 h-8" />
             </div>
-            <p className="text-gray-600 mt-2 text-sm font-medium">
-              Tap to capture
-            </p>
+            <p className="text-gray-600 mt-2 text-sm font-medium">Tap to capture</p>
           </div>
         )}
         <input
@@ -220,9 +226,7 @@ export default function MedicineLookup() {
           </button>
         </form>
 
-        {error && (
-          <p className="text-red-500 text-sm text-center mt-2">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
       </div>
 
       {/* Results */}
@@ -258,8 +262,8 @@ export default function MedicineLookup() {
                     result.compatibility_score >= 7
                       ? "bg-green-500"
                       : result.compatibility_score >= 4
-                        ? "bg-yellow-400"
-                        : "bg-red-500"
+                      ? "bg-yellow-400"
+                      : "bg-red-500"
                   }`}
                   style={{
                     width: `${(result.compatibility_score / 10) * 100}%`,
@@ -271,8 +275,8 @@ export default function MedicineLookup() {
                   result.compatibility_score >= 7
                     ? "text-green-600"
                     : result.compatibility_score >= 4
-                      ? "text-yellow-500"
-                      : "text-red-600"
+                    ? "text-yellow-500"
+                    : "text-red-600"
                 }`}
               >
                 {Number(result.compatibility_score).toFixed(1)}

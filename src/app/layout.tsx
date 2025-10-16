@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { LoadingProvider } from "@/context/LoadingContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,11 +30,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F9FCF9] text-slate-900`}
       >
-        <Navbar />
-        <main className="min-h-screen">
-        {children}
-        <SpeedInsights />
-        </main>
+        {/* ✅ Wrap the ENTIRE app in the LoadingProvider */}
+        <LoadingProvider>
+          <Navbar />
+          <main className="min-h-screen">
+            {children}
+            <SpeedInsights />
+          </main>
+        </LoadingProvider>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search, Share2, Bookmark } from "lucide-react";
 import BackButton from "@/components/BackButton";
+import { useLoading } from "@/context/LoadingContext";
 
 interface SymptomResult {
   condition: string;

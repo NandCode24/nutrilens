@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import BackButton from "@/components/BackButton";
 
+
 export default function ScanIngredient() {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

@@ -1,5 +1,6 @@
 "use client";
 import BackButton from "@/components/BackButton";
+import { useLoading } from "@/context/LoadingContext";
 
 export default function TermsPage() {
   return (

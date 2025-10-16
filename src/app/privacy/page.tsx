@@ -1,5 +1,5 @@
 "use client";
-
+import { useLoading } from "@/context/LoadingContext";
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-16 px-6 flex flex-col items-center">

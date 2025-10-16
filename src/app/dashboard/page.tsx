@@ -5,40 +5,54 @@ import { useRouter } from "next/navigation";
 import BottomNav from "@/components/BottomNav";
 import { FiCamera, FiClipboard, FiHelpCircle, FiEdit3 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLoading } from "@/context/LoadingContext"; // ✅ Loader context
 
 export default function DashboardPage() {
   const router = useRouter();
   const [userName, setUserName] = useState<string>("");
   const [showTransition, setShowTransition] = useState(false);
+  const { showLoader, hideLoader } = useLoading(); // ✅ Loader hooks
 
   // ✅ Load user data from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
+      showLoader(); // 🔹 show loader during redirect
       router.push("/auth/signin");
+      hideLoader();
     } else {
       try {
         const user = JSON.parse(storedUser);
         setUserName(user.name || "User");
       } catch {
         localStorage.removeItem("user");
+        showLoader();
         router.push("/auth/signin");
+        hideLoader();
       }
     }
-  }, [router]);
+  }, [router, showLoader, hideLoader]);
 
   // ✅ Logout function (fully working)
   const handleLogout = () => {
     localStorage.removeItem("user");
-
-    // ✅ Remove cookie (remove Secure for localhost)
     document.cookie = "isLoggedIn=; Max-Age=0; path=/; SameSite=Lax";
 
-    // ✅ Show animation before redirect
+    // ✅ Show global loader for smoothness
+    showLoader();
+
     setShowTransition(true);
     setTimeout(() => {
+      hideLoader();
       router.push("/");
     }, 1500);
+  };
+
+  // ✅ Navigation cards with loader
+  const handleNavigation = async (path: string) => {
+    showLoader(); // show loader before navigation
+    router.push(path);
+    setTimeout(() => hideLoader(), 1200); // smooth hide after transition
   };
 
   const menuItems = [
@@ -50,8 +64,7 @@ export default function DashboardPage() {
     },
     {
       title: "Health Tips",
-      description:
-        "Get personalized health and nutrition tips to stay fit.",
+      description: "Get personalized health and nutrition tips to stay fit.",
       icon: <FiClipboard className="w-9 h-9 text-green-500" />,
       path: "/tips",
     },
@@ -72,8 +85,6 @@ export default function DashboardPage() {
   return (
     <>
       <div className="min-h-screen flex flex-col bg-[#f6fdf6] relative pb-20">
-   
-
         {/* 🔹 Welcome Section */}
         <div className="px-8 mt-4 mb-6">
           <h1 className="text-3xl font-semibold text-gray-900">
@@ -86,7 +97,7 @@ export default function DashboardPage() {
           {menuItems.map((item, idx) => (
             <button
               key={idx}
-              onClick={() => router.push(item.path)}
+              onClick={() => handleNavigation(item.path)} // ✅ Added loader
               className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 p-8 flex flex-col items-center justify-center text-center"
             >
               <div className="mb-4">{item.icon}</div>
@@ -113,9 +124,8 @@ export default function DashboardPage() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {/* 🔹 Replace with your brand logo */}
             <motion.img
-              src="/NutriLens.png" // ✅ your brand logo path here
+              src="/NutriLens.png"
               alt="NutriLens Logo"
               initial={{ scale: 0 }}
               animate={{ scale: 1.2, rotate: 360 }}

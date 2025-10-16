@@ -5,6 +5,7 @@ import { healthTips } from "@/app/tips/healthtips";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import BackButton from "@/components/BackButton";
+import { useLoading } from "@/context/LoadingContext";
 
 export default function TipsPage() {
   const [currentTip, setCurrentTip] = useState(0);
