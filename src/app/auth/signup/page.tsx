@@ -18,39 +18,54 @@ export default function RegisterPage() {
   const [message, setMessage] = useState("");
   const [showTransition, setShowTransition] = useState(false);
 
+  // ✅ Password validation (min 8 chars, upper, lower, number, special)
+  const validatePassword = (pwd: string) => {
+    const strongRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return strongRegex.test(pwd);
+  };
+
   // ✅ Manual Email Signup
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setMessage("");
+
+    // 🔒 Password validation before request
+    if (!validatePassword(password)) {
+      setMessage(
+        "❌ Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+      );
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
-
       });
 
       const data = await res.json();
 
-  if (res.ok) {
-    setMessage("✅ Account created successfully!");
-    setShowTransition(true);
+      if (res.ok) {
+        setMessage("✅ Account created successfully!");
+        setShowTransition(true);
 
-    // ✅ Save user info for onboarding autofill
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        name,
-        email,
-      })
-    );
+        // ✅ Save user info for onboarding autofill
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name,
+            email,
+          })
+        );
 
-    setTimeout(() => router.push("/auth/signin"), 1800);
-  } else {
-    setMessage(`❌ ${data.error || "Signup failed."}`);
-  }
+        setTimeout(() => router.push("/auth/signin"), 1800);
+      } else {
+        setMessage(`❌ ${data.error || "Signup failed."}`);
+      }
     } catch {
       setMessage("❌ Something went wrong. Try again.");
     } finally {
@@ -86,19 +101,9 @@ export default function RegisterPage() {
           password: "google-auth",
         }),
       });
-localStorage.setItem(
-  "user",
-  JSON.stringify({
-    name: user.displayName,
-    email: user.email,
-    photo: user.photoURL,
-    uid: user.uid,
-  })
-);
+
       document.cookie = "isLoggedIn=true; path=/; max-age=604800";
       setShowTransition(true);
-
-      // Google users go directly to onboarding
       setTimeout(() => router.push("/onboarding"), 1500);
     } catch (error) {
       console.error("Google Sign-Up Error:", error);
@@ -138,14 +143,42 @@ localStorage.setItem(
               className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
               required
             />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
-              required
-            />
+          <input
+  type="password"
+  placeholder="Password"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  className={`w-full rounded-md border px-3 py-2 text-gray-700 focus:ring-2 focus:outline-none ${
+    validatePassword(password)
+      ? "border-green-300 focus:ring-green-500"
+      : password
+      ? "border-red-300 focus:ring-red-400"
+      : "border-gray-200"
+  }`}
+  required
+/>
+
+{/* 🔒 Interactive password feedback */}
+{password && (
+  <div className="mt-1 text-xs text-gray-600 space-y-0.5">
+    <p>
+      {password.length >= 8 ? "✅" : "❌"} At least <b>8 characters</b>
+    </p>
+    <p>
+      {/[A-Z]/.test(password) ? "✅" : "❌"} Includes an <b>uppercase</b> letter
+    </p>
+    <p>
+     {/[a-z]/.test(password) ? "✅" : "❌"} Includes a <b>lowercase</b> letter
+    </p>
+    <p>
+      {/\d/.test(password) ? "✅" : "❌"} Includes a <b>number</b>
+    </p>
+    <p>
+      {/[!@#$%^&*(),.?":{}|<>]/.test(password) ? "✅" : "❌"} Includes a{" "}
+      <b>special character</b>
+    </p>
+  </div>
+)}
 
             <button
               type="submit"
@@ -154,6 +187,17 @@ localStorage.setItem(
             >
               {loading ? "Creating Account..." : "Sign Up"}
             </button>
+
+            {/* Message */}
+            {message && (
+              <p
+                className={`text-center text-sm mt-2 ${
+                  message.startsWith("❌") ? "text-red-500" : "text-green-600"
+                }`}
+              >
+                {message}
+              </p>
+            )}
           </form>
 
           {/* Google Option */}

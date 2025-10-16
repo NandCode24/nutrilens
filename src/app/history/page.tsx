@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Trash2, Eye } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import BackButton from "@/components/BackButton";
+
 
 export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
@@ -80,6 +82,9 @@ export default function HistoryPage() {
 
   return (
     <div className="min-h-screen bg-[#F7FFF9] py-10 px-4 flex flex-col items-center">
+      <div className="absolute top-24 left-6 z-[60]">
+        <BackButton />
+      </div>
       {/* Header */}
       <div className="text-center mb-6">
         <h1 className="text-2xl font-semibold text-[#1F2937]">History</h1>
@@ -144,8 +149,8 @@ export default function HistoryPage() {
 
       {/* Footer */}
       <footer className="text-center text-gray-400 text-xs mt-10">
-        © 2025{" "}
-        <span className="font-semibold text-[#22C55E]">NutriLens</span> — Empowering Smarter Nutrition.
+        © 2025 <span className="font-semibold text-[#22C55E]">NutriLens</span>{" "}
+        — Empowering Smarter Nutrition.
       </footer>
     </div>
   );

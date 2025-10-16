@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { healthTips } from "@/app/tips/healthtips";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
+import BackButton from "@/components/BackButton";
 
 export default function TipsPage() {
   const [currentTip, setCurrentTip] = useState(0);
@@ -12,9 +13,18 @@ export default function TipsPage() {
     setCurrentTip((prev) => (prev + 1) % healthTips.length);
   };
 
+  const prevTip = () => {
+    setCurrentTip((prev) => (prev === 0 ? healthTips.length - 1 : prev - 1));
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#F7FFF9] px-6 py-10 relative overflow-hidden">
-      {/* Gradient Circles for soft background aesthetics */}
+      {/* 🔙 Back Button */}
+      <div className="absolute top-24 left-6 z-[60]">
+        <BackButton />
+      </div>
+
+      {/* Gradient Background Aesthetics */}
       <div className="absolute top-10 left-10 w-32 h-32 bg-green-300/30 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-40 h-40 bg-emerald-200/30 rounded-full blur-3xl" />
 
@@ -37,21 +47,30 @@ export default function TipsPage() {
           </motion.p>
         </AnimatePresence>
 
-        <div className="mt-8 flex justify-center">
+        {/* Navigation Buttons */}
+        <div className="mt-8 flex justify-center gap-4">
+          <button
+            onClick={prevTip}
+            className="flex items-center justify-center bg-white text-[#22C55E] border border-green-300 hover:bg-green-50 font-semibold px-5 py-2.5 rounded-xl shadow-sm transition-all duration-300"
+          >
+            <ArrowLeft className="mr-2 w-5 h-5" />
+            Previous
+          </button>
+
           <button
             onClick={nextTip}
-            className="flex items-center justify-center bg-[#22C55E] hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition-all duration-300"
+            className="flex items-center justify-center bg-[#22C55E] hover:bg-green-600 text-white font-semibold px-5 py-2.5 rounded-xl shadow-md transition-all duration-300"
           >
-            Next Tip
+            Next
             <ArrowRight className="ml-2 w-5 h-5" />
           </button>
         </div>
-
-      
       </div>
 
       {/* Footer note */}
-     
+      <p className="mt-8 text-sm text-gray-500">
+        Tap below to swipe through your health tips 🌿
+      </p>
     </div>
   );
 }

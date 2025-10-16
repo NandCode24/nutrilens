@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Camera, Search, Loader2 } from "lucide-react";
+import BackButton from "@/components/BackButton";
 
 export default function MedicineLookup() {
   const [image, setImage] = useState<string | null>(null);
@@ -118,6 +119,9 @@ export default function MedicineLookup() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center pb-10">
+   <div className="absolute top-24 left-6 z-[60]">
+          <BackButton />
+        </div>
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-10 bg-white flex justify-between items-center px-8 py-4 border-b border-gray-100 shadow-sm">
         <div className="flex items-center space-x-2">

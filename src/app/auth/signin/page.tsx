@@ -32,22 +32,22 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-     if (res.ok) {
-       // Save user data for onboarding autofill
-       localStorage.setItem(
-         "user",
-         JSON.stringify({
-           name: data.user.name,
-           email: data.user.email,
-         })
-       );
+      if (res.ok) {
+        // Save user data for onboarding autofill
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: data.user.name,
+            email: data.user.email,
+          })
+        );
 
-       document.cookie = "isLoggedIn=true; path=/; max-age=604800";
-       setShowTransition(true);
-       setTimeout(() => router.push("/onboarding"), 1500);
-     } else {
-       setMessage(`❌ ${data.error || "Invalid credentials"}`);
-     }
+        document.cookie = "isLoggedIn=true; path=/; max-age=604800";
+        setShowTransition(true);
+        setTimeout(() => router.push("/onboarding"), 1500);
+      } else {
+        setMessage(`❌ ${data.error || "Invalid credentials"}`);
+      }
     } catch {
       setMessage("❌ Something went wrong. Try again.");
     } finally {
@@ -71,16 +71,6 @@ export default function LoginPage() {
         })
       );
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          name: user.displayName,
-          email: user.email,
-          photo: user.photoURL,
-          uid: user.uid,
-        })
-      );
-
       await fetch("/api/auth/firebase-sync", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -93,8 +83,6 @@ export default function LoginPage() {
 
       document.cookie = "isLoggedIn=true; path=/; max-age=604800";
       setShowTransition(true);
-
-      // Google users also go directly to onboarding
       setTimeout(() => router.push("/onboarding"), 1500);
     } catch (error) {
       console.error("Google Sign-In Error:", error);
@@ -142,6 +130,17 @@ export default function LoginPage() {
             >
               {loading ? "Signing In..." : "Sign In"}
             </button>
+
+            {/* 🔴 Error or Info Message */}
+            {message && (
+              <p
+                className={`text-center text-sm mt-3 ${
+                  message.startsWith("❌") ? "text-red-500" : "text-green-600"
+                }`}
+              >
+                {message}
+              </p>
+            )}
           </form>
 
           {/* Divider */}

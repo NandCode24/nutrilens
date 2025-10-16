@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Search, Share2, Bookmark } from "lucide-react";
+import BackButton from "@/components/BackButton";
 
 interface SymptomResult {
   condition: string;
@@ -75,6 +76,9 @@ export default function SymptomChecker() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-4">
+     <div className="absolute top-24 left-6 z-[60]">
+            <BackButton />
+          </div>
       {/* Header */}
       <div className="text-center max-w-xl">
         <h1 className="text-3xl font-semibold text-gray-900">
@@ -136,9 +140,7 @@ export default function SymptomChecker() {
           </p>
         )}
 
-        {error && (
-          <p className="text-center text-red-500 mt-6">{error}</p>
-        )}
+        {error && <p className="text-center text-red-500 mt-6">{error}</p>}
 
         {!loading && !error && results.length > 0 && (
           <>

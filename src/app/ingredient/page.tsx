@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Camera, Loader2 } from "lucide-react";
+import BackButton from "@/components/BackButton";
 
 export default function ScanIngredient() {
   const [image, setImage] = useState<string | null>(null);
@@ -140,6 +141,9 @@ export default function ScanIngredient() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center overflow-y-auto pb-10">
+      <div className="absolute top-24 left-6 z-[60]">
+             <BackButton />
+           </div>
       {/* Header */}
       <div className="mt-28 text-center">
         <h1 className="text-2xl font-semibold text-gray-900">

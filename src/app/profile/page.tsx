@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
+import BackButton from "@/components/BackButton";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
@@ -69,6 +70,9 @@ export default function ProfilePage() {
   // ✅ 4️⃣ Main Profile UI
   return (
     <div className="min-h-screen bg-[#F7FFF9] px-6 sm:px-10 py-12 flex flex-col items-center">
+      <div className="absolute top-24 left-6 z-[60]">
+        <BackButton />
+      </div>
       {/* Header */}
       <div className="w-full max-w-5xl mb-8">
         <h1 className="text-2xl font-semibold text-[#1F2937]">My Profile</h1>
@@ -94,10 +98,10 @@ export default function ProfilePage() {
         </div>
 
         <button
-            onClick={() => router.push("/edit-profile")}
-            className="mt-4 sm:mt-0 bg-[#22C55E] text-white px-6 py-2 rounded-full font-medium hover:bg-[#16A34A] transition"
-            >
-            Edit Profile
+          onClick={() => router.push("/edit-profile")}
+          className="mt-4 sm:mt-0 bg-[#22C55E] text-white px-6 py-2 rounded-full font-medium hover:bg-[#16A34A] transition"
+        >
+          Edit Profile
         </button>
       </div>
 
@@ -142,7 +146,8 @@ export default function ProfilePage() {
           <Detail
             label="Medical History"
             value={
-              Array.isArray(user.medicalHistory) && user.medicalHistory.length > 0
+              Array.isArray(user.medicalHistory) &&
+              user.medicalHistory.length > 0
                 ? user.medicalHistory.join(", ")
                 : "None"
             }
@@ -172,8 +177,8 @@ export default function ProfilePage() {
 
       {/* Footer */}
       <footer className="text-center text-gray-400 text-xs mt-10">
-        © 2025 <span className="font-semibold text-[#22C55E]">NutriLens</span> —
-        Empowering Smarter Nutrition.
+        © 2025 <span className="font-semibold text-[#22C55E]">NutriLens</span>{" "}
+        — Empowering Smarter Nutrition.
       </footer>
     </div>
   );

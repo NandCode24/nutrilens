@@ -1,8 +1,12 @@
 "use client";
+import BackButton from "@/components/BackButton";
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-16 px-6 flex flex-col items-center">
+      <div className="absolute top-24 left-6 z-[60]">
+        <BackButton />
+      </div>
       <div className="max-w-3xl w-full bg-white shadow-sm rounded-2xl p-8">
         <h1 className="text-3xl font-semibold text-gray-900 text-center mb-6">
           Terms & Conditions
