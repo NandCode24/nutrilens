@@ -33,15 +33,10 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Save user data for onboarding autofill
         localStorage.setItem(
           "user",
-          JSON.stringify({
-            name: data.user.name,
-            email: data.user.email,
-          })
+          JSON.stringify({ name: data.user.name, email: data.user.email })
         );
-
         document.cookie = "isLoggedIn=true; path=/; max-age=604800";
         setShowTransition(true);
         setTimeout(() => router.push("/onboarding"), 1500);
@@ -61,6 +56,7 @@ export default function LoginPage() {
       setLoading(true);
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -86,7 +82,7 @@ export default function LoginPage() {
       setTimeout(() => router.push("/onboarding"), 1500);
     } catch (error) {
       console.error("Google Sign-In Error:", error);
-      alert("Failed to sign in with Google.");
+      setMessage("❌ Failed to sign in with Google.");
     } finally {
       setLoading(false);
     }
@@ -94,14 +90,16 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-[#f6fdf6]">
-        <div className="bg-white shadow-sm rounded-2xl p-8 w-full max-w-sm relative overflow-hidden">
-          <h1 className="text-2xl font-semibold text-center text-gray-900">
+      {/* ✅ Auth Container */}
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors duration-300">
+        <div className="bg-card border border-border shadow-sm rounded-2xl p-8 w-full max-w-sm relative overflow-hidden transition-colors duration-300">
+          {/* Header */}
+          <h1 className="text-2xl font-semibold text-center mb-1">
             Welcome Back
           </h1>
-          <p className="text-center text-gray-500 mt-1 mb-6">
+          <p className="text-center text-muted-foreground mb-6 text-sm">
             Sign in to continue your{" "}
-            <span className="font-medium">NutriLens</span> journey
+            <span className="font-medium text-primary">NutriLens</span> journey
           </p>
 
           {/* Email Form */}
@@ -111,7 +109,7 @@ export default function LoginPage() {
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
             <input
@@ -119,19 +117,19 @@ export default function LoginPage() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-gray-200 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition disabled:opacity-50"
+              className="w-full bg-primary text-primary-foreground font-medium py-2 rounded-md hover:opacity-90 transition disabled:opacity-60"
             >
               {loading ? "Signing In..." : "Sign In"}
             </button>
 
-            {/* 🔴 Error or Info Message */}
+            {/* 🔴 Status Message */}
             {message && (
               <p
                 className={`text-center text-sm mt-3 ${
@@ -145,9 +143,11 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="flex items-center my-6">
-            <hr className="flex-grow border-gray-300" />
-            <span className="px-2 text-gray-400 text-sm">Or continue with</span>
-            <hr className="flex-grow border-gray-300" />
+            <hr className="flex-grow border-border" />
+            <span className="px-2 text-muted-foreground text-sm">
+              Or continue with
+            </span>
+            <hr className="flex-grow border-border" />
           </div>
 
           {/* Google Button */}
@@ -155,18 +155,19 @@ export default function LoginPage() {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 transition disabled:opacity-50"
+              className="p-2 border border-border rounded-full hover:bg-muted transition disabled:opacity-50"
             >
               <FcGoogle className="w-6 h-6" />
             </button>
           </div>
 
-          <p className="text-center text-gray-500 mt-6 text-sm">
+          {/* Signup Link */}
+          <p className="text-center text-muted-foreground mt-6 text-sm">
             Don’t have an account?{" "}
             <button
               type="button"
               onClick={() => router.push("/auth/signup")}
-              className="text-green-600 font-medium hover:underline"
+              className="text-primary font-medium hover:underline"
             >
               Create one
             </button>
@@ -174,11 +175,11 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Transition Animation */}
+      {/* 🌀 Transition Animation */}
       <AnimatePresence>
         {showTransition && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#f6fdf6]"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background text-foreground"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -188,7 +189,7 @@ export default function LoginPage() {
               initial={{ scale: 0 }}
               animate={{ scale: 1.2, rotate: 360 }}
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="w-28 h-28 rounded-full bg-white shadow-md flex items-center justify-center"
+              className="w-28 h-28 rounded-full bg-card shadow-md flex items-center justify-center"
             >
               <Image
                 src={logo}

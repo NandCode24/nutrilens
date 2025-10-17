@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LoadingProvider } from "@/context/LoadingContext";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,18 +27,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F9FCF9] text-slate-900`}
       >
-        {/* ✅ Wrap the ENTIRE app in the LoadingProvider */}
-        <LoadingProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-            <SpeedInsights />
-          </main>
-        </LoadingProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {/* ✅ Wrap the ENTIRE app in the LoadingProvider */}
+          <LoadingProvider>
+            <Navbar />
+            <main className="min-h-screen">
+              {children}
+              <SpeedInsights />
+            </main>
+          </LoadingProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

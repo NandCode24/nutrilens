@@ -17,7 +17,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
-      showLoader(); // 🔹 show loader during redirect
+      showLoader();
       router.push("/auth/signin");
       hideLoader();
     } else {
@@ -38,9 +38,7 @@ export default function DashboardPage() {
     localStorage.removeItem("user");
     document.cookie = "isLoggedIn=; Max-Age=0; path=/; SameSite=Lax";
 
-    // ✅ Show global loader for smoothness
     showLoader();
-
     setShowTransition(true);
     setTimeout(() => {
       hideLoader();
@@ -50,44 +48,44 @@ export default function DashboardPage() {
 
   // ✅ Navigation cards with loader
   const handleNavigation = async (path: string) => {
-    showLoader(); // show loader before navigation
+    showLoader();
     router.push(path);
-    setTimeout(() => hideLoader(), 1200); // smooth hide after transition
+    setTimeout(() => hideLoader(), 1200);
   };
 
   const menuItems = [
     {
       title: "Scan Label",
       description: "Quickly analyze food labels for nutritional information.",
-      icon: <FiCamera className="w-9 h-9 text-green-500" />,
+      icon: <FiCamera className="w-9 h-9 text-primary" />,
       path: "/ingredient",
     },
     {
       title: "Health Tips",
       description: "Get personalized health and nutrition tips to stay fit.",
-      icon: <FiClipboard className="w-9 h-9 text-green-500" />,
+      icon: <FiClipboard className="w-9 h-9 text-primary" />,
       path: "/tips",
     },
     {
       title: "Symptom Checker",
       description: "Identify potential health issues based on your symptoms.",
-      icon: <FiHelpCircle className="w-9 h-9 text-green-500" />,
+      icon: <FiHelpCircle className="w-9 h-9 text-primary" />,
       path: "/symptom-checker",
     },
     {
       title: "Medicine Lookup",
       description: "Find information about medications and their interactions.",
-      icon: <FiEdit3 className="w-9 h-9 text-green-500" />,
+      icon: <FiEdit3 className="w-9 h-9 text-primary" />,
       path: "/medicine",
     },
   ];
 
   return (
     <>
-      <div className="min-h-screen flex flex-col bg-[#f6fdf6] relative pb-20">
+      <div className="min-h-screen flex flex-col bg-background text-foreground relative pb-20 transition-colors duration-300">
         {/* 🔹 Welcome Section */}
         <div className="px-8 mt-4 mb-6">
-          <h1 className="text-3xl font-semibold text-gray-900">
+          <h1 className="text-3xl font-semibold text-foreground">
             Welcome back, {userName}
           </h1>
         </div>
@@ -97,14 +95,14 @@ export default function DashboardPage() {
           {menuItems.map((item, idx) => (
             <button
               key={idx}
-              onClick={() => handleNavigation(item.path)} // ✅ Added loader
-              className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 p-8 flex flex-col items-center justify-center text-center"
+              onClick={() => handleNavigation(item.path)}
+              className="bg-card border border-border rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 p-8 flex flex-col items-center justify-center text-center"
             >
               <div className="mb-4">{item.icon}</div>
-              <h3 className="text-gray-900 font-semibold text-lg">
+              <h3 className="text-lg font-semibold text-foreground">
                 {item.title}
               </h3>
-              <p className="text-gray-500 text-sm mt-2 leading-relaxed">
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                 {item.description}
               </p>
             </button>
@@ -118,7 +116,7 @@ export default function DashboardPage() {
       <AnimatePresence>
         {showTransition && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#f6fdf6]"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

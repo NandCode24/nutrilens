@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Loader2, RefreshCw } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import ApiLoader from "@/components/ApiLoader";
 
@@ -66,7 +65,7 @@ export default function HistoryViewPage() {
 
   if (loading)
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-gray-600">
+      <div className="min-h-screen flex flex-col items-center justify-center text-muted-foreground bg-background">
         <Loader2 className="animate-spin w-6 h-6 mb-2" />
         Loading saved scan...
       </div>
@@ -74,96 +73,72 @@ export default function HistoryViewPage() {
 
   if (!data)
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-gray-600 text-center">
+      <div className="min-h-screen flex flex-col items-center justify-center text-muted-foreground bg-background text-center">
         <p>No saved analysis found.</p>
-        <p className="text-sm mt-1">Go back and select a previous record.</p>
+        <p className="text-sm mt-1 text-muted-foreground">
+          Go back and select a previous record.
+        </p>
       </div>
     );
 
   return (
     <>
       {reAnalyzing && <ApiLoader />}
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center overflow-y-auto pb-10">
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center overflow-y-auto pb-10 transition-colors duration-300">
         <div className="absolute top-24 left-6 z-[60]">
           <BackButton />
         </div>
 
         {/* Header */}
         <div className="mt-28 text-center">
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-foreground dark:text-brand-accent">
             {type === "Ingredient"
               ? "🍃 AI Nutrition Analysis"
               : "💊 AI Medicine Analysis"}
           </h1>
-          <p className="text-gray-500 mt-1">
-            ✅ Personalized data loaded — health score tailored for you!
+          <p className="text-sm text-muted-foreground dark:text-brand-muted mt-1">
+            ✅ Personalized data loaded — tailored for you!
           </p>
         </div>
 
-        {/* Re-analyze Button */}
-        <div className="mt-8">
-          <button
-            onClick={handleReAnalyze}
-            disabled={reAnalyzing}
-            className={`flex justify-center items-center bg-green-500 text-white py-3 px-6 rounded-xl font-semibold transition-all ${
-              reAnalyzing
-                ? "opacity-70 cursor-not-allowed"
-                : "hover:bg-green-600"
-            }`}
-          >
-            {reAnalyzing ? (
-              <>
-                <Loader2 className="animate-spin mr-2 h-5 w-5" />{" "}
-                Re-analyzing...
-              </>
-            ) : (
-              <>
-                <RefreshCw className="mr-2 w-5 h-5" /> Recheck with Latest AI
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Result Section */}
-        <div className="mt-10 w-11/12 md:w-3/5 bg-gradient-to-b from-white to-green-50 rounded-2xl shadow-xl p-6 border border-green-200 relative animate-fadeIn">
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-200 opacity-30 rounded-full blur-3xl" />
+        {/* Main Card */}
+        <div className="mt-10 w-11/12 md:w-3/5 bg-card border border-border rounded-2xl shadow-xl p-6 relative animate-fadeIn transition-colors duration-300">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 opacity-30 rounded-full blur-3xl" />
 
           {/* INGREDIENT VIEW */}
           {type === "Ingredient" && (
-            <div className="space-y-5 text-gray-700 relative z-10">
-              <h2 className="text-2xl font-bold text-center text-green-600 mb-4 drop-shadow-sm">
-                🍃 AI Nutrition Analysis
+            <div className="space-y-5 relative z-10">
+              <h2 className="text-2xl font-bold text-center text-primary mb-4 drop-shadow-sm">
+                🍃 Ingredient Breakdown
               </h2>
 
-              {/* Ingredients */}
               <div>
-                <p className="font-semibold text-lg text-gray-800">
+                <p className="font-semibold text-lg text-foreground">
                   Ingredients:
                 </p>
-                <p className="mt-1 text-gray-600 leading-relaxed">
+                <p className="mt-1 text-muted-foreground leading-relaxed">
                   {safeJoin(data.ingredients)}
                 </p>
               </div>
 
-              {/* Additives Info */}
               {data.additives_info?.length > 0 && (
                 <div>
-                  <p className="font-semibold text-lg text-gray-800">
+                  <p className="font-semibold text-lg text-foreground">
                     Additives / Preservatives:
                   </p>
                   <div className="mt-2 space-y-2">
                     {data.additives_info.map((add: any, index: number) => (
                       <div
                         key={index}
-                        className="bg-green-100/70 border border-green-200 rounded-xl px-4 py-2 shadow-sm"
+                        className="bg-primary/10 border border-primary/30 rounded-xl px-4 py-2 shadow-sm"
                       >
-                        <p className="font-medium text-green-700">
+                        <p className="font-medium text-primary">
                           {add.name}{" "}
-                          <span className="text-sm text-gray-700">
+                          <span className="text-sm text-muted-foreground">
                             — {add.purpose}
                           </span>
                         </p>
-                        <p className="text-sm text-gray-600 italic mt-1">
+                        <p className="text-sm text-muted-foreground italic mt-1">
                           ⚠️ {add.side_effect}
                         </p>
                       </div>
@@ -172,32 +147,31 @@ export default function HistoryViewPage() {
                 </div>
               )}
 
-              {/* Allergens */}
               <div>
-                <p className="font-semibold text-lg text-gray-800">
+                <p className="font-semibold text-lg text-foreground">
                   Allergens:
                 </p>
-                <p className="mt-1 text-gray-600">{safeJoin(data.allergens)}</p>
+                <p className="mt-1 text-muted-foreground">
+                  {safeJoin(data.allergens)}
+                </p>
               </div>
 
-              {/* Nutrition Summary */}
               <div>
-                <p className="font-semibold text-lg text-gray-800">
+                <p className="font-semibold text-lg text-foreground">
                   Nutrition Summary:
                 </p>
-                <p className="mt-1 text-gray-600 leading-relaxed">
+                <p className="mt-1 text-muted-foreground leading-relaxed">
                   {data.nutrition_summary || "N/A"}
                 </p>
               </div>
 
-              {/* Score */}
+              {/* Health Score */}
               {typeof data.personalized_score !== "undefined" && (
                 <div className="text-center mt-6 relative">
-                  <p className="font-semibold text-lg text-gray-800 mb-3">
+                  <p className="font-semibold text-lg text-foreground mb-3">
                     Health Score
                   </p>
 
-                  {/* Animated Score Circle */}
                   <div className="relative flex justify-center items-center">
                     <div
                       className={`absolute w-36 h-36 rounded-full blur-2xl opacity-60 animate-pulse 
@@ -224,12 +198,29 @@ export default function HistoryViewPage() {
                     </div>
                   </div>
 
+                  {/* Progress Bar */}
+                  <div className="mt-5 h-3 w-full bg-muted rounded-full overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-500 ease-in-out 
+                      ${
+                        data.personalized_score >= 7
+                          ? "bg-green-500"
+                          : data.personalized_score >= 4
+                            ? "bg-yellow-400"
+                            : "bg-red-500"
+                      }`}
+                      style={{
+                        width: `${(Number(data.personalized_score) / 10) * 100}%`,
+                      }}
+                    />
+                  </div>
+
                   <p
                     className={`mt-3 font-semibold text-base transition-all ${
                       data.personalized_score >= 7
-                        ? "text-green-600"
+                        ? "text-green-500"
                         : data.personalized_score >= 4
-                          ? "text-yellow-500"
+                          ? "text-yellow-400"
                           : "text-red-500"
                     }`}
                   >
@@ -242,25 +233,23 @@ export default function HistoryViewPage() {
                 </div>
               )}
 
-              {/* Reasoning */}
               {data.reasoning && (
                 <div>
-                  <p className="font-semibold text-lg text-gray-800">
+                  <p className="font-semibold text-lg text-foreground">
                     Reasoning:
                   </p>
-                  <p className="mt-1 text-gray-600 leading-relaxed">
+                  <p className="mt-1 text-muted-foreground leading-relaxed">
                     {data.reasoning}
                   </p>
                 </div>
               )}
 
-              {/* Recommendation */}
               {data.recommendation && (
                 <div>
-                  <p className="font-semibold text-lg text-gray-800">
+                  <p className="font-semibold text-lg text-foreground">
                     Recommendation:
                   </p>
-                  <p className="mt-1 text-gray-600 leading-relaxed">
+                  <p className="mt-1 text-muted-foreground leading-relaxed">
                     {data.recommendation}
                   </p>
                 </div>
@@ -270,36 +259,38 @@ export default function HistoryViewPage() {
 
           {/* MEDICINE VIEW */}
           {type === "Medicine" && (
-            <div className="space-y-5 text-gray-700 relative z-10">
-              <h2 className="text-2xl font-bold text-center text-green-600 mb-4 drop-shadow-sm">
-                💊 AI Medicine Analysis
+            <div className="space-y-5 relative z-10">
+              <h2 className="text-2xl font-bold text-center text-primary mb-4 drop-shadow-sm">
+                💊 Medicine Overview
               </h2>
 
-              <p>
-                <strong>Medicine Name:</strong>{" "}
+              <p className="text-muted-foreground">
+                <strong className="text-foreground">Medicine Name:</strong>{" "}
                 {data.medicine_name || "Unknown"}
               </p>
-              <p>
-                <strong>Active Ingredients:</strong>{" "}
+              <p className="text-muted-foreground">
+                <strong className="text-foreground">Active Ingredients:</strong>{" "}
                 {safeJoin(data.active_ingredients)}
               </p>
-              <p>
-                <strong>Uses:</strong> {data.uses || "Not specified"}
+              <p className="text-muted-foreground">
+                <strong className="text-foreground">Uses:</strong>{" "}
+                {data.uses || "Not specified"}
               </p>
-              <p>
-                <strong>Side Effects:</strong> {safeJoin(data.side_effects)}
+              <p className="text-muted-foreground">
+                <strong className="text-foreground">Side Effects:</strong>{" "}
+                {safeJoin(data.side_effects)}
               </p>
-              <p>
-                <strong>Precautions:</strong> {safeJoin(data.precautions)}
+              <p className="text-muted-foreground">
+                <strong className="text-foreground">Precautions:</strong>{" "}
+                {safeJoin(data.precautions)}
               </p>
 
               {typeof data.compatibility_score !== "undefined" && (
                 <div className="text-center mt-6 relative">
-                  <p className="font-semibold text-lg text-gray-800 mb-3">
+                  <p className="font-semibold text-lg text-foreground mb-3">
                     Compatibility Score
                   </p>
 
-                  {/* Animated Score Circle */}
                   <div className="relative flex justify-center items-center">
                     <div
                       className={`absolute w-36 h-36 rounded-full blur-2xl opacity-60 animate-pulse 
@@ -330,25 +321,35 @@ export default function HistoryViewPage() {
 
               {data.reasoning && (
                 <div>
-                  <strong>Reasoning:</strong>
-                  <p>{data.reasoning}</p>
+                  <p className="font-semibold text-lg text-foreground">
+                    Reasoning:
+                  </p>
+                  <p className="mt-1 text-muted-foreground leading-relaxed">
+                    {data.reasoning}
+                  </p>
                 </div>
               )}
 
               {data.recommendation && (
                 <div>
-                  <strong>Recommendation:</strong>
-                  <p>{data.recommendation}</p>
+                  <p className="font-semibold text-lg text-foreground">
+                    Recommendation:
+                  </p>
+                  <p className="mt-1 text-muted-foreground leading-relaxed">
+                    {data.recommendation}
+                  </p>
                 </div>
               )}
             </div>
           )}
         </div>
 
-        <footer className="text-center text-gray-400 text-xs mt-10">
+        <footer className="text-center text-muted-foreground dark:text-brand-muted text-xs mt-10">
           © 2025{" "}
-          <span className="font-semibold text-[#22C55E]">NutriLens</span> —
-          Empowering Smarter Nutrition.
+          <span className="font-semibold text-primary dark:text-brand-accent">
+            NutriLens
+          </span>{" "}
+          — Empowering Smarter Nutrition.
         </footer>
       </div>
     </>

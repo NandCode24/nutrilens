@@ -8,7 +8,7 @@ export default function GlobalLoader({ visible }: { visible: boolean }) {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#f6fdf6]"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-card"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -19,7 +19,7 @@ export default function GlobalLoader({ visible }: { visible: boolean }) {
             animate={{ scale: 1.2, rotate: 360 }}
             exit={{ scale: 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-28 h-28 rounded-full bg-white shadow-md flex items-center justify-center"
+            className="w-28 h-28 rounded-full bg-card shadow-md flex items-center justify-center"
           >
             <Image
               src={logo}

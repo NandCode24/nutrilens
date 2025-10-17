@@ -1,34 +1,101 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 html {
   scroll-behavior: smooth;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ================================
+   🌞 LIGHT MODE + 🌚 DARK MODE BASE
+   ================================ */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    /* White background */
+    --foreground: 0 0% 10%;
+    /* Deep neutral text */
+    --muted-foreground: 0 0% 40%;
+    /* Softer gray for secondary text */
+
+    --primary: 142 71% 45%;
+    /* Brand green (#22C55E) */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    /* 🌿 Black-Green Palette for Light Mode */
+    --text-primary: 142 45% 15%;
+    /* Deep dark green — for headings */
+    --text-accent: 142 40% 22%;
+    /* Dark forest green — accent elements */
+    --text-muted-green: 142 25% 35%;
+    /* Softer olive green for subtext */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    /* Deep dark gray */
+    --foreground: 0 0% 99%;
+    /* Light text */
+    --muted-foreground: 0 0% 80%;
+    /* Soft gray-white */
+    --primary: 142 71% 45%;
+    /* Keep same brand green */
+
+    /* 🌙 Bright Green Palette for Dark Mode */
+    --text-primary: 142 65% 70%;
+    /* Bright green — for titles */
+    --text-accent: 142 60% 60%;
+    /* Softer lime-green accent */
+    --text-muted-green: 142 25% 70%;
+    /* Muted mint for body text */
+
+    --card: 222.2 84% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 222.2 84% 5%;
+    --popover-foreground: 0 0% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==================================
+   🧩 THEME TOKENS (Tailwind v4 syntax)
+   ================================== */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* ✅ Green Text Tokens */
+  --color-text-primary: var(--text-primary);
+  --color-text-accent: var(--text-accent);
+  --color-text-muted-green: var(--text-muted-green);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
 }
 
+/* ======================
+   🌀 ANIMATIONS / EFFECTS
+   ====================== */
 @keyframes shake {
 
   0%,
@@ -44,5 +111,80 @@ body {
   40%,
   80% {
     transform: translateX(4px);
+  }
+}
+
+/* =================================
+   🎨 OKLCH COLOR SYSTEM FALLBACK
+   ================================= */
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.6 0.18 142);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.80 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.80 0 0);
+  --primary: oklch(0.71 0.14 142);
+  --primary-foreground: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.85 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 18%);
+}
+
+/* =============================
+   🌐 UNIVERSAL ELEMENT STYLING
+   ============================= */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+
+  /* 🌿 Green Text Utility Classes */
+  .text-brand {
+    color: hsl(var(--text-primary));
+  }
+
+  .text-brand-accent {
+    color: hsl(var(--text-accent));
+  }
+
+  .text-brand-muted {
+    color: hsl(var(--text-muted-green));
+  }
+
+  /* ✨ Selection Highlight */
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+    color: hsl(var(--text-primary));
+  }
+
+  /* 🌱 Link Hover Effect */
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  a:hover {
+    color: hsl(var(--text-accent));
   }
 }

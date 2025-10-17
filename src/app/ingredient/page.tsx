@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import BackButton from "@/components/BackButton";
-import ApiLoader from "@/components/ApiLoader"; // 🧩 Minimal Loader Overlay
+import ApiLoader from "@/components/ApiLoader";
 
 export default function ScanIngredient() {
   const [image, setImage] = useState<string | null>(null);
@@ -14,9 +14,9 @@ export default function ScanIngredient() {
   const [isGeneric, setIsGeneric] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [apiLoading, setApiLoading] = useState(false); // ✅ for overlay loader
+  const [apiLoading, setApiLoading] = useState(false);
 
-  // 🧍 Load user info + personalized profile from localStorage
+  // 🧍 Load user info + profile
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -42,7 +42,6 @@ export default function ScanIngredient() {
         setProfile(completeProfile);
         setIsGeneric(false);
       } else {
-        // fallback: general profile
         setProfile({
           goal: "General wellness",
           dietType: "None",
@@ -62,7 +61,6 @@ export default function ScanIngredient() {
     }
   }, []);
 
-  // helper: convert dataURL to Blob
   const dataUrlToBlob = (dataUrl: string) => {
     const arr = dataUrl.split(",");
     const mimeMatch = arr[0].match(/:(.*?);/);
@@ -74,7 +72,6 @@ export default function ScanIngredient() {
     return new Blob([u8arr], { type: mime });
   };
 
-  // 📸 Upload / Capture image
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(null);
     if (event.target.files && event.target.files[0]) {
@@ -85,14 +82,13 @@ export default function ScanIngredient() {
     }
   };
 
-  // 🧠 Analyze image using backend
   const handleScan = async () => {
     if (!image) {
       alert("Please capture or upload an ingredient label first!");
       return;
     }
 
-    setApiLoading(true); // 🌀 Show overlay loader
+    setApiLoading(true);
     setLoading(true);
     setResult(null);
     setErrorMessage(null);
@@ -114,8 +110,6 @@ export default function ScanIngredient() {
       const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
       if (storedUser?.email) {
         formData.append("email", storedUser.email);
-      } else {
-        console.warn("⚠️ No email found in localStorage — using guest mode");
       }
 
       const response = await fetch("/api/ingredient", {
@@ -139,30 +133,30 @@ export default function ScanIngredient() {
       alert(msg);
     } finally {
       setLoading(false);
-      setApiLoading(false); // ✅ Hide overlay loader
+      setApiLoading(false);
     }
   };
 
   return (
     <>
-      {apiLoading && <ApiLoader />} {/* 🧩 Minimal overlay loader */}
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center overflow-y-auto pb-10">
+      {apiLoading && <ApiLoader />}
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center overflow-y-auto pb-10 transition-colors duration-300">
         <div className="absolute top-24 left-6 z-[60]">
           <BackButton />
         </div>
 
         {/* Header */}
         <div className="mt-28 text-center">
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-foreground">
             Scan Ingredient Label
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Center the label in the frame for the best results.
           </p>
         </div>
 
         {/* Scanner Frame */}
-        <div className="relative mt-8 border-2 border-dashed border-green-400 rounded-2xl w-80 h-96 flex items-center justify-center overflow-hidden bg-white shadow-md">
+        <div className="relative mt-8 border-2 border-dashed border-primary rounded-2xl w-80 h-96 flex items-center justify-center overflow-hidden bg-card shadow-md">
           {image ? (
             <Image
               src={image}
@@ -172,10 +166,10 @@ export default function ScanIngredient() {
             />
           ) : (
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                <Camera className="text-green-500 w-8 h-8" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <Camera className="text-primary w-8 h-8" />
               </div>
-              <p className="text-gray-600 mt-2 text-sm font-medium">
+              <p className="text-muted-foreground mt-2 text-sm font-medium">
                 Tap to capture
               </p>
             </div>
@@ -194,8 +188,8 @@ export default function ScanIngredient() {
           <button
             onClick={handleScan}
             disabled={loading}
-            className={`flex justify-center items-center bg-green-500 text-white py-3 rounded-xl font-semibold transition-all ${
-              loading ? "opacity-70 cursor-not-allowed" : "hover:bg-green-600"
+            className={`flex justify-center items-center bg-primary text-primary-foreground py-3 rounded-xl font-semibold transition-all ${
+              loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
             }`}
           >
             {loading ? (
@@ -216,30 +210,30 @@ export default function ScanIngredient() {
 
         {/* ✅ Analysis Result */}
         {result && (
-          <div className="mt-10 w-11/12 md:w-3/5 bg-gradient-to-b from-white to-green-50 rounded-2xl shadow-xl p-6 border border-green-200 animate-fadeIn relative">
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-200 opacity-30 rounded-full blur-3xl" />
+          <div className="mt-10 w-11/12 md:w-3/5 bg-card border border-border rounded-2xl shadow-xl p-6 animate-fadeIn relative transition-colors duration-300">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 opacity-30 rounded-full blur-3xl" />
 
-            <h2 className="text-2xl font-bold text-center text-green-600 mb-4 drop-shadow-sm">
+            <h2 className="text-2xl font-bold text-center text-primary mb-4 drop-shadow-sm">
               🍃 AI Nutrition Analysis
             </h2>
 
             {!isGeneric ? (
-              <p className="text-green-600 text-sm font-medium text-center mb-3">
+              <p className="text-primary text-sm font-medium text-center mb-3">
                 ✅ Personalized data loaded — health score tailored for you!
               </p>
             ) : (
-              <p className="text-yellow-600 text-sm font-medium text-center mb-3">
+              <p className="text-yellow-500 text-sm font-medium text-center mb-3">
                 ⚠️ Showing general analysis (no personal data found)
               </p>
             )}
-            {/* Rest of UI untouched */}
-            <div className="space-y-5 text-gray-700 relative z-10">
+
+            <div className="space-y-5 relative z-10">
               {/* Ingredients */}
               <div>
-                <p className="font-semibold text-lg text-gray-800">
+                <p className="font-semibold text-lg text-foreground">
                   Ingredients:
                 </p>
-                <p className="mt-1 text-gray-600 leading-relaxed">
+                <p className="mt-1 text-muted-foreground leading-relaxed">
                   {result.ingredients?.join(", ") || "Not found"}
                 </p>
               </div>
@@ -247,22 +241,22 @@ export default function ScanIngredient() {
               {/* Additives Info */}
               {result.additives_info?.length > 0 && (
                 <div>
-                  <p className="font-semibold text-lg text-gray-800">
+                  <p className="font-semibold text-lg text-foreground">
                     Additives / Preservatives:
                   </p>
                   <div className="mt-2 space-y-2">
                     {result.additives_info.map((add: any, index: number) => (
                       <div
                         key={index}
-                        className="bg-green-100/70 border border-green-200 rounded-xl px-4 py-2 shadow-sm"
+                        className="bg-primary/10 border border-primary/30 rounded-xl px-4 py-2 shadow-sm"
                       >
-                        <p className="font-medium text-green-700">
+                        <p className="font-medium text-primary">
                           {add.name}{" "}
-                          <span className="text-sm text-gray-700">
+                          <span className="text-sm text-muted-foreground">
                             — {add.purpose}
                           </span>
                         </p>
-                        <p className="text-sm text-gray-600 italic mt-1">
+                        <p className="text-sm text-muted-foreground italic mt-1">
                           ⚠️ {add.side_effect}
                         </p>
                       </div>
@@ -273,10 +267,10 @@ export default function ScanIngredient() {
 
               {/* Allergens */}
               <div>
-                <p className="font-semibold text-lg text-gray-800">
+                <p className="font-semibold text-lg text-foreground">
                   Allergens:
                 </p>
-                <p className="mt-1 text-gray-600">
+                <p className="mt-1 text-muted-foreground">
                   {result.allergens?.length
                     ? result.allergens.join(", ")
                     : "None detected"}
@@ -285,10 +279,10 @@ export default function ScanIngredient() {
 
               {/* Nutrition Summary */}
               <div>
-                <p className="font-semibold text-lg text-gray-800">
+                <p className="font-semibold text-lg text-foreground">
                   Nutrition Summary:
                 </p>
-                <p className="mt-1 text-gray-600 leading-relaxed">
+                <p className="mt-1 text-muted-foreground leading-relaxed">
                   {result.nutrition_summary || "N/A"}
                 </p>
               </div>
@@ -296,7 +290,7 @@ export default function ScanIngredient() {
               {/* Health Score */}
               {typeof result.personalized_score !== "undefined" && (
                 <div className="text-center mt-6 relative">
-                  <p className="font-semibold text-lg text-gray-800 mb-3">
+                  <p className="font-semibold text-lg text-foreground mb-3">
                     {isGeneric ? "Health Score" : "Personalized Score"}
                   </p>
 
@@ -328,7 +322,7 @@ export default function ScanIngredient() {
                   </div>
 
                   {/* Progress Bar */}
-                  <div className="mt-5 h-3 w-full bg-gray-200 rounded-full overflow-hidden">
+                  <div className="mt-5 h-3 w-full bg-muted rounded-full overflow-hidden">
                     <div
                       className={`h-full transition-all duration-500 ease-in-out 
                       ${
@@ -348,9 +342,9 @@ export default function ScanIngredient() {
                   <p
                     className={`mt-3 font-semibold text-base transition-all ${
                       result.personalized_score >= 7
-                        ? "text-green-600"
+                        ? "text-green-500"
                         : result.personalized_score >= 4
-                          ? "text-yellow-500"
+                          ? "text-yellow-400"
                           : "text-red-500"
                     }`}
                   >
@@ -366,10 +360,10 @@ export default function ScanIngredient() {
               {/* Reasoning */}
               {result.reasoning && (
                 <div>
-                  <p className="font-semibold text-lg text-gray-800">
+                  <p className="font-semibold text-lg text-foreground">
                     Reasoning:
                   </p>
-                  <p className="mt-1 text-gray-600 leading-relaxed">
+                  <p className="mt-1 text-muted-foreground leading-relaxed">
                     {result.reasoning}
                   </p>
                 </div>
@@ -378,10 +372,10 @@ export default function ScanIngredient() {
               {/* Recommendation */}
               {result.recommendation && (
                 <div>
-                  <p className="font-semibold text-lg text-gray-800">
+                  <p className="font-semibold text-lg text-foreground">
                     Recommendation:
                   </p>
-                  <p className="mt-1 text-gray-600 leading-relaxed">
+                  <p className="mt-1 text-muted-foreground leading-relaxed">
                     {result.recommendation}
                   </p>
                 </div>

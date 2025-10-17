@@ -15,9 +15,7 @@ export default function ContactPage() {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  ) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +36,7 @@ export default function ContactPage() {
       } else {
         setStatus(`❌ ${data.error || "Failed to send message."}`);
       }
-    } catch (err) {
+    } catch {
       setStatus("❌ Something went wrong. Try again.");
     } finally {
       setLoading(false);
@@ -46,22 +44,24 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-16 px-6 flex flex-col items-center">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center py-16 px-6 transition-colors duration-300">
+      {/* 🔙 Back Button */}
       <div className="absolute top-24 left-6 z-[60]">
         <BackButton />
       </div>
-      <div className="max-w-3xl w-full bg-white shadow-sm rounded-2xl p-8">
-        <h1 className="text-3xl font-semibold text-gray-900 text-center mb-6">
-          Contact Us
-        </h1>
-        <p className="text-gray-600 text-center mb-6">
+
+      {/* 📨 Contact Card */}
+      <div className="max-w-3xl w-full bg-card border border-border shadow-sm rounded-2xl p-8 transition-colors duration-300">
+        <h1 className="text-3xl font-semibold text-center mb-6">Contact Us</h1>
+        <p className="text-center text-muted-foreground mb-8">
           We’d love to hear from you! Whether it’s feedback, support, or a
           partnership inquiry — reach out below.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* 📝 Contact Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
               Name
             </label>
             <input
@@ -70,13 +70,13 @@ export default function ContactPage() {
               value={form.name}
               onChange={handleChange}
               placeholder="Your name"
-              className="w-full mt-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-border bg-background rounded-xl px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
               Email
             </label>
             <input
@@ -85,13 +85,13 @@ export default function ContactPage() {
               value={form.email}
               onChange={handleChange}
               placeholder="you@example.com"
-              className="w-full mt-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-border bg-background rounded-xl px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
               Message
             </label>
             <textarea
@@ -100,7 +100,7 @@ export default function ContactPage() {
               onChange={handleChange}
               rows={4}
               placeholder="Your message..."
-              className="w-full mt-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-border bg-background rounded-xl px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               required
             ></textarea>
           </div>
@@ -108,15 +108,16 @@ export default function ContactPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-500 text-white font-semibold py-3 rounded-xl hover:bg-green-600 transition disabled:opacity-50"
+            className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition disabled:opacity-60"
           >
             {loading ? "Sending..." : "Send Message"}
           </button>
         </form>
 
+        {/* Status Message */}
         {status && (
           <p
-            className={`text-center mt-4 ${
+            className={`text-center mt-4 text-sm ${
               status.includes("✅") ? "text-green-600" : "text-red-500"
             }`}
           >

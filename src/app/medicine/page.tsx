@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Camera, Search, Loader2 } from "lucide-react";
 import BackButton from "@/components/BackButton";
-import ApiLoader from "@/components/ApiLoader"; // 🌀 clean overlay loader
+import ApiLoader from "@/components/ApiLoader";
 import { useLoading } from "@/context/LoadingContext";
 
 export default function MedicineLookup() {
@@ -15,10 +15,9 @@ export default function MedicineLookup() {
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [apiLoading, setApiLoading] = useState(false); // ✅ overlay loader
-  const { showLoader, hideLoader } = useLoading(); // used for routing
+  const [apiLoading, setApiLoading] = useState(false);
+  const { showLoader, hideLoader } = useLoading();
 
-  // 🧍 Load user info + profile
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -45,7 +44,6 @@ export default function MedicineLookup() {
     }
   }, []);
 
-  // Convert image → Blob
   const dataUrlToBlob = (dataUrl: string) => {
     const arr = dataUrl.split(",");
     const mime = arr[0].match(/:(.*?);/)?.[1] || "image/jpeg";
@@ -55,7 +53,6 @@ export default function MedicineLookup() {
     return new Blob([u8arr], { type: mime });
   };
 
-  // Upload / Capture
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.[0]) {
       const file = event.target.files[0];
@@ -65,7 +62,6 @@ export default function MedicineLookup() {
     }
   };
 
-  // 🧠 Scan with Gemini API (overlay loader)
   const handleScan = async () => {
     if (!image) return alert("Please capture or upload a label first!");
     setApiLoading(true);
@@ -99,7 +95,6 @@ export default function MedicineLookup() {
     }
   };
 
-  // Manual text lookup (overlay loader)
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!medicineName.trim()) return;
@@ -128,9 +123,9 @@ export default function MedicineLookup() {
 
   return (
     <>
-      {apiLoading && <ApiLoader />} {/* 🌀 overlay loader */}
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center pb-10">
-        {/* ✅ Back button — fixed to avoid nested <button> */}
+      {apiLoading && <ApiLoader />}
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center pb-10 transition-colors duration-300">
+        {/* Back Button */}
         <div
           className="absolute top-24 left-6 z-[60]"
           onClick={() => {
@@ -145,36 +140,35 @@ export default function MedicineLookup() {
         </div>
 
         {/* Header */}
-        <header className="fixed top-0 left-0 right-0 z-10 bg-white flex justify-between items-center px-8 py-4 border-b border-gray-100 shadow-sm">
+        <header className="fixed top-0 left-0 right-0 z-10 bg-card flex justify-between items-center px-8 py-4 border-b border-border shadow-sm transition-colors duration-300">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold">
               N
             </div>
-            <span className="text-lg font-semibold text-gray-800">
+            <span className="text-lg font-semibold text-foreground">
               NutriLens
             </span>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="text-gray-500 hover:text-gray-700 text-sm">
+            <button className="text-muted-foreground hover:text-foreground text-sm">
               ?
             </button>
-            <div className="w-8 h-8 rounded-full bg-gray-200"></div>
+            <div className="w-8 h-8 rounded-full bg-muted" />
           </div>
         </header>
 
         {/* Main Section */}
         <div className="mt-28 text-center">
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-foreground">
             Scan or Search Medicine Label
           </h1>
-          <p className="text-gray-500 mt-1">
-            Upload the medicine label or search manually for details and safety
-            insights.
+          <p className="text-sm text-muted-foreground mt-1">
+            Upload the medicine label or search manually for safety insights.
           </p>
         </div>
 
         {/* Scanner Frame */}
-        <div className="relative mt-8 border-2 border-dashed border-green-400 rounded-2xl w-80 h-96 flex items-center justify-center overflow-hidden bg-white shadow-sm">
+        <div className="relative mt-8 border-2 border-dashed border-primary rounded-2xl w-80 h-96 flex items-center justify-center overflow-hidden bg-card shadow-md">
           {image ? (
             <Image
               src={image}
@@ -184,10 +178,10 @@ export default function MedicineLookup() {
             />
           ) : (
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                <Camera className="text-green-500 w-8 h-8" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <Camera className="text-primary w-8 h-8" />
               </div>
-              <p className="text-gray-600 mt-2 text-sm font-medium">
+              <p className="text-muted-foreground mt-2 text-sm font-medium">
                 Tap to capture
               </p>
             </div>
@@ -206,8 +200,8 @@ export default function MedicineLookup() {
           <button
             onClick={handleScan}
             disabled={loading}
-            className={`flex justify-center items-center bg-green-500 text-white py-3 rounded-xl font-semibold transition-all ${
-              loading ? "opacity-70 cursor-not-allowed" : "hover:bg-green-600"
+            className={`flex justify-center items-center bg-primary text-primary-foreground py-3 rounded-xl font-semibold transition-all ${
+              loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
             }`}
           >
             {loading ? (
@@ -220,10 +214,10 @@ export default function MedicineLookup() {
           </button>
 
           {/* Divider */}
-          <div className="flex items-center justify-center text-gray-400 text-sm">
-            <span className="border-t border-gray-200 w-16"></span>
+          <div className="flex items-center justify-center text-muted-foreground text-sm">
+            <span className="border-t border-border w-16"></span>
             <span className="px-3">OR</span>
-            <span className="border-t border-gray-200 w-16"></span>
+            <span className="border-t border-border w-16"></span>
           </div>
 
           {/* Search Form */}
@@ -233,11 +227,11 @@ export default function MedicineLookup() {
               placeholder="Enter medicine name"
               value={medicineName}
               onChange={(e) => setMedicineName(e.target.value)}
-              className="flex-1 px-4 py-3 border text-gray-600 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="flex-1 px-4 py-3 border border-border rounded-xl bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <button
               type="submit"
-              className="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition"
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-xl hover:opacity-90 transition"
               disabled={loading}
             >
               {loading ? "..." : <Search className="w-5 h-5" />}
@@ -245,38 +239,44 @@ export default function MedicineLookup() {
           </form>
 
           {error && (
-            <p className="text-red-500 text-sm text-center mt-2">{error}</p>
+            <p className="text-destructive text-sm text-center mt-2">{error}</p>
           )}
         </div>
 
         {/* Results */}
         {result && (
-          <div className="mt-10 w-11/12 md:w-3/5 bg-white rounded-2xl shadow-lg p-6 border border-green-100">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+          <div className="mt-10 w-11/12 md:w-3/5 bg-card rounded-2xl shadow-lg p-6 border border-border transition-colors duration-300">
+            <h2 className="text-lg font-semibold text-foreground mb-4 text-center">
               💊 Medicine Analysis Result
             </h2>
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-muted-foreground">
               <p>
-                <strong>Medicine Name:</strong> {result.medicine_name || "N/A"}
+                <strong className="text-foreground">Medicine Name:</strong>{" "}
+                {result.medicine_name || "N/A"}
               </p>
               <p>
-                <strong>Active Ingredients:</strong>{" "}
+                <strong className="text-foreground">Active Ingredients:</strong>{" "}
                 {result.active_ingredients?.join(", ") || "Unknown"}
               </p>
               <p>
-                <strong>Uses:</strong> {result.uses || "Not specified"}
+                <strong className="text-foreground">Uses:</strong>{" "}
+                {result.uses || "Not specified"}
               </p>
               <p>
-                <strong>Side Effects:</strong>{" "}
+                <strong className="text-foreground">Side Effects:</strong>{" "}
                 {result.side_effects?.join(", ") || "None listed"}
               </p>
               <p>
-                <strong>Precautions:</strong>{" "}
+                <strong className="text-foreground">Precautions:</strong>{" "}
                 {result.precautions?.join(", ") || "None"}
               </p>
+
+              {/* Compatibility Bar */}
               <div className="mt-3 flex items-center">
-                <strong>Health Compatibility:</strong>
-                <div className="ml-3 flex-1 h-3 rounded-full bg-gray-200 overflow-hidden">
+                <strong className="text-foreground">
+                  Health Compatibility:
+                </strong>
+                <div className="ml-3 flex-1 h-3 rounded-full bg-muted overflow-hidden">
                   <div
                     className={`h-full rounded-full ${
                       result.compatibility_score >= 7
@@ -293,21 +293,22 @@ export default function MedicineLookup() {
                 <span
                   className={`ml-3 font-bold text-lg ${
                     result.compatibility_score >= 7
-                      ? "text-green-600"
+                      ? "text-green-500"
                       : result.compatibility_score >= 4
-                        ? "text-yellow-500"
-                        : "text-red-600"
+                        ? "text-yellow-400"
+                        : "text-red-500"
                   }`}
                 >
                   {Number(result.compatibility_score).toFixed(1)}
                 </span>
               </div>
+
               <p className="mt-2">
-                <strong>Reasoning:</strong>{" "}
+                <strong className="text-foreground">Reasoning:</strong>{" "}
                 {result.reasoning || "No reasoning provided"}
               </p>
               <p>
-                <strong>Recommendation:</strong>{" "}
+                <strong className="text-foreground">Recommendation:</strong>{" "}
                 {result.recommendation || "No recommendation available"}
               </p>
             </div>

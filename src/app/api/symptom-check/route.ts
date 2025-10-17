@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const text = result.response.text();
     console.log("✅ Raw Gemini response:", text);
 
-    const parsed = safeJsonParse(text);
+    const parsed = safeJsonParse(text,{});
 
     return NextResponse.json(parsed);
   } catch (error: any) {

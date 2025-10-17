@@ -23,10 +23,8 @@ export default function HistoryPage() {
       try {
         const res = await fetch(`/api/history?email=${user.email}`);
         const data = await res.json();
-
         if (!res.ok) throw new Error(data.error || "Failed to fetch history");
 
-        // 🧠 Combine new unified history + legacy scans
         const unified =
           data.history?.map((item: any) => ({
             id: item.id,
@@ -44,10 +42,9 @@ export default function HistoryPage() {
             type:
               item.type.charAt(0).toUpperCase() +
               item.type.slice(1).toLowerCase(),
-            fullData: item.data, // 🧩 stored JSON for later detail view
+            fullData: item.data,
           })) || [];
 
-        // 🧩 Include legacy data for backward support
         const legacy = [
           ...(data.foodScans || []).map((item: any) => ({
             id: item.id,
@@ -91,7 +88,6 @@ export default function HistoryPage() {
       });
       if (!res.ok) throw new Error("Failed to delete entry");
 
-      // Remove locally after deletion
       setLogs((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Error deleting entry:", err);
@@ -99,7 +95,6 @@ export default function HistoryPage() {
   };
 
   const handleView = (item: any) => {
-    // 🧠 Save full result temporarily for re-render on detail page
     localStorage.setItem("selectedHistoryItem", JSON.stringify(item.fullData));
     localStorage.setItem("selectedHistoryType", item.type);
     router.push("/history/view");
@@ -109,7 +104,7 @@ export default function HistoryPage() {
     return (
       <AnimatePresence>
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#f6fdf6]"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-background text-foreground"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -120,7 +115,7 @@ export default function HistoryPage() {
             animate={{ scale: 1.2, rotate: 360 }}
             exit={{ scale: 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-28 h-28 rounded-full bg-white shadow-md flex items-center justify-center"
+            className="w-28 h-28 rounded-full bg-card shadow-md flex items-center justify-center"
           >
             <Image
               src={logo}
@@ -135,15 +130,17 @@ export default function HistoryPage() {
     );
 
   return (
-    <div className="min-h-screen bg-[#F7FFF9] py-10 px-4 flex flex-col items-center">
+    <div className="min-h-screen bg-background text-foreground py-10 px-4 flex flex-col items-center transition-colors duration-300">
       <div className="absolute top-24 left-6 z-[60]">
         <BackButton />
       </div>
 
       {/* Header */}
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-semibold text-[#1F2937]">History</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-foreground dark:text-brand-accent">
+          History
+        </h1>
+        <p className="text-sm text-muted-foreground dark:text-brand-muted mt-1">
           View your scanned ingredient and medicine logs.
         </p>
       </div>
@@ -151,41 +148,43 @@ export default function HistoryPage() {
       {/* Logs */}
       <div className="w-full max-w-md space-y-4">
         {logs.length === 0 ? (
-          <p className="text-gray-400 text-center">No records found.</p>
+          <p className="text-center text-muted-foreground dark:text-brand-muted">
+            No records found.
+          </p>
         ) : (
           logs.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5"
+              className="bg-card rounded-2xl shadow-sm border border-border p-5 hover:border-primary/30 transition-all duration-300"
             >
               <div className="flex justify-between items-start">
-                <h3 className="text-lg font-semibold text-[#1F2937]">
+                <h3 className="text-lg font-semibold text-foreground dark:text-brand">
                   {item.title || "Unnamed Entry"}
                 </h3>
                 <span
                   className={`text-xs font-medium px-3 py-1 rounded-full ${
                     item.type === "Ingredient"
-                      ? "bg-blue-100 text-blue-600"
-                      : "bg-purple-100 text-purple-600"
+                      ? "bg-primary/10 text-primary"
+                      : "bg-primary/15 text-primary"
                   }`}
                 >
                   {item.type}
                 </span>
               </div>
 
-              <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+              <p className="text-sm text-muted-foreground dark:text-brand-muted mt-1 line-clamp-2">
                 {item.description || "No description available."}
               </p>
 
-              <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-100">
-                <p className="text-xs text-gray-400">
+              <div className="flex justify-between items-center mt-4 pt-3 border-t border-border">
+                <p className="text-xs text-muted-foreground dark:text-brand-muted">
                   Scanned:{" "}
                   {formatDistanceToNow(new Date(item.date), {
                     addSuffix: true,
                   })}
                 </p>
 
-                <div className="flex items-center gap-3 text-gray-400">
+                <div className="flex items-center gap-3 text-muted-foreground dark:text-brand-muted">
                   <button
                     onClick={() => handleDelete(item.id, item.type)}
                     className="hover:text-red-500 transition"
@@ -194,7 +193,7 @@ export default function HistoryPage() {
                   </button>
                   <button
                     onClick={() => handleView(item)}
-                    className="hover:text-green-500 transition"
+                    className="hover:text-primary transition"
                   >
                     <Eye className="w-4 h-4" />
                   </button>
@@ -206,8 +205,11 @@ export default function HistoryPage() {
       </div>
 
       {/* Footer */}
-      <footer className="text-center text-gray-400 text-xs mt-10">
-        © 2025 <span className="font-semibold text-[#22C55E]">NutriLens</span>{" "}
+      <footer className="text-center text-muted-foreground dark:text-brand-muted text-xs mt-10">
+        © 2025{" "}
+        <span className="font-semibold text-primary dark:text-brand-accent">
+          NutriLens
+        </span>{" "}
         — Empowering Smarter Nutrition.
       </footer>
     </div>
