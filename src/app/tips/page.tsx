@@ -47,7 +47,8 @@ export default function TipsPage() {
             {healthTips[currentTip]}
           </motion.p>
         </AnimatePresence>
-
+        {/* Footer note */}
+        <p className="mt-8 text-sm text-gray-500">Tap below to get health tips 🌿</p>
         {/* Navigation Buttons */}
         <div className="mt-8 flex justify-center gap-4">
           <button
@@ -67,11 +68,6 @@ export default function TipsPage() {
           </button>
         </div>
       </div>
-
-      {/* Footer note */}
-      <p className="mt-8 text-sm text-gray-500">
-        Tap below to swipe through your health tips 🌿
-      </p>
     </div>
   );
 }
