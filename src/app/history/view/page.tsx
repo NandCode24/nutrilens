@@ -1,9 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Loader2, RefreshCw } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import ApiLoader from "@/components/ApiLoader";
+
+// ✅ Helper: safely join arrays or return strings
+const safeJoin = (val: any) =>
+  Array.isArray(val)
+    ? val.join(", ")
+    : typeof val === "string"
+      ? val
+      : "Not available";
 
 export default function HistoryViewPage() {
   const [data, setData] = useState<any>(null);
@@ -74,165 +83,265 @@ export default function HistoryViewPage() {
   return (
     <>
       {reAnalyzing && <ApiLoader />}
-      <div className="min-h-screen bg-[#F7FFF9] py-10 px-5 sm:px-10 flex flex-col items-center text-gray-800 leading-relaxed">
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center overflow-y-auto pb-10">
         <div className="absolute top-24 left-6 z-[60]">
           <BackButton />
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-semibold text-green-700 text-center mb-2">
-          {type === "Ingredient"
-            ? "🍃 AI Nutrition Analysis"
-            : "💊 AI Medicine Analysis"}
-        </h1>
-        <p className="text-gray-500 text-sm text-center mb-8">
-          ✅ Personalized data loaded — health score tailored for you!
-        </p>
+        {/* Header */}
+        <div className="mt-28 text-center">
+          <h1 className="text-2xl font-semibold text-gray-900">
+            {type === "Ingredient"
+              ? "🍃 AI Nutrition Analysis"
+              : "💊 AI Medicine Analysis"}
+          </h1>
+          <p className="text-gray-500 mt-1">
+            ✅ Personalized data loaded — health score tailored for you!
+          </p>
+        </div>
 
-        {/* Re-analyze button */}
-        <button
-          onClick={handleReAnalyze}
-          disabled={reAnalyzing}
-          className="flex items-center gap-2 bg-green-500 text-white px-6 py-2 rounded-full font-medium hover:bg-green-600 transition mb-10 disabled:opacity-70"
-        >
-          <RefreshCw
-            className={`w-4 h-4 ${reAnalyzing ? "animate-spin" : ""}`}
-          />
-          {reAnalyzing ? "Re-analyzing..." : "Recheck with Latest AI"}
-        </button>
+        {/* Re-analyze Button */}
+        <div className="mt-8">
+          <button
+            onClick={handleReAnalyze}
+            disabled={reAnalyzing}
+            className={`flex justify-center items-center bg-green-500 text-white py-3 px-6 rounded-xl font-semibold transition-all ${
+              reAnalyzing
+                ? "opacity-70 cursor-not-allowed"
+                : "hover:bg-green-600"
+            }`}
+          >
+            {reAnalyzing ? (
+              <>
+                <Loader2 className="animate-spin mr-2 h-5 w-5" />{" "}
+                Re-analyzing...
+              </>
+            ) : (
+              <>
+                <RefreshCw className="mr-2 w-5 h-5" /> Recheck with Latest AI
+              </>
+            )}
+          </button>
+        </div>
 
-        {/* Content */}
-        <div className="max-w-3xl w-full bg-white rounded-2xl shadow-md border border-green-100 p-8 whitespace-pre-wrap text-[15px] font-[450]">
+        {/* Result Section */}
+        <div className="mt-10 w-11/12 md:w-3/5 bg-gradient-to-b from-white to-green-50 rounded-2xl shadow-xl p-6 border border-green-200 relative animate-fadeIn">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-200 opacity-30 rounded-full blur-3xl" />
+
+          {/* INGREDIENT VIEW */}
           {type === "Ingredient" && (
-            <>
-              <p className="mb-4">
-                <strong>Ingredients:</strong>
-                {"\n"}
-                {data.ingredients?.join(", ") || "No ingredients detected."}
-              </p>
+            <div className="space-y-5 text-gray-700 relative z-10">
+              <h2 className="text-2xl font-bold text-center text-green-600 mb-4 drop-shadow-sm">
+                🍃 AI Nutrition Analysis
+              </h2>
 
+              {/* Ingredients */}
+              <div>
+                <p className="font-semibold text-lg text-gray-800">
+                  Ingredients:
+                </p>
+                <p className="mt-1 text-gray-600 leading-relaxed">
+                  {safeJoin(data.ingredients)}
+                </p>
+              </div>
+
+              {/* Additives Info */}
               {data.additives_info?.length > 0 && (
-                <div className="mb-4">
-                  <strong>Additives / Preservatives:</strong>
-                  {"\n\n"}
-                  {data.additives_info.map((add: any, idx: number) => (
-                    <div key={idx} className="mb-3">
-                      <p>
-                        <strong>{add.name}</strong> — {add.purpose}
-                      </p>
-                      <p className="text-gray-600">⚠️ {add.side_effect}</p>
-                    </div>
-                  ))}
+                <div>
+                  <p className="font-semibold text-lg text-gray-800">
+                    Additives / Preservatives:
+                  </p>
+                  <div className="mt-2 space-y-2">
+                    {data.additives_info.map((add: any, index: number) => (
+                      <div
+                        key={index}
+                        className="bg-green-100/70 border border-green-200 rounded-xl px-4 py-2 shadow-sm"
+                      >
+                        <p className="font-medium text-green-700">
+                          {add.name}{" "}
+                          <span className="text-sm text-gray-700">
+                            — {add.purpose}
+                          </span>
+                        </p>
+                        <p className="text-sm text-gray-600 italic mt-1">
+                          ⚠️ {add.side_effect}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              <p className="mb-4">
-                <strong>Allergens:</strong>
-                {"\n"}
-                {data.allergens?.length
-                  ? data.allergens.join(", ")
-                  : "None detected"}
-              </p>
+              {/* Allergens */}
+              <div>
+                <p className="font-semibold text-lg text-gray-800">
+                  Allergens:
+                </p>
+                <p className="mt-1 text-gray-600">{safeJoin(data.allergens)}</p>
+              </div>
 
-              <p className="mb-4">
-                <strong>Nutrition Summary:</strong>
-                {"\n"}
-                {data.nutrition_summary || "No nutrition data available."}
-              </p>
+              {/* Nutrition Summary */}
+              <div>
+                <p className="font-semibold text-lg text-gray-800">
+                  Nutrition Summary:
+                </p>
+                <p className="mt-1 text-gray-600 leading-relaxed">
+                  {data.nutrition_summary || "N/A"}
+                </p>
+              </div>
 
+              {/* Score */}
               {typeof data.personalized_score !== "undefined" && (
-                <div className="mb-4">
-                  <strong>Personalized Score</strong>
-                  {"\n\n"}
-                  <span className="text-3xl font-bold text-green-600">
-                    {Number(data.personalized_score).toFixed(1)}
-                  </span>{" "}
-                  <span className="text-gray-600">/10</span>
-                  {"\n"}
-                  {data.personalized_score >= 7
-                    ? "🌿 Excellent — Great nutritional balance!"
-                    : data.personalized_score >= 4
-                      ? "⚖️ Moderate — Okay in moderation."
-                      : "🚫 Unhealthy — Consider healthier alternatives."}
+                <div className="text-center mt-6 relative">
+                  <p className="font-semibold text-lg text-gray-800 mb-3">
+                    Health Score
+                  </p>
+
+                  {/* Animated Score Circle */}
+                  <div className="relative flex justify-center items-center">
+                    <div
+                      className={`absolute w-36 h-36 rounded-full blur-2xl opacity-60 animate-pulse 
+                      ${
+                        data.personalized_score >= 7
+                          ? "bg-green-400"
+                          : data.personalized_score >= 4
+                            ? "bg-yellow-300"
+                            : "bg-red-400 animate-[shake_0.6s_ease-in-out_infinite]"
+                      }`}
+                    ></div>
+                    <div
+                      className={`relative z-10 flex flex-col items-center justify-center w-28 h-28 rounded-full shadow-xl text-3xl font-bold text-white transition-all duration-700
+                      ${
+                        data.personalized_score >= 7
+                          ? "bg-gradient-to-br from-green-500 to-emerald-400"
+                          : data.personalized_score >= 4
+                            ? "bg-gradient-to-br from-yellow-400 to-amber-300 text-gray-800"
+                            : "bg-gradient-to-br from-red-500 to-rose-400"
+                      }`}
+                    >
+                      {Number(data.personalized_score).toFixed(1)}
+                      <span className="text-xs mt-1 font-medium">/10</span>
+                    </div>
+                  </div>
+
+                  <p
+                    className={`mt-3 font-semibold text-base transition-all ${
+                      data.personalized_score >= 7
+                        ? "text-green-600"
+                        : data.personalized_score >= 4
+                          ? "text-yellow-500"
+                          : "text-red-500"
+                    }`}
+                  >
+                    {data.personalized_score >= 7
+                      ? "🌿 Excellent — Great nutritional balance!"
+                      : data.personalized_score >= 4
+                        ? "⚖️ Moderate — Okay in moderation."
+                        : "🚫 Unhealthy — Consider healthier alternatives."}
+                  </p>
                 </div>
               )}
 
+              {/* Reasoning */}
               {data.reasoning && (
-                <p className="mb-4">
-                  <strong>Reasoning:</strong>
-                  {"\n"}
-                  {data.reasoning}
-                </p>
+                <div>
+                  <p className="font-semibold text-lg text-gray-800">
+                    Reasoning:
+                  </p>
+                  <p className="mt-1 text-gray-600 leading-relaxed">
+                    {data.reasoning}
+                  </p>
+                </div>
               )}
 
+              {/* Recommendation */}
               {data.recommendation && (
-                <p>
-                  <strong>Recommendation:</strong>
-                  {"\n"}
-                  {data.recommendation}
-                </p>
+                <div>
+                  <p className="font-semibold text-lg text-gray-800">
+                    Recommendation:
+                  </p>
+                  <p className="mt-1 text-gray-600 leading-relaxed">
+                    {data.recommendation}
+                  </p>
+                </div>
               )}
-            </>
+            </div>
           )}
 
+          {/* MEDICINE VIEW */}
           {type === "Medicine" && (
-            <>
-              <p className="mb-4">
+            <div className="space-y-5 text-gray-700 relative z-10">
+              <h2 className="text-2xl font-bold text-center text-green-600 mb-4 drop-shadow-sm">
+                💊 AI Medicine Analysis
+              </h2>
+
+              <p>
                 <strong>Medicine Name:</strong>{" "}
                 {data.medicine_name || "Unknown"}
               </p>
-              <p className="mb-4">
-                <strong>Active Ingredients:</strong>
-                {"\n"}
-                {data.active_ingredients?.join(", ") || "Unknown"}
+              <p>
+                <strong>Active Ingredients:</strong>{" "}
+                {safeJoin(data.active_ingredients)}
               </p>
-              <p className="mb-4">
-                <strong>Uses:</strong>
-                {"\n"}
-                {data.uses || "Not specified"}
+              <p>
+                <strong>Uses:</strong> {data.uses || "Not specified"}
               </p>
-              <p className="mb-4">
-                <strong>Side Effects:</strong>
-                {"\n"}
-                {data.side_effects?.join(", ") || "None listed"}
+              <p>
+                <strong>Side Effects:</strong> {safeJoin(data.side_effects)}
               </p>
-              <p className="mb-4">
-                <strong>Precautions:</strong>
-                {"\n"}
-                {data.precautions?.join(", ") || "None"}
+              <p>
+                <strong>Precautions:</strong> {safeJoin(data.precautions)}
               </p>
 
               {typeof data.compatibility_score !== "undefined" && (
-                <div className="mb-4">
-                  <strong>Compatibility Score</strong>
-                  {"\n\n"}
-                  <span className="text-3xl font-bold text-green-600">
-                    {Number(data.compatibility_score).toFixed(1)}
-                  </span>{" "}
-                  <span className="text-gray-600">/10</span>
-                  {"\n"}
-                  {data.compatibility_score >= 7
-                    ? "🌿 Excellent compatibility."
-                    : data.compatibility_score >= 4
-                      ? "⚖️ Moderate compatibility — use with caution."
-                      : "🚫 Poor compatibility — avoid using this medicine."}
+                <div className="text-center mt-6 relative">
+                  <p className="font-semibold text-lg text-gray-800 mb-3">
+                    Compatibility Score
+                  </p>
+
+                  {/* Animated Score Circle */}
+                  <div className="relative flex justify-center items-center">
+                    <div
+                      className={`absolute w-36 h-36 rounded-full blur-2xl opacity-60 animate-pulse 
+                      ${
+                        data.compatibility_score >= 7
+                          ? "bg-green-400"
+                          : data.compatibility_score >= 4
+                            ? "bg-yellow-300"
+                            : "bg-red-400 animate-[shake_0.6s_ease-in-out_infinite]"
+                      }`}
+                    ></div>
+                    <div
+                      className={`relative z-10 flex flex-col items-center justify-center w-28 h-28 rounded-full shadow-xl text-3xl font-bold text-white transition-all duration-700
+                      ${
+                        data.compatibility_score >= 7
+                          ? "bg-gradient-to-br from-green-500 to-emerald-400"
+                          : data.compatibility_score >= 4
+                            ? "bg-gradient-to-br from-yellow-400 to-amber-300 text-gray-800"
+                            : "bg-gradient-to-br from-red-500 to-rose-400"
+                      }`}
+                    >
+                      {Number(data.compatibility_score).toFixed(1)}
+                      <span className="text-xs mt-1 font-medium">/10</span>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {data.reasoning && (
-                <p className="mb-4">
+                <div>
                   <strong>Reasoning:</strong>
-                  {"\n"}
-                  {data.reasoning}
-                </p>
+                  <p>{data.reasoning}</p>
+                </div>
               )}
+
               {data.recommendation && (
-                <p>
+                <div>
                   <strong>Recommendation:</strong>
-                  {"\n"}
-                  {data.recommendation}
-                </p>
+                  <p>{data.recommendation}</p>
+                </div>
               )}
-            </>
+            </div>
           )}
         </div>
 
