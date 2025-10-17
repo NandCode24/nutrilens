@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic"; // ensures fresh fetch every time
 
-// 🧾 Fetch user’s scan history (via email)
+// 🧾 GET — Fetch user's full history (both food + medicine)
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
       );
     }
 
-    // ✅ Step 1: Find user safely
+    // ✅ 1️⃣ Verify user exists
     const user = await prisma.user.findUnique({
       where: { email },
       select: { id: true },
@@ -27,7 +27,13 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // ✅ Step 2: Fetch user’s scans
+    // ✅ 2️⃣ Fetch History entries
+    const history = await prisma.history.findMany({
+      where: { email },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // ✅ 3️⃣ Fallback legacy scans (if any)
     const [foodScans, medicines] = await Promise.all([
       prisma.foodScan.findMany({
         where: { userId: user.id },
@@ -39,21 +45,25 @@ export async function GET(req: Request) {
       }),
     ]);
 
-    // ✅ Step 3: Return merged data
     return NextResponse.json(
-      { success: true, foodScans, medicines },
+      {
+        success: true,
+        history, // new unified records
+        foodScans, // legacy support
+        medicines, // legacy support
+      },
       { status: 200 }
     );
   } catch (error: any) {
     console.error("❌ [History API] Error fetching history:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch user history" },
+      { error: error.message || "Failed to fetch history" },
       { status: 500 }
     );
   }
 }
 
-// 🗑️ Delete an entry by id + type
+// 🗑️ DELETE — Remove entry by ID + type
 export async function DELETE(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -67,11 +77,13 @@ export async function DELETE(req: Request) {
       );
     }
 
-    // ✅ Step 1: Validate deletion target
-    if (type === "Ingredient") {
+    // ✅ Delete from appropriate table
+    if (type.toLowerCase() === "ingredient") {
       await prisma.foodScan.delete({ where: { id } });
-    } else if (type === "Medicine") {
+    } else if (type.toLowerCase() === "medicine") {
       await prisma.medicine.delete({ where: { id } });
+    } else if (type.toLowerCase() === "history") {
+      await prisma.history.delete({ where: { id } });
     } else {
       return NextResponse.json(
         { error: "Invalid type parameter" },
@@ -79,7 +91,6 @@ export async function DELETE(req: Request) {
       );
     }
 
-    // ✅ Step 2: Return success
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {
     console.error("❌ [History API] Error deleting entry:", error);

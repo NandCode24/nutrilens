@@ -45,7 +45,7 @@ export async function POST(req: Request) {
       profile = JSON.parse(profileStr);
       console.log("✅ Received user profile:", profile);
     } catch (err) {
-      console.warn("⚠️ Failed to parse user profile, using general defaults.");
+      console.warn("⚠️ Failed to parse user profile, using defaults.");
       profile = {
         age: "N/A",
         gender: "N/A",
@@ -57,21 +57,18 @@ export async function POST(req: Request) {
       };
     }
 
-    // 🖼️ Convert image to base64
+    // 🖼️ Convert image to Base64 (store actual image)
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const base64Image = buffer.toString("base64");
     const mimeType = (file as any).type || "image/jpeg";
 
-    // 🔐 Generate image hash (for caching)
+    // 🔐 Generate image hash for caching
     const imageHash = crypto.createHash("sha256").update(buffer).digest("hex");
 
-    // ⚡ Check if analysis already exists (cache)
+    // ⚡ Check cache (by hash)
     const existing = await prisma.foodScan.findFirst({
-      where: {
-        userId: user.id,
-        imageUrl: imageHash,
-      },
+      where: { userId: user.id, imageUrl: imageHash },
     });
 
     if (existing) {
@@ -84,14 +81,10 @@ export async function POST(req: Request) {
     // 🧩 Prepare Gemini model
     const model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash",
-      generationConfig: {
-        temperature: 0,
-        topP: 0.1,
-        topK: 1,
-      },
+      generationConfig: { temperature: 0, topP: 0.1, topK: 1 },
     });
 
-    // 🧬 Personalized context string
+    // 🧬 Personalized context
     const personalization = `
 User profile:
 - Age: ${profile.age ?? "N/A"}
@@ -103,16 +96,16 @@ User profile:
 - Medical Conditions: ${Array.isArray(profile.medicalConditions) ? profile.medicalConditions.join(", ") : "None"}
     `;
 
-    // 🧾 Gemini Prompt (enhanced with personalization)
+    // 🧾 Gemini prompt
     const prompt = `
 You are NutriLens — a professional AI nutritionist.
 
 Analyze the attached image of a food or ingredient label.
 
 Tasks:
-1. Extract the text from the image (use your built-in OCR).
+1. Extract text from the image (OCR).
 2. Identify the ingredients.
-3. Identify emulsifiers, preservatives, or additives (and briefly describe their potential side effects).
+3. Identify emulsifiers, preservatives, or additives (and describe their potential side effects).
 4. Detect allergens.
 5. Summarize the nutritional quality (sugar, sodium, protein, etc.).
 6. Give a health score (0–10) based on the user’s profile below.
@@ -152,11 +145,12 @@ Return ONLY valid JSON in this format:
 
     console.log("✅ Gemini response parsed successfully.");
 
-    // 🗄️ Save to Prisma
-    await prisma.foodScan.create({
+    // 🗄️ Save to Prisma (FoodScan)
+    const newScan = await prisma.foodScan.create({
       data: {
         userId: user.id,
-        imageUrl: imageHash,
+        // ✅ Now we store the *actual* Base64 image
+        imageUrl: `data:${mimeType};base64,${base64Image}`,
         ingredientsText: imageHash.slice(0, 64),
         ingredients: parsed.ingredients || [],
         allergens: parsed.allergens || [],
@@ -167,6 +161,17 @@ Return ONLY valid JSON in this format:
         nutritionData: parsed,
       },
     });
+
+    // 🧠 Also save in History table
+    await prisma.history.create({
+      data: {
+        email,
+        type: "ingredient",
+        data: parsed,
+      },
+    });
+
+    console.log("📜 Saved scan result to History.");
 
     return NextResponse.json(parsed);
   } catch (err: any) {

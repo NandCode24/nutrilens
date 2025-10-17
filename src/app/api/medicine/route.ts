@@ -16,6 +16,7 @@ export async function POST(req: Request) {
     let profile: Record<string, any> = {};
     let email: string | null = null;
 
+    // 🧩 Handle multipart form-data (for image upload)
     if (contentType.includes("multipart/form-data")) {
       const form = await req.formData();
       const file = form.get("file") as Blob | null;
@@ -35,7 +36,9 @@ export async function POST(req: Request) {
         imageBase64 = Buffer.from(bytes).toString("base64");
         mimeType = (file as any).type || "image/jpeg";
       }
-    } else if (contentType.includes("application/json")) {
+    }
+    // 🧩 Handle JSON input (manual text search)
+    else if (contentType.includes("application/json")) {
       const body = await req.json();
       medicineName = body.medicineName || null;
       profile = body.profile || {};
@@ -53,6 +56,7 @@ export async function POST(req: Request) {
       );
     }
 
+    // 🧍 Validate user
     if (!email) {
       return NextResponse.json(
         { error: "Missing user email" },
@@ -69,16 +73,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    // ⚙️ Prepare Gemini model
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
-      generationConfig: {
-        temperature: 0,
-        topP: 0.1,
-        topK: 1,
-      },
+      generationConfig: { temperature: 0, topP: 0.1, topK: 1 },
     });
 
-    // ✅ Fixed template literal (no nested backticks)
+    // 🧠 Prompt with personalization
     const prompt = `
 You are NutriLens — an AI Health Assistant.
 Analyze this medicine information.
@@ -115,12 +116,15 @@ Return ONLY valid JSON in this format:
       ? [{ inlineData: { data: imageBase64, mimeType } }, { text: prompt }]
       : [{ text: prompt }];
 
+    // 🚀 Send to Gemini
     const result = await model.generateContent(input);
     const text = result.response.text().trim();
 
+    // 🧩 Parse Gemini output safely
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : { raw_output: text };
 
+    // 🗄️ Save Medicine details to DB
     await prisma.medicine.create({
       data: {
         userId: user.id,
@@ -131,6 +135,17 @@ Return ONLY valid JSON in this format:
         precautions: parsed.precautions?.join(", ") || "",
       },
     });
+
+    // 🧠 Save complete Gemini response in History table (NEW)
+    await prisma.history.create({
+      data: {
+        email,
+        type: "medicine",
+        data: parsed,
+      },
+    });
+
+    console.log("📜 Saved medicine analysis to History.");
 
     return NextResponse.json(parsed);
   } catch (err: any) {
