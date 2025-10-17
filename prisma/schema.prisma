@@ -119,3 +119,11 @@ model Contact {
   message   String
   createdAt DateTime @default(now())
 }
+
+model History {
+  id        String   @id @default(cuid())
+  email     String
+  type      String
+  data      Json     // ✅ new field
+  createdAt DateTime @default(now())
+}

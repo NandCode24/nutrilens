@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoading } from "@/context/LoadingContext";
 
 // ✅ Schema Validation
 const formSchema = z.object({
@@ -44,6 +43,7 @@ export default function OnboardingPage() {
     handleSubmit,
     watch,
     formState: { errors },
+    setValue, // ✅ added
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
@@ -57,7 +57,6 @@ export default function OnboardingPage() {
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      // Fallback guest user to prevent redirect loop
       localStorage.setItem(
         "user",
         JSON.stringify({ name: "Guest User", email: "guest@nutrilens.ai" })
@@ -65,28 +64,24 @@ export default function OnboardingPage() {
     }
   }, []);
 
-  // ✅ Autofill Email + Name from LocalStorage User
+  // ✅ Autofill Email + Name safely using setValue (no DOM mutation)
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
-      if (user.email) {
-        const emailInput = document.querySelector(
-          'input[name="email"]'
-        ) as HTMLInputElement;
-        const nameInput = document.querySelector(
-          'input[name="name"]'
-        ) as HTMLInputElement;
-        if (emailInput) emailInput.value = user.email;
-        if (nameInput && user.name) nameInput.value = user.name;
+      if (user.email || user.name) {
+        setValue("email", user.email || "");
+        setValue("name", user.name || "");
       }
     } else {
       localStorage.setItem(
         "user",
         JSON.stringify({ name: "Guest User", email: "guest@nutrilens.ai" })
       );
+      setValue("email", "guest@nutrilens.ai");
+      setValue("name", "Guest User");
     }
-  }, []);
+  }, [setValue]);
 
   // ✅ Auto-calculate BMR dynamically
   useEffect(() => {
@@ -137,7 +132,7 @@ export default function OnboardingPage() {
         throw new Error(result.error || "Failed to save onboarding details");
       }
 
-      // ✅ Save user profile locally for personalization
+      // ✅ Save user profile locally
       const profileData = {
         name: data.name,
         age: Number(data.age),
@@ -165,7 +160,7 @@ export default function OnboardingPage() {
     }
   };
 
-  // ✅ Handle “Skip for Now” — Always go to dashboard safely
+  // ✅ Handle “Skip for Now”
   const handleSkip = () => {
     const user = localStorage.getItem("user");
     if (!user) {
