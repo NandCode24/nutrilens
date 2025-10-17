@@ -2,12 +2,20 @@
 
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import logo from "../../../../public/NutriLens.png";
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "@/lib/firebase";
+
+import {
+  signInWithPopup,
+  fetchSignInMethodsForEmail,
+  linkWithCredential,
+} from "firebase/auth";
+import { GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+
+import { auth, googleProvider, githubProvider } from "@/lib/firebase";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -88,6 +96,80 @@ export default function LoginPage() {
     }
   };
 
+  // ✅ GitHub Login
+  const handleGithubSignIn = async () => {
+    try {
+      setLoading(true);
+      const result = await signInWithPopup(auth, githubProvider);
+      const user = result.user;
+
+      // ✅ Save user locally
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          uid: user.uid,
+        })
+      );
+
+      // ✅ Sync user with backend
+      await fetch("/api/auth/firebase-sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          password: "github-auth",
+        }),
+      });
+
+      document.cookie = "isLoggedIn=true; path=/; max-age=604800";
+      setShowTransition(true);
+      setTimeout(() => router.push("/onboarding"), 1500);
+    } catch (error: any) {
+      // 🧠 Handle account-exists-with-different-credential
+      if (error.code === "auth/account-exists-with-different-credential") {
+        const pendingCred = GithubAuthProvider.credentialFromError(error);
+        const email = error.customData.email;
+        const methods = await fetchSignInMethodsForEmail(auth, email);
+
+        if (methods[0] === "google.com") {
+          const googleResult = await signInWithPopup(auth, googleProvider);
+          if (pendingCred) {
+            await linkWithCredential(googleResult.user, pendingCred);
+            console.log("✅ Linked Google + GitHub accounts successfully!");
+          }
+
+          console.log("✅ Linked Google + GitHub accounts successfully!");
+
+          // Optional — sign the user in after linking
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              name: googleResult.user.displayName,
+              email: googleResult.user.email,
+              photo: googleResult.user.photoURL,
+              uid: googleResult.user.uid,
+            })
+          );
+          document.cookie = "isLoggedIn=true; path=/; max-age=604800";
+          setShowTransition(true);
+          setTimeout(() => router.push("/onboarding"), 1500);
+        } else {
+          alert(
+            "Please sign in using your Google account linked to this email."
+          );
+        }
+      } else {
+        console.error("GitHub Sign-In Error:", error);
+        setMessage("❌ Failed to sign in with GitHub.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       {/* ✅ Auth Container */}
@@ -150,14 +232,22 @@ export default function LoginPage() {
             <hr className="flex-grow border-border" />
           </div>
 
-          {/* Google Button */}
-          <div className="flex justify-center">
+          {/* OAuth Buttons */}
+          <div className="flex justify-center gap-4">
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
               className="p-2 border border-border rounded-full hover:bg-muted transition disabled:opacity-50"
             >
               <FcGoogle className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={handleGithubSignIn}
+              disabled={loading}
+              className="p-2 border border-border rounded-full hover:bg-muted transition disabled:opacity-50"
+            >
+              <FaGithub className="w-6 h-6 text-foreground" />
             </button>
           </div>
 

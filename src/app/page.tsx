@@ -1,12 +1,14 @@
 /* src/app/page.tsx */
+"use client";
+
 import Link from "next/link";
-import logo from "../../public/NutriLens.png"
+import logo from "../../public/NutriLens.png";
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-white text-slate-900">
+    <main className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* ---------- NAV ---------- */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
+      <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border transition-all duration-300">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
@@ -14,28 +16,24 @@ export default function Page() {
               <img
                 src={logo.src}
                 alt="NutriLens Logo"
-                className="h-15 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                className="h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               />
-              {/* <span className="text-xl font-semibold tracking-tight text-slate-900 group-hover:text-[#22C55E] transition-colors">
-                NutriLens
-              </span> */}
             </Link>
 
             {/* Nav Links */}
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-700">
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
               {[
                 { label: "Features", href: "#features" },
                 { label: "How It Works", href: "#how" },
                 { label: "Personalization", href: "#personalization" },
-                // { label: "Testimonials", href: "#testimonials" },
               ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="relative group transition-colors duration-200 hover:text-[#22C55E]"
+                  className="relative group hover:text-primary transition-colors duration-200"
                 >
                   {item.label}
-                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#22C55E] transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               ))}
             </nav>
@@ -44,13 +42,13 @@ export default function Page() {
             <div className="flex items-center gap-3">
               <Link
                 href="/auth/signin"
-                className="hidden md:inline-flex rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-[#22C55E] hover:bg-slate-50 transition-all"
+                className="hidden md:inline-flex rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center rounded-full bg-[#22C55E] px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-[#16A34A] hover:shadow-lg transition-all"
+                className="inline-flex items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
               >
                 Get Started Free
               </Link>
@@ -59,19 +57,18 @@ export default function Page() {
         </div>
       </header>
 
-
       {/* ---------- HERO ---------- */}
-      <section className="bg-gradient-to-b from-white to-[#F9FCF9]">
+      <section className="bg-gradient-to-b from-background to-card transition-colors duration-300">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             {/* Left: Text */}
             <div className="max-w-xl">
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-tight tracking-tight">
+              <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight text-foreground">
                 Understand What You Eat,{" "}
-                <span className="text-[#22C55E]">Effortlessly.</span>
+                <span className="text-primary">Effortlessly.</span>
               </h1>
 
-              <p className="mt-6 text-lg text-slate-600 max-w-xl">
+              <p className="mt-6 text-lg text-muted-foreground max-w-xl">
                 NutriLens uses AI to analyze your food intake, providing
                 personalized insights and recommendations to help you achieve
                 your health goals.
@@ -80,28 +77,26 @@ export default function Page() {
               <div className="mt-8 flex items-center gap-4">
                 <Link
                   href="/auth/signup"
-                  className="inline-flex items-center rounded-full bg-[#22C55E] px-6 py-3 text-base font-semibold text-white shadow hover:bg-[#16A34A] transition"
+                  className="inline-flex items-center rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow hover:bg-primary/90 transition"
                 >
                   Create Free Account
                 </Link>
 
                 <a
                   href="#how"
-                  className="inline-flex items-center rounded-md border border-[#22C55E] px-4 py-2 text-base font-medium text-[#22C55E] hover:bg-[#DCFCE7] transition"
+                  className="inline-flex items-center rounded-md border border-primary px-4 py-2 text-base font-medium text-primary hover:bg-primary/10 transition"
                 >
                   Learn More
                 </a>
               </div>
             </div>
 
-            {/* Right: Illustration / card */}
+            {/* Right: Mockup */}
             <div className="flex items-center justify-center">
-              <div className="w-[360px] h-[360px] rounded-2xl bg-white shadow-lg flex items-center justify-center p-10">
-                {/* placeholder device illustration */}
-                <div className="w-full h-full rounded-xl bg-gradient-to-br from-[#fff7ed] to-[#fff] flex items-center justify-center">
-                  {/* simple phone mockup */}
-                  <div className="w-44 h-80 bg-white rounded-2xl shadow-md flex flex-col items-center p-4">
-                    <div className="w-10 h-10 rounded-full bg-[#ECFDF6] flex items-center justify-center">
+              <div className="w-[360px] h-[360px] rounded-2xl bg-card shadow-lg flex items-center justify-center p-10 border border-border">
+                <div className="w-full h-full rounded-xl bg-gradient-to-br from-muted to-card flex items-center justify-center">
+                  <div className="w-44 h-80 bg-background rounded-2xl shadow-md flex flex-col items-center p-4 border border-border">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <svg
                         width="16"
                         height="16"
@@ -110,37 +105,32 @@ export default function Page() {
                       >
                         <path
                           d="M12 2v6"
-                          stroke="#16A34A"
+                          stroke="hsl(var(--primary))"
                           strokeWidth="1.5"
                           strokeLinecap="round"
-                          strokeLinejoin="round"
                         />
                         <path
                           d="M21 12c0 4.971-4.029 9-9 9s-9-4.029-9-9 4.029-9 9-9 9 4.029 9 9z"
-                          stroke="#22C55E"
+                          stroke="hsl(var(--primary))"
                           strokeWidth="1.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
                         />
                       </svg>
                     </div>
                     <div className="mt-6 w-full">
-                      <div className="h-4 rounded bg-slate-100 w-3/4 mb-3"></div>
-                      <div className="h-3 rounded bg-slate-100 w-1/2 mb-4"></div>
-
-                      <div className="h-40 rounded bg-[#F8FAF8] border border-[#ECFDF6] p-3">
-                        <div className="h-3 bg-slate-200 w-2/3 rounded mb-2"></div>
-                        <div className="h-3 bg-slate-200 w-1/3 rounded mb-2"></div>
+                      <div className="h-4 rounded bg-muted w-3/4 mb-3"></div>
+                      <div className="h-3 rounded bg-muted w-1/2 mb-4"></div>
+                      <div className="h-40 rounded bg-card border border-border p-3">
+                        <div className="h-3 bg-muted w-2/3 rounded mb-2"></div>
+                        <div className="h-3 bg-muted w-1/3 rounded mb-2"></div>
                         <div className="mt-3 space-y-2">
-                          <div className="h-3 bg-slate-200 w-full rounded"></div>
-                          <div className="h-3 bg-slate-200 w-3/4 rounded"></div>
-                          <div className="h-3 bg-slate-200 w-1/2 rounded"></div>
+                          <div className="h-3 bg-muted w-full rounded"></div>
+                          <div className="h-3 bg-muted w-3/4 rounded"></div>
+                          <div className="h-3 bg-muted w-1/2 rounded"></div>
                         </div>
                       </div>
                     </div>
-
                     <div className="mt-auto w-full flex justify-center">
-                      <div className="h-10 w-28 bg-[#22C55E] rounded-full"></div>
+                      <div className="h-10 w-28 bg-primary rounded-full"></div>
                     </div>
                   </div>
                 </div>
@@ -151,336 +141,117 @@ export default function Page() {
       </section>
 
       {/* ---------- FEATURES ---------- */}
-      <section id="features" className="bg-[#F7FFF7] scroll-mt-20">
+      <section
+        id="features"
+        className="bg-card scroll-mt-20 transition-colors duration-300"
+      >
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20">
-          {/* Heading */}
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <h2 className="text-3xl font-semibold text-slate-900 leading-tight">
+            <h2 className="text-3xl font-semibold text-foreground">
               Your All-in-One Nutrition Companion
             </h2>
-            <p className="mt-4 text-slate-600 text-lg leading-relaxed">
+            <p className="mt-4 text-muted-foreground text-lg">
               NutriLens offers a comprehensive suite of tools to help you manage
               your nutrition and wellness effectively.
             </p>
           </div>
 
-          {/* Feature Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* AI-Powered Food Analysis */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <div className="flex flex-col items-start text-left">
-                <div className="w-14 h-14 rounded-full bg-[#DCFCE7] flex items-center justify-center mb-5 shadow-inner">
-                  {/* Scan Icon */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    strokeWidth={1.6}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-7 h-7 text-[#16A34A]"
-                  >
-                    <path d="M11 11l6 6" stroke="currentColor" />
-                    <circle cx="8.5" cy="8.5" r="5" stroke="#22C55E" />
-                  </svg>
+            {[
+              {
+                title: "AI-Powered Food Analysis",
+                desc: "Instantly analyze ingredients using your camera. Our AI identifies food items and provides detailed nutritional breakdowns.",
+              },
+              {
+                title: "Personalized Insights",
+                desc: "Get tailored meal and nutrition recommendations powered by your BMR, allergies, and health goals.",
+              },
+              {
+                title: "Community Support",
+                desc: "Join a thriving community sharing healthy recipes, motivation, and personalized tips to stay consistent.",
+              },
+              {
+                title: "Data Privacy & Security",
+                desc: "Your data is securely encrypted and never shared. NutriLens ensures total privacy with industry-leading protection.",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="bg-background rounded-2xl p-8 shadow-sm hover:shadow-md border border-border transition-shadow duration-200"
+              >
+                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5 shadow-inner">
+                  <span className="text-primary text-xl font-bold">
+                    {i + 1}
+                  </span>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  AI-Powered Food Analysis
+                <h3 className="text-lg font-semibold text-foreground">
+                  {item.title}
                 </h3>
-                <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Instantly analyze ingredients using your camera. Our AI
-                  identifies food items and provides detailed nutritional
-                  breakdowns.
+                <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                  {item.desc}
                 </p>
               </div>
-            </div>
-
-            {/* Personalized Insights */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <div className="flex flex-col items-start text-left">
-                <div className="w-14 h-14 rounded-full bg-[#DCFCE7] flex items-center justify-center mb-5 shadow-inner">
-                  {/* Brain/insight icon */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    strokeWidth={1.6}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-7 h-7 text-[#16A34A]"
-                  >
-                    <path
-                      d="M12 3c2.5 0 4.5 2 4.5 4.5S14.5 12 12 12s-4.5-2-4.5-4.5S9.5 3 12 3z"
-                      stroke="currentColor"
-                    />
-                    <path d="M12 12v9M9 15h6" stroke="#22C55E" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Personalized Insights
-                </h3>
-                <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Get tailored meal and nutrition recommendations powered by
-                  your BMR, allergies, and health goals.
-                </p>
-              </div>
-            </div>
-
-            {/* Community Support */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <div className="flex flex-col items-start text-left">
-                <div className="w-14 h-14 rounded-full bg-[#DCFCE7] flex items-center justify-center mb-5 shadow-inner">
-                  {/* Users/community icon */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    strokeWidth={1.6}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-7 h-7 text-[#16A34A]"
-                  >
-                    <circle cx="12" cy="7" r="3" stroke="currentColor" />
-                    <path
-                      d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"
-                      stroke="#22C55E"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Community Support
-                </h3>
-                <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Join a thriving community of users sharing healthy recipes,
-                  motivation, and personalized tips to stay consistent.
-                </p>
-              </div>
-            </div>
-
-            {/* Data Privacy & Security */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <div className="flex flex-col items-start text-left">
-                <div className="w-14 h-14 rounded-full bg-[#DCFCE7] flex items-center justify-center mb-5 shadow-inner">
-                  {/* Lock/security icon */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    strokeWidth={1.6}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-7 h-7 text-[#16A34A]"
-                  >
-                    <rect
-                      x="4"
-                      y="11"
-                      width="16"
-                      height="10"
-                      rx="2"
-                      stroke="currentColor"
-                    />
-                    <path d="M8 11V7a4 4 0 018 0v4" stroke="#22C55E" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Data Privacy & Security
-                </h3>
-                <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Your data is securely encrypted and never shared. NutriLens
-                  ensures total privacy with industry-leading protection.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ---------- HOW IT WORKS ---------- */}
-      <section id="how" className="bg-white scroll-mt-20">
+      <section
+        id="how"
+        className="bg-background scroll-mt-20 transition-colors duration-300"
+      >
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold text-slate-900">
+            <h2 className="text-2xl font-semibold text-foreground">
               Get Started in 3 Simple Steps
             </h2>
-            <p className="mt-3 text-slate-600">
+            <p className="mt-3 text-muted-foreground">
               Tracking your nutrition has never been this easy. Follow these
               steps to begin your journey to better health.
             </p>
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row items-start justify-between gap-6">
-            <div className="flex-1 bg-[#F9FFF9] p-8 rounded-2xl text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-white flex items-center justify-center shadow">
-                <span className="text-[#22C55E] font-bold">1</span>
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-slate-900">
-                Snap a Photo
-              </h3>
-              <p className="mt-2 text-sm text-slate-600">
-                Take a picture of your meal or snack using the NutriLens app.
-              </p>
-            </div>
-
-            <div className="flex-1 bg-[#F9FFF9] p-8 rounded-2xl text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-white flex items-center justify-center shadow">
-                <span className="text-[#22C55E] font-bold">2</span>
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-slate-900">
-                Get Instant Analysis
-              </h3>
-              <p className="mt-2 text-sm text-slate-600">
-                Our AI identifies the food and provides detailed nutritional
-                information.
-              </p>
-            </div>
-
-            <div className="flex-1 bg-[#F9FFF9] p-8 rounded-2xl text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-white flex items-center justify-center shadow">
-                <span className="text-[#22C55E] font-bold">3</span>
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-slate-900">
-                Achieve Your Goals
-              </h3>
-              <p className="mt-2 text-sm text-slate-600">
-                Track your progress, adjust your diet, and reach your wellness
-                objectives.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- HEALTH AT A GLANCE ---------- */}
-      <section id="personalization" className="bg-[#F7FFF7]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-2xl font-semibold text-slate-900">
-                Your Health at a Glance
-              </h2>
-              <p className="mt-3 text-slate-600">
-                NutriLens provides a comprehensive dashboard to help you stay on
-                top of your nutrition and wellness journey. Track your daily
-                intake, monitor your progress, and receive personalized
-                recommendations to keep you on track.
-              </p>
-
-              <ul className="mt-6 space-y-4 text-sm text-slate-600">
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block w-3 h-3 rounded-full bg-[#22C55E]"></span>
-                  <div>
-                    <strong className="text-slate-900">
-                      Calorie Tracking:
-                    </strong>{" "}
-                    Effortlessly log meals and monitor daily calorie
-                    consumption.
+            {["Snap a Photo", "Get Instant Analysis", "Achieve Your Goals"].map(
+              (title, i) => (
+                <div
+                  key={i}
+                  className="flex-1 bg-card p-8 rounded-2xl text-center border border-border"
+                >
+                  <div className="mx-auto w-12 h-12 rounded-full bg-background flex items-center justify-center shadow border border-border">
+                    <span className="text-primary font-bold">{i + 1}</span>
                   </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block w-3 h-3 rounded-full bg-[#22C55E]"></span>
-                  <div>
-                    <strong className="text-slate-900">
-                      Macronutrient Breakdown:
-                    </strong>{" "}
-                    Visualize protein, carbs, and fat to ensure balanced intake.
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block w-3 h-3 rounded-full bg-[#22C55E]"></span>
-                  <div>
-                    <strong className="text-slate-900">
-                      Progress Reports:
-                    </strong>{" "}
-                    Get weekly and monthly summaries to see how far you've come.
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div className="flex items-center justify-center">
-              {/* large phone mockup or screenshot placeholder */}
-              <div className="w-[320px] h-[560px] rounded-2xl bg-white shadow-lg border border-slate-100 p-6">
-                <div className="h-full flex flex-col">
-                  <div className="h-12 mb-4 w-full rounded bg-slate-50"></div>
-                  <div className="flex-1 rounded bg-[#F8FAF8] p-4">
-                    <div className="h-3 bg-slate-200 w-2/3 rounded mb-3"></div>
-                    <div className="h-3 bg-slate-200 w-1/2 rounded mb-3"></div>
-                    <div className="h-3 bg-slate-200 w-full rounded mb-1"></div>
-                    <div className="mt-4 space-y-2">
-                      <div className="h-3 bg-slate-200 w-full rounded"></div>
-                      <div className="h-3 bg-slate-200 w-4/5 rounded"></div>
-                      <div className="h-3 bg-slate-200 w-3/5 rounded"></div>
-                    </div>
-                  </div>
+                  <h3 className="mt-5 text-lg font-semibold text-foreground">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {i === 0
+                      ? "Take a picture of your meal or snack using the NutriLens app."
+                      : i === 1
+                        ? "Our AI identifies the food and provides detailed nutritional information."
+                        : "Track your progress, adjust your diet, and reach your wellness objectives."}
+                  </p>
                 </div>
-              </div>
-            </div>
+              )
+            )}
           </div>
         </div>
       </section>
 
-      {/* ---------- TESTIMONIALS ---------- */}
-      {/* <section id="testimonials" className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold text-slate-900">
-              Loved by Health Enthusiasts
-            </h2>
-            <p className="mt-3 text-slate-600">
-              Don't just take our word for it. Hear what our users have to say
-              about their journey with NutriLens.
-            </p>
-          </div>
-
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <blockquote className="bg-[#F7FFF7] rounded-xl p-6 shadow-sm">
-              <p className="text-slate-700 italic">
-                “NutriLens has completely transformed my approach to nutrition.
-                The AI analysis is incredibly accurate, and the personalized
-                insights have helped me make healthier choices effortlessly.”
-              </p>
-              <footer className="mt-4 text-sm text-slate-600 font-semibold">
-                — Sarah M., Fitness Blogger
-              </footer>
-            </blockquote>
-
-            <blockquote className="bg-[#F7FFF7] rounded-xl p-6 shadow-sm">
-              <p className="text-slate-700 italic">
-                “I’ve tried numerous diet apps, but NutriLens stands out. The
-                community support is fantastic, and the privacy features give me
-                peace of mind.”
-              </p>
-              <footer className="mt-4 text-sm text-slate-600 font-semibold">
-                — David L., Working Professional
-              </footer>
-            </blockquote>
-
-            <blockquote className="bg-[#F7FFF7] rounded-xl p-6 shadow-sm">
-              <p className="text-slate-700 italic">
-                “The dashboard is so intuitive and easy to use. I can quickly
-                track my progress and see the impact of my dietary changes.”
-              </p>
-              <footer className="mt-4 text-sm text-slate-600 font-semibold">
-                — Emily R., Marathon Runner
-              </footer>
-            </blockquote>
-          </div>
-        </div>
-      </section> */}
-
-      {/* ---------- CTA BANNER ---------- */}
-      <section className="bg-gradient-to-r from-[#E6FFE9] to-[#F9FFF9]">
+      {/* ---------- CTA ---------- */}
+      <section className="bg-primary/5 border-t border-border">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12 text-center">
-          <h3 className="text-2xl font-semibold text-slate-900">
+          <h3 className="text-2xl font-semibold text-foreground">
             Ready to Transform Your Health?
           </h3>
-          <p className="mt-3 text-slate-600">
+          <p className="mt-3 text-muted-foreground">
             Create your free account and start using NutriLens today.
           </p>
           <div className="mt-6">
             <Link
               href="/auth/signup"
-              className="inline-flex items-center rounded-full bg-[#22C55E] px-6 py-3 text-base font-semibold text-white shadow hover:bg-[#16A34A]"
+              className="inline-flex items-center rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow hover:bg-primary/90 transition"
             >
               Get Started for Free
             </Link>
@@ -489,52 +260,26 @@ export default function Page() {
       </section>
 
       {/* ---------- FOOTER ---------- */}
-      <footer className="bg-[#F8FAF8] border-t border-slate-100">
+      <footer className="bg-card border-t border-border transition-colors duration-300">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              {/* small logo */}
-              {/* <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                className=""
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden
-              >
-                <rect width="24" height="24" rx="5" fill="#ECFDF6" />
-                <path
-                  d="M8 13c1.2-1.2 4-3 6-1.6"
-                  stroke="#16A34A"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M13 14.2c.2.2.6.2.8 0"
-                  stroke="#22C55E"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg> */}
               <div>
-                <div className="font-semibold">NutriLens</div>
-                <div className="text-sm text-slate-600">
+                <div className="font-semibold text-foreground">NutriLens</div>
+                <div className="text-sm text-muted-foreground">
                   © {new Date().getFullYear()} NutriLens. All rights reserved.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-8 text-sm text-slate-600">
-              <Link href="/privacy" className="hover:text-slate-800">
+            <div className="flex items-center gap-8 text-sm text-muted-foreground">
+              <Link href="/privacy" className="hover:text-primary transition">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="hover:text-slate-800">
+              <Link href="/terms" className="hover:text-primary transition">
                 Terms of Service
               </Link>
-              <Link href="/contact" className="hover:text-slate-800">
+              <Link href="/contact" className="hover:text-primary transition">
                 Contact Us
               </Link>
             </div>

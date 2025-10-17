@@ -333,7 +333,7 @@ export default function OnboardingPage() {
             <button
               type="button"
               onClick={handleSkip}
-              className="flex-1 bg-muted text-foreground hover:opacity-90 py-2.5 rounded-md font-medium transition"
+              className="flex-1 bg-muted text-black hover:opacity-90 py-2.5 rounded-md font-medium transition"
             >
               Skip for now
             </button>
