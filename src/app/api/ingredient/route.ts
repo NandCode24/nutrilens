@@ -29,16 +29,18 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🧍 Fetch user from Prisma using email
-    const user = await prisma.user.findUnique({
-      where: { email },
-      select: { id: true },
-    });
+const user = await prisma.user.findUnique({
+  where: { email },
+  select: { id: true, preferredLanguage: true },
+});
 
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
+if (!user) {
+  return NextResponse.json({ error: "User not found" }, { status: 404 });
+}
 
+const preferredLanguage = user.preferredLanguage || "English";
+
+console.log("🌍 Preferred Language (from DB):", preferredLanguage);
     // 🧠 Parse user profile safely
     let profile: Record<string, any> = {};
     try {
@@ -98,43 +100,53 @@ User profile:
 
     // 🧾 Gemini prompt
     const prompt = `
-You are NutriLens — a professional AI nutritionist.
+You are NutriLens — an expert multilingual AI nutritionist.
+
+The user's preferred language is **${preferredLanguage}**.
+⚠️ All explanations, summaries, and recommendations must be written **completely in ${preferredLanguage} only**.
+Do NOT mix English and ${preferredLanguage}. Keep JSON keys in English, but all textual values in ${preferredLanguage}.
 
 Analyze the attached image of a food or ingredient label.
 
 Tasks:
-1. Extract text from the image (OCR).
+1. Extract text (OCR).
 2. Identify the ingredients.
-3. Identify emulsifiers, preservatives, or additives (and describe their potential side effects).
+3. Detect emulsifiers/preservatives (and describe their effects).
 4. Detect allergens.
 5. Summarize the nutritional quality (sugar, sodium, protein, etc.).
 6. Give a health score (0–10) based on the user’s profile below.
 7. Provide reasoning and a short recommendation.
+8. Write all summaries and text fields in ${preferredLanguage}.
 
-${personalization}
+User profile:
+- Age: ${profile.age ?? "N/A"}
+- Gender: ${profile.gender ?? "N/A"}
+- Height: ${profile.heightCm ?? "N/A"} cm
+- Weight: ${profile.weightKg ?? "N/A"} kg
+- Allergies: ${Array.isArray(profile.allergies) ? profile.allergies.join(", ") : "None"}
+- Health Goal: ${profile.healthGoals ?? "General wellness"}
+- Medical Conditions: ${Array.isArray(profile.medicalConditions) ? profile.medicalConditions.join(", ") : "None"}
 
-Return ONLY valid JSON in this format:
+Return only valid JSON in this format:
 {
-  "ingredients": ["ingredient1", "ingredient2", ...],
+  "ingredients": ["ingredient1", "ingredient2", ...] in ${preferredLanguage},
   "additives_info": [
-    {
-      "name": "INS 471",
-      "purpose": "emulsifier",
-      "side_effect": "May cause mild digestive irritation"
-    }
+    { "name": "INS 471", "purpose": "emulsifier", "side_effect": "..." }
   ],
-  "allergens": ["allergen1", "allergen2"],
-  "nutrition_summary": "1–2 sentences summarizing the product’s nutrition",
+  "allergens": ["allergen1", "allergen2"] in ${preferredLanguage},
+  "nutrition_summary": "Written fully in ${preferredLanguage}",
   "personalized_score": 0–10,
-  "reasoning": "Short reasoning behind the score",
-  "recommendation": "Short actionable suggestion"
+  "reasoning": "Written fully in ${preferredLanguage}",
+  "recommendation": "Written fully in ${preferredLanguage}"
 }
-    `.trim();
-
+`.trim();
     // 🚀 Send to Gemini with image + prompt
     const result = await model.generateContent([
       { inlineData: { data: base64Image, mimeType } },
       { text: prompt },
+      {
+        text: `Ensure your response text is in ${preferredLanguage}. Do not use English.`,
+      },
     ]);
 
     const text = result.response.text().trim();
@@ -172,6 +184,7 @@ Return ONLY valid JSON in this format:
     });
 
     console.log("📜 Saved scan result to History.");
+    console.log("🌍 Preferred Language:", profile.preferredLanguage);
 
     return NextResponse.json(parsed);
   } catch (err: any) {

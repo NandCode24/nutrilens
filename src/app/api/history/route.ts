@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic"; // ensures fresh fetch every time
 
-// 🧾 GET — Fetch user's full history (both food + medicine)
+// 🧾 GET — Fetch user's unified history only (no legacy duplication)
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
       );
     }
 
-    // ✅ 1️⃣ Verify user exists
+    // ✅ Verify user exists
     const user = await prisma.user.findUnique({
       where: { email },
       select: { id: true },
@@ -27,30 +27,16 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // ✅ 2️⃣ Fetch History entries
+    // ✅ Fetch only unified History entries
     const history = await prisma.history.findMany({
       where: { email },
       orderBy: { createdAt: "desc" },
     });
 
-    // ✅ 3️⃣ Fallback legacy scans (if any)
-    const [foodScans, medicines] = await Promise.all([
-      prisma.foodScan.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.medicine.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: "desc" },
-      }),
-    ]);
-
     return NextResponse.json(
       {
         success: true,
-        history, // new unified records
-        foodScans, // legacy support
-        medicines, // legacy support
+        history, // 🟢 Only modern unified data
       },
       { status: 200 }
     );
@@ -62,7 +48,6 @@ export async function GET(req: Request) {
     );
   }
 }
-
 // 🗑️ DELETE — Remove entry by ID + type
 export async function DELETE(req: Request) {
   try {

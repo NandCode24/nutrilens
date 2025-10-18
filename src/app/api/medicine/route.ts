@@ -64,14 +64,18 @@ export async function POST(req: Request) {
       );
     }
 
+    // 🧠 Fetch user + language preference
     const user = await prisma.user.findUnique({
       where: { email },
-      select: { id: true },
+      select: { id: true, preferredLanguage: true },
     });
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
+
+    const preferredLanguage = user.preferredLanguage || "English";
+    console.log("🌍 Preferred Language (from DB):", preferredLanguage);
 
     // ⚙️ Prepare Gemini model
     const model = genAI.getGenerativeModel({
@@ -79,17 +83,20 @@ export async function POST(req: Request) {
       generationConfig: { temperature: 0, topP: 0.1, topK: 1 },
     });
 
-    // 🧠 Prompt with personalization
+    // 🧠 Prompt with personalization + language
     const prompt = `
-You are NutriLens — an AI Health Assistant.
-Analyze this medicine information.
+You are NutriLens — an expert multilingual AI health assistant.
+
+The user's preferred language is **${preferredLanguage}**.
+Write all textual parts (uses, reasoning, recommendations, etc.) **completely in ${preferredLanguage} only**.
+Do not mix English and ${preferredLanguage}. Keep JSON keys in English, but values in ${preferredLanguage}.
+
+Analyze the provided medicine information.
 
 ${
   imageBase64
     ? "You are provided with an image of the medicine label. Extract and analyze it."
-    : 'You are provided with a medicine name: "' +
-      medicineName +
-      '". Analyze it.'
+    : `You are provided with a medicine name: "${medicineName}". Analyze it.`
 }
 
 User profile:
@@ -97,20 +104,20 @@ User profile:
 - Gender: ${profile.gender ?? "N/A"}
 - Allergies: ${profile.allergies?.join(", ") ?? "None"}
 - Medical conditions: ${profile.medicalConditions?.join(", ") ?? "None"}
-- Goal: ${profile.goal ?? "General wellness"}
+- Health Goal: ${profile.goal ?? "General wellness"}
 
-Return ONLY valid JSON in this format:
+Return only valid JSON in this format:
 {
   "medicine_name": "string",
   "active_ingredients": ["string"],
-  "uses": "short summary of purpose",
-  "side_effects": ["string"],
-  "precautions": ["string"],
-  "compatibility_score": 0-10,
-  "reasoning": "why this score was given",
-  "recommendation": "personalized advice (based on user profile)"
+  "uses": "short summary written fully in ${preferredLanguage}",
+  "side_effects": ["string values in ${preferredLanguage}"],
+  "precautions": ["string values in ${preferredLanguage}"],
+  "compatibility_score": 0–10,
+  "reasoning": "why this score was given (in ${preferredLanguage})",
+  "recommendation": "personalized advice (in ${preferredLanguage})"
 }
-    `.trim();
+`.trim();
 
     const input = imageBase64
       ? [{ inlineData: { data: imageBase64, mimeType } }, { text: prompt }]
@@ -136,7 +143,7 @@ Return ONLY valid JSON in this format:
       },
     });
 
-    // 🧠 Save complete Gemini response in History table (NEW)
+    // 🧠 Save complete Gemini response in History table
     await prisma.history.create({
       data: {
         email,
@@ -145,8 +152,7 @@ Return ONLY valid JSON in this format:
       },
     });
 
-    console.log("📜 Saved medicine analysis to History.");
-
+    console.log("💊 Saved medicine analysis to History successfully.");
     return NextResponse.json(parsed);
   } catch (err: any) {
     console.error("💊 Medicine lookup error:", err);

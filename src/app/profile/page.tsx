@@ -13,10 +13,12 @@ export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updating, setUpdating] = useState(false);
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // 🧠 Fetch Profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -47,6 +49,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, [router]);
 
+  // 🌓 Handle Theme
   useEffect(() => {
     setIsDarkMode(theme === "dark");
   }, [theme]);
@@ -57,6 +60,39 @@ export default function ProfilePage() {
     setIsDarkMode(!isDarkMode);
   };
 
+  // 🌍 Update Preferred Language
+  const handleLanguageChange = async (newLang: string) => {
+    if (!user?.email) return;
+    setUpdating(true);
+    try {
+      const res = await fetch("/api/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email, preferredLanguage: newLang }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update language");
+
+      const updated = await res.json();
+      setUser(updated);
+
+      // 🔒 Update localStorage for Gemini usage later
+      const storedProfile = localStorage.getItem("userProfile");
+      if (storedProfile) {
+        const parsed = JSON.parse(storedProfile);
+        parsed.preferredLanguage = newLang;
+        localStorage.setItem("userProfile", JSON.stringify(parsed));
+      }
+
+      console.log("✅ Preferred Language updated:", newLang);
+    } catch (error) {
+      console.error("❌ Error updating language:", error);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  // 🌀 Loading UI
   if (loading)
     return (
       <AnimatePresence>
@@ -186,7 +222,26 @@ export default function ProfilePage() {
         </div>
       </div>
 
-     
+      {/* 🌍 Preferred Language */}
+      <div className="w-full max-w-5xl mt-6 bg-card text-card-foreground rounded-2xl shadow-sm p-6 border border-border transition-colors duration-300">
+        <h3 className="text-lg font-semibold mb-4">Preferred Language</h3>
+        <div className="flex items-center gap-4">
+          <select
+            value={user.preferredLanguage || "English"}
+            onChange={(e) => handleLanguageChange(e.target.value)}
+            disabled={updating}
+            className="w-64 border border-border rounded-md px-3 py-2 bg-background text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition"
+          >
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Gujarati">Gujarati</option>
+          </select>
+          {updating && (
+            <span className="text-sm text-muted-foreground">Saving...</span>
+          )}
+        </div>
+      </div>
+
       {/* Footer */}
       <footer className="text-center text-muted-foreground text-xs mt-10">
         © 2025 <span className="font-semibold text-primary">NutriLens</span> —
@@ -203,39 +258,12 @@ function Detail({ label, value }: { label: string; value: string | number }) {
     <div>
       <p className="text-xs uppercase text-muted-foreground mb-1">{label}</p>
       <p
-        className={`text-sm font-medium ${isNone ? "text-muted-foreground/70 italic" : "text-foreground"}`}
+        className={`text-sm font-medium ${
+          isNone ? "text-muted-foreground/70 italic" : "text-foreground"
+        }`}
       >
         {value}
       </p>
-    </div>
-  );
-}
-
-/* 🧩 Preferences Toggle Component */
-function PreferenceToggle({
-  label,
-  active,
-  onToggle,
-}: {
-  label: string;
-  active: boolean;
-  onToggle?: () => void;
-}) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-sm font-medium">{label}</span>
-      <button
-        onClick={onToggle}
-        className={`w-12 h-6 rounded-full relative transition-all ${
-          active ? "bg-primary" : "bg-muted"
-        }`}
-      >
-        <span
-          className={`absolute top-1 left-1 w-4 h-4 bg-background rounded-full shadow transition-transform ${
-            active ? "translate-x-6" : ""
-          }`}
-        ></span>
-      </button>
     </div>
   );
 }
