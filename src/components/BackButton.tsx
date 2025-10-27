@@ -8,7 +8,7 @@ export default function BackButton({ label = "Back" }: { label?: string }) {
 
   return (
     <button
-      onClick={() => router.back()}
+      onClick={() => router.push("/dashboard")}
       className="
         flex items-center gap-2
         bg-card/80 backdrop-blur-sm

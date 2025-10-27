@@ -83,7 +83,7 @@ export default function Page() {
                 </Link>
 
                 <a
-                  href="#how"
+                  href="https://youtu.be/eytnJGhYu-w"
                   className="inline-flex items-center rounded-md border border-primary px-4 py-2 text-base font-medium text-primary hover:bg-primary/10 transition"
                 >
                   Learn More

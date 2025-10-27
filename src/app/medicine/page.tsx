@@ -126,18 +126,9 @@ export default function MedicineLookup() {
       {apiLoading && <ApiLoader />}
       <div className="min-h-screen bg-background text-foreground flex flex-col items-center pb-10 transition-colors duration-300">
         {/* Back Button */}
-        <div
-          className="absolute top-24 left-6 z-[60]"
-          onClick={() => {
-            showLoader();
-            setTimeout(() => {
-              hideLoader();
-              window.history.back();
-            }, 600);
-          }}
-        >
-          <BackButton />
-        </div>
+           <div className="absolute top-24 left-6 z-[60]">
+             <BackButton />
+           </div>
 
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-10 bg-card flex justify-between items-center px-8 py-4 border-b border-border shadow-sm transition-colors duration-300">

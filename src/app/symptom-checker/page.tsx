@@ -79,18 +79,9 @@ export default function SymptomChecker() {
       {apiLoading && <ApiLoader />}
       <div className="min-h-screen bg-background text-foreground flex flex-col items-center py-10 px-4 transition-colors duration-300">
         {/* Back Button */}
-        <div
-          className="absolute top-24 left-6 z-[60]"
-          onClick={() => {
-            showLoader();
-            setTimeout(() => {
-              hideLoader();
-              window.history.back();
-            }, 600);
-          }}
-        >
-          <BackButton />
-        </div>
+          <div className="absolute top-24 left-6 z-[60]">
+            <BackButton />
+          </div>
 
         {/* Header */}
         <div className="text-center max-w-xl">
