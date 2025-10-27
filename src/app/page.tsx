@@ -40,17 +40,12 @@ export default function Page() {
 
             {/* CTAs */}
             <div className="flex items-center gap-3">
+
               <Link
                 href="/auth/signin"
-                className="hidden md:inline-flex rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
-              >
-                Sign in
-              </Link>
-              <Link
-                href="/auth/signup"
                 className="inline-flex items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
               >
-                Get Started Free
+                Login
               </Link>
             </div>
           </div>
