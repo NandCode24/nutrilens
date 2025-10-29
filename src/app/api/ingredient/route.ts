@@ -82,7 +82,7 @@ console.log("🌍 Preferred Language (from DB):", preferredLanguage);
 
     // 🧩 Prepare Gemini model
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
       generationConfig: { temperature: 0, topP: 0.1, topK: 1 },
     });
 
