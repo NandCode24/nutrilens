@@ -300,9 +300,17 @@ export default function ProfilePage() {
       </div>
 
       {/* Footer */}
-      <footer className="text-center text-muted-foreground text-xs mt-10">
+      <footer className="text-center text-muted-foreground text-xs mt-10 space-x-1">
         © 2025 <span className="font-semibold text-primary">NutriLens</span> —
-        Empowering Smarter Nutrition.
+        Empowering Smarter Nutrition.{" "}
+        <br />
+        <br />
+        <a
+          href="/contact"
+          className="hover:text-primary transition-colors underline-offset-4 hover:underline font-bold"
+        >
+          Contact Us
+        </a>
       </footer>
     </div>
   );
