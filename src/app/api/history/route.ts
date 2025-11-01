@@ -48,6 +48,7 @@ export async function GET(req: Request) {
     );
   }
 }
+
 // 🗑️ DELETE — Remove entry by ID + type
 export async function DELETE(req: Request) {
   try {
