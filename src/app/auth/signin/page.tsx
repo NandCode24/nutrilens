@@ -87,7 +87,7 @@ export default function LoginPage() {
 
       document.cookie = "isLoggedIn=true; path=/; max-age=604800";
       setShowTransition(true);
-      setTimeout(() => router.push("/onboarding"), 1500);
+      setTimeout(() => router.push("/dashboard"), 1500);
     } catch (error) {
       console.error("Google Sign-In Error:", error);
       setMessage("❌ Failed to sign in with Google.");
@@ -127,7 +127,7 @@ export default function LoginPage() {
 
       document.cookie = "isLoggedIn=true; path=/; max-age=604800";
       setShowTransition(true);
-      setTimeout(() => router.push("/onboarding"), 1500);
+      setTimeout(() => router.push("/dashboard"), 1500);
     } catch (error: any) {
       // 🧠 Handle account-exists-with-different-credential
       if (error.code === "auth/account-exists-with-different-credential") {
