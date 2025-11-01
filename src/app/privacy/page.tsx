@@ -1,5 +1,5 @@
 "use client";
-import { useLoading } from "@/context/LoadingContext";
+
 
 export default function PrivacyPage() {
   return (

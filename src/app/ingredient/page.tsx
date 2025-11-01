@@ -141,7 +141,7 @@ export default function ScanIngredient() {
     <>
       {apiLoading && <ApiLoader />}
       <div className="min-h-screen bg-background text-foreground flex flex-col items-center overflow-y-auto pb-10 transition-colors duration-300">
-        <div className="absolute top-24 left-6 z-[60]">
+        <div className="absolute top-24 left-6 z-[0]">
           <BackButton />
         </div>
 

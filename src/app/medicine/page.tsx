@@ -126,7 +126,7 @@ export default function MedicineLookup() {
       {apiLoading && <ApiLoader />}
       <div className="min-h-screen bg-background text-foreground flex flex-col items-center pb-10 transition-colors duration-300">
         {/* Back Button */}
-           <div className="absolute top-24 left-6 z-[60]">
+           <div className="absolute top-24 left-6 ">
              <BackButton />
            </div>
 

@@ -138,7 +138,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground px-6 sm:px-10 py-12 flex flex-col items-center transition-colors duration-300">
-      <div className="absolute top-24 left-6 z-[60]">
+      <div className="absolute top-24 left-6  ">
         <BackButton />
       </div>
 

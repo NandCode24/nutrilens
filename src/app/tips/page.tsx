@@ -17,7 +17,7 @@ export default function TipsPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground px-6 py-10 relative overflow-hidden transition-colors duration-300">
       {/* 🔙 Back Button */}
-      <div className="absolute top-24 left-6 z-[60]">
+      <div className="absolute top-7 left-6">
         <BackButton />
       </div>
 

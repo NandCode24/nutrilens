@@ -45,30 +45,7 @@ export default function HistoryPage() {
             fullData: item.data,
           })) || [];
 
-        const legacy = [
-          ...(data.foodScans || []).map((item: any) => ({
-            id: item.id,
-            title: item.ingredients?.[0] || "Ingredient Scan",
-            description: item.nutritionSummary || item.ingredientsText || "—",
-            date: item.createdAt,
-            type: "Ingredient",
-            fullData: item,
-          })),
-          ...(data.medicines || []).map((item: any) => ({
-            id: item.id,
-            title: item.name || "Medicine Lookup",
-            description: item.uses || "No details available.",
-            date: item.createdAt,
-            type: "Medicine",
-            fullData: item,
-          })),
-        ];
-
-        const combined = [...unified, ...legacy].sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-
-        setLogs(combined);
+        setLogs(unified);
       } catch (err) {
         console.error("Error fetching history:", err);
       } finally {
@@ -79,18 +56,20 @@ export default function HistoryPage() {
     fetchHistory();
   }, []);
 
-  const handleDelete = async (id: string, type: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this entry?")) return;
 
     try {
-      const res = await fetch(`/api/history?id=${id}&type=${type}`, {
+      const res = await fetch(`/api/history?id=${id}&type=history`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error("Failed to delete entry");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to delete entry");
 
       setLogs((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Error deleting entry:", err);
+      alert("Failed to delete entry. Please try again.");
     }
   };
 
@@ -131,7 +110,7 @@ export default function HistoryPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground py-10 px-4 flex flex-col items-center transition-colors duration-300">
-      <div className="absolute top-24 left-6 z-[60]">
+      <div className="absolute top-24 left-6">
         <BackButton />
       </div>
 
@@ -161,13 +140,7 @@ export default function HistoryPage() {
                 <h3 className="text-lg font-semibold text-foreground dark:text-brand">
                   {item.title || "Unnamed Entry"}
                 </h3>
-                <span
-                  className={`text-xs font-medium px-3 py-1 rounded-full ${
-                    item.type === "Ingredient"
-                      ? "bg-primary/10 text-primary"
-                      : "bg-primary/15 text-primary"
-                  }`}
-                >
+                <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
                   {item.type}
                 </span>
               </div>
@@ -186,7 +159,7 @@ export default function HistoryPage() {
 
                 <div className="flex items-center gap-3 text-muted-foreground dark:text-brand-muted">
                   <button
-                    onClick={() => handleDelete(item.id, item.type)}
+                    onClick={() => handleDelete(item.id)}
                     className="hover:text-red-500 transition"
                   >
                     <Trash2 className="w-4 h-4" />

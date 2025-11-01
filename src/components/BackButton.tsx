@@ -18,7 +18,7 @@ export default function BackButton({ label = "Back" }: { label?: string }) {
         text-foreground dark:text-brand-muted
         hover:text-primary dark:hover:text-brand-accent
         transition-all duration-300
-        z-[60]
+        z-[0]
       "
     >
       <ArrowLeft className="w-4 h-4" />
