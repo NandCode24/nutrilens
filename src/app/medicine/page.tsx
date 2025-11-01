@@ -1,3 +1,4 @@
+// src/app/medicine/page.tsx
 "use client";
 
 import Image from "next/image";
@@ -6,6 +7,7 @@ import { Camera, Search, Loader2 } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import ApiLoader from "@/components/ApiLoader";
 import { useLoading } from "@/context/LoadingContext";
+import { useRouter } from "next/navigation";
 
 export default function MedicineLookup() {
   const [image, setImage] = useState<string | null>(null);
@@ -17,6 +19,7 @@ export default function MedicineLookup() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [apiLoading, setApiLoading] = useState(false);
   const { showLoader, hideLoader } = useLoading();
+  const router = useRouter();
 
   useEffect(() => {
     try {
@@ -121,14 +124,19 @@ export default function MedicineLookup() {
     }
   };
 
+  // Helper: handle redirect to ingredient scanner
+  const goToIngredientScanner = () => {
+    router.push("/ingredient");
+  };
+
   return (
     <>
       {apiLoading && <ApiLoader />}
       <div className="min-h-screen bg-background text-foreground flex flex-col items-center pb-10 transition-colors duration-300">
         {/* Back Button */}
-           <div className="absolute top-24 left-6 ">
-             <BackButton />
-           </div>
+        <div className="absolute top-24 left-6 ">
+          <BackButton />
+        </div>
 
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-10 bg-card flex justify-between items-center px-8 py-4 border-b border-border shadow-sm transition-colors duration-300">
@@ -237,72 +245,137 @@ export default function MedicineLookup() {
         {/* Results */}
         {result && (
           <div className="mt-10 w-11/12 md:w-3/5 bg-card rounded-2xl shadow-lg p-6 border border-border transition-colors duration-300">
-            <h2 className="text-lg font-semibold text-foreground mb-4 text-center">
-              💊 Medicine Analysis Result
-            </h2>
-            <div className="space-y-3 text-muted-foreground">
-              <p>
-                <strong className="text-foreground">Medicine Name:</strong>{" "}
-                {result.medicine_name || "N/A"}
-              </p>
-              <p>
-                <strong className="text-foreground">Active Ingredients:</strong>{" "}
-                {result.active_ingredients?.join(", ") || "Unknown"}
-              </p>
-              <p>
-                <strong className="text-foreground">Uses:</strong>{" "}
-                {result.uses || "Not specified"}
-              </p>
-              <p>
-                <strong className="text-foreground">Side Effects:</strong>{" "}
-                {result.side_effects?.join(", ") || "None listed"}
-              </p>
-              <p>
-                <strong className="text-foreground">Precautions:</strong>{" "}
-                {result.precautions?.join(", ") || "None"}
-              </p>
+            {/* CASE A: Model says this is NOT a medicine */}
+            {result.not_medicine ? (
+              <div className="space-y-4 text-center">
+                <h2 className="text-lg font-semibold text-foreground mb-2">
+                  🔎 Not a Medicine
+                </h2>
+                <p className="text-muted-foreground">
+                  {result.reason ||
+                    "This input appears to be a food/product label rather than a medicine."}
+                </p>
 
-              {/* Compatibility Bar */}
-              <div className="mt-3 flex items-center">
-                <strong className="text-foreground">
-                  Health Compatibility:
-                </strong>
-                <div className="ml-3 flex-1 h-3 rounded-full bg-muted overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${
-                      result.compatibility_score >= 7
-                        ? "bg-green-500"
-                        : result.compatibility_score >= 4
-                          ? "bg-yellow-400"
-                          : "bg-red-500"
-                    }`}
-                    style={{
-                      width: `${(result.compatibility_score / 10) * 100}%`,
+                <p className="text-sm text-muted-foreground">
+                  {result.suggestion ||
+                    "Please use the Ingredient Scanner for food/beverage/grocery labels."}
+                </p>
+
+                <div className="flex justify-center gap-3 mt-4">
+                  <button
+                    onClick={goToIngredientScanner}
+                    className="bg-primary text-primary-foreground px-4 py-2 rounded-xl hover:opacity-90 transition"
+                  >
+                    Open Ingredient Scanner
+                  </button>
+                  <button
+                    onClick={() => {
+                      setResult(null);
+                      setImage(null);
+                      setMedicineName("");
                     }}
-                  />
+                    className="px-4 py-2 rounded-xl border border-border hover:bg-muted transition"
+                  >
+                    Close
+                  </button>
                 </div>
-                <span
-                  className={`ml-3 font-bold text-lg ${
-                    result.compatibility_score >= 7
-                      ? "text-green-500"
-                      : result.compatibility_score >= 4
-                        ? "text-yellow-400"
-                        : "text-red-500"
-                  }`}
-                >
-                  {Number(result.compatibility_score).toFixed(1)}
-                </span>
               </div>
+            ) : (
+              /* CASE B: Valid medicine result — same as before */
+              <div>
+                <h2 className="text-lg font-semibold text-foreground mb-4 text-center">
+                  💊 Medicine Analysis Result
+                </h2>
+                <div className="space-y-3 text-muted-foreground">
+                  <p>
+                    <strong className="text-foreground">Medicine Name:</strong>{" "}
+                    {result.medicine_name || "N/A"}
+                  </p>
+                  <p>
+                    <strong className="text-foreground">
+                      Active Ingredients:
+                    </strong>{" "}
+                    {result.active_ingredients?.join(", ") || "Unknown"}
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Uses:</strong>{" "}
+                    {result.uses || "Not specified"}
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Side Effects:</strong>{" "}
+                    {result.side_effects?.join(", ") || "None listed"}
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Precautions:</strong>{" "}
+                    {result.precautions?.join(", ") || "None"}
+                  </p>
 
-              <p className="mt-2">
-                <strong className="text-foreground">Reasoning:</strong>{" "}
-                {result.reasoning || "No reasoning provided"}
-              </p>
-              <p>
-                <strong className="text-foreground">Recommendation:</strong>{" "}
-                {result.recommendation || "No recommendation available"}
-              </p>
-            </div>
+                  {/* Compatibility Bar */}
+                  <div className="mt-3 flex items-center">
+                    <strong className="text-foreground">
+                      Health Compatibility:
+                    </strong>
+                    <div className="ml-3 flex-1 h-3 rounded-full bg-muted overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          result.compatibility_score >= 7
+                            ? "bg-green-500"
+                            : result.compatibility_score >= 4
+                              ? "bg-yellow-400"
+                              : "bg-red-500"
+                        }`}
+                        style={{
+                          width: `${(result.compatibility_score / 10) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    <span
+                      className={`ml-3 font-bold text-lg ${
+                        result.compatibility_score >= 7
+                          ? "text-green-500"
+                          : result.compatibility_score >= 4
+                            ? "text-yellow-400"
+                            : "text-red-500"
+                      }`}
+                    >
+                      {Number(result.compatibility_score || 0).toFixed(1)}
+                    </span>
+                  </div>
+
+                  <p className="mt-2">
+                    <strong className="text-foreground">Reasoning:</strong>{" "}
+                    {result.reasoning || "No reasoning provided"}
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Recommendation:</strong>{" "}
+                    {result.recommendation || "No recommendation available"}
+                  </p>
+
+                  <div className="flex justify-end gap-3 mt-4">
+                    <button
+                      onClick={() => {
+                        // simple close action
+                        setResult(null);
+                        setImage(null);
+                        setMedicineName("");
+                      }}
+                      className="px-4 py-2 rounded-xl border border-border hover:bg-muted transition"
+                    >
+                      Close
+                    </button>
+                    <button
+                      onClick={() => {
+                        // optional: navigate to history or save additional actions
+                        router.push("/history");
+                      }}
+                      className="bg-primary text-primary-foreground px-4 py-2 rounded-xl hover:opacity-90 transition"
+                    >
+                      View in History
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
