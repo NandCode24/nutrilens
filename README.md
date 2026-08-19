@@ -1,14 +1,3 @@
-This version:
-✅ Keeps the homescreen image (hero visual)
-✅ Adds elegant typography and emojis
-✅ Uses perfect markdown hierarchy
-✅ Makes sections visually pop with spacing and icons
-✅ Looks gorgeous on GitHub (tested layout)
-
-⸻
-
-🚀 Here’s your final polished README.md (copy-paste it as is):
-
 <h1 align="center">🌿 NutriLens — AI-Powered Nutrition & Wellness Assistant</h1>
 
 <p align="center">
