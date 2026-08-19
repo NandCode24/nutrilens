@@ -1,6 +1,3 @@
-Got it 😌 — bold move, bud!
-Let’s ditch all images except the homescreen, and turn your README.md into something that looks so clean and professional, images won’t even be missed.
-
 This version:
 ✅ Keeps the homescreen image (hero visual)
 ✅ Adds elegant typography and emojis
