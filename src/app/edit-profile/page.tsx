@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import logo from "../../../public/NutriLens.png";
+import logo from "../../../public/logo.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { calculateAge } from "@/lib/utils";
 
 // ✅ Validation Schema
 const formSchema = z.object({
@@ -15,9 +16,7 @@ const formSchema = z.object({
   gender: z.string().refine((val) => val === "Male" || val === "Female", {
     message: "Please select a gender",
   }),
-  age: z
-    .union([z.string(), z.number()])
-    .refine((val) => Number(val) > 0, { message: "Enter valid age" }),
+  dob: z.string().min(1, { message: "Please select your date of birth" }),
   height: z
     .union([z.string(), z.number()])
     .refine((val) => Number(val) >= 50, { message: "Enter valid height" }),
@@ -50,7 +49,7 @@ export default function EditProfilePage() {
 
   const weight = watch("weight");
   const height = watch("height");
-  const age = watch("age");
+  const dob = watch("dob");
   const gender = watch("gender");
 
   // ✅ Prefill user data
@@ -73,7 +72,11 @@ export default function EditProfilePage() {
         // Prefill values
         setValue("name", data.name || "");
         setValue("gender", data.gender || "Male");
-        setValue("age", data.age || "");
+        if (data.dob) {
+          setValue("dob", new Date(data.dob).toISOString().split("T")[0]);
+        } else {
+          setValue("dob", "");
+        }
         setValue("height", data.heightCm || "");
         setValue("weight", data.weightKg || "");
         setValue("goal", data.healthGoals || "");
@@ -91,19 +94,23 @@ export default function EditProfilePage() {
 
   // ✅ Auto calculate BMR
   useEffect(() => {
-    if (weight && height && age && gender) {
+    if (weight && height && dob && gender) {
       const w = Number(weight);
       const h = Number(height);
-      const a = Number(age);
-      const calc =
-        gender === "Male"
-          ? 10 * w + 6.25 * h - 5 * a + 5
-          : 10 * w + 6.25 * h - 5 * a - 161;
-      setBmr(Math.round(calc));
+      const calculatedAge = calculateAge(dob);
+      if (calculatedAge !== null && calculatedAge >= 0) {
+        const calc =
+          gender === "Male"
+            ? 10 * w + 6.25 * h - 5 * calculatedAge + 5
+            : 10 * w + 6.25 * h - 5 * calculatedAge - 161;
+        setBmr(Math.round(calc));
+      } else {
+        setBmr(null);
+      }
     } else {
       setBmr(null);
     }
-  }, [weight, height, age, gender]);
+  }, [weight, height, dob, gender]);
 
   // ✅ Submit
   const onSubmit = async (data: FormData) => {
@@ -112,7 +119,7 @@ export default function EditProfilePage() {
       email: userEmail,
       name: data.name,
       gender: data.gender,
-      age: Number(data.age),
+      dob: data.dob,
       heightCm: Number(data.height),
       weightKg: Number(data.weight),
       healthGoals: data.goal,
@@ -133,6 +140,29 @@ export default function EditProfilePage() {
       });
 
       if (!res.ok) throw new Error("Failed to update profile");
+
+      const dynamicAge = calculateAge(data.dob);
+      const storedProfile = localStorage.getItem("userProfile");
+      const existingProfile = storedProfile ? JSON.parse(storedProfile) : {};
+      localStorage.setItem(
+        "userProfile",
+        JSON.stringify({
+          ...existingProfile,
+          name: data.name,
+          gender: data.gender,
+          dob: data.dob,
+          age: dynamicAge,
+          heightCm: Number(data.height),
+          weightKg: Number(data.weight),
+          healthGoals: data.goal,
+          allergies: data.allergies
+            ? data.allergies.split(",").map((a) => a.trim())
+            : [],
+          medicalConditions: data.info
+            ? data.info.split(",").map((m) => m.trim())
+            : [],
+        })
+      );
 
       alert("✅ Profile updated successfully!");
       router.push("/profile");
@@ -161,7 +191,7 @@ export default function EditProfilePage() {
           >
             <Image
               src={logo}
-              alt="NutriLens Logo"
+              alt="AaharSnap Logo"
               width={80}
               height={80}
               className="rounded-full object-contain"
@@ -202,18 +232,28 @@ export default function EditProfilePage() {
             )}
           </div>
 
-          {/* Age + Gender */}
+          {/* Date of Birth + Gender */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-foreground mb-1 block">
-                Age
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-foreground">
+                  Date of Birth
+                </label>
+                {dob && calculateAge(dob) !== null && (
+                  <span className="text-xs font-semibold text-primary">
+                    ({calculateAge(dob)} yrs)
+                  </span>
+                )}
+              </div>
               <input
-                type="number"
-                {...register("age")}
-                placeholder="Enter your age"
+                type="date"
+                max={new Date().toISOString().split("T")[0]}
+                {...register("dob")}
                 className="w-full bg-background border border-border rounded-md px-3 py-2 text-foreground focus:ring-2 focus:ring-primary focus:outline-none"
               />
+              {errors.dob && (
+                <p className="text-red-500 text-sm mt-1">{errors.dob.message}</p>
+              )}
             </div>
 
             <div>

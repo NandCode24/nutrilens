@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import BackButton from "@/components/BackButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import logo from "../../../public/NutriLens.png";
+import logo from "../../../public/logo.svg";
 import { useRouter } from "next/navigation";
 
 type FilterOption = "All" | "Ingredient" | "Medicine";
@@ -156,7 +156,7 @@ export default function HistoryPage() {
           >
             <Image
               src={logo}
-              alt="NutriLens Logo"
+              alt="AaharSnap Logo"
               width={80}
               height={80}
               className="rounded-full object-contain"
@@ -363,7 +363,7 @@ export default function HistoryPage() {
 
       {/* Footer */}
       <footer className="text-center text-muted-foreground text-xs mt-10">
-        © 2025 <span className="font-semibold text-primary">NutriLens</span> —
+        © 2025 <span className="font-semibold text-primary">AaharSnap</span> —
         Empowering Smarter Nutrition.
       </footer>
     </div>

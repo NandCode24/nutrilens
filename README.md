@@ -1,4 +1,4 @@
-<h1 align="center">🌿 NutriLens — AI-Powered Nutrition & Wellness Assistant</h1>
+<h1 align="center">🌿 AaharSnap — AI-Powered Nutrition & Wellness Assistant</h1>
 
 <p align="center">
   <strong>Team ID:</strong> TM180 · <strong>Team Name:</strong> BitByBit  
@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/NandCode24/nutrilens/main/assets/homescreen.png" alt="NutriLens Home" width="600" />
+  <img src="https://raw.githubusercontent.com/NandCode24/aaharsnap/main/assets/homescreen.png" alt="AaharSnap Home" width="600" />
 </p>
 
 <p align="center">
@@ -22,8 +22,8 @@
 
 ## 🚀 Overview
 
-**NutriLens** is an intelligent web app that blends AI and nutrition science to help users make smarter food, medicine, and lifestyle decisions.  
-Built with **Next.js**, **Google Gemini AI**, and **NeonDB**, it provides real-time ingredient and medicine analysis, symptom checking, and personalized wellness guidance — all in a beautiful, user-first dashboard.
+**AaharSnap** is an intelligent web app that blends AI and nutrition science to help users make smarter food, medicine, and lifestyle decisions.  
+Built with **Next.js**, **Groq AI (GPT-OSS 120B & Qwen 3.8 27B Vision)**, and **NeonDB**, it provides real-time ingredient and medicine analysis, symptom checking, and personalized wellness guidance — all in a beautiful, user-first dashboard.
 
 ---
 
@@ -35,7 +35,7 @@ Built with **Next.js**, **Google Gemini AI**, and **NeonDB**, it provides real-t
 - Persistent profile with secure cloud sync  
 
 ### 🧠 AI-Powered Food Label Analysis  
-- Upload ingredient labels → get insights via **Gemini AI OCR**  
+- Upload ingredient labels → get insights via **Groq Vision AI**  
 - Detects allergens, additives, preservatives, and nutrition facts  
 - Health score (0–10) and personalized recommendation  
 
@@ -71,7 +71,7 @@ Built with **Next.js**, **Google Gemini AI**, and **NeonDB**, it provides real-t
 | **Backend** | Next.js API Routes (Node.js Runtime) |
 | **Database** | NeonDB (PostgreSQL + Prisma ORM) |
 | **Auth** | Firebase Authentication |
-| **AI Model** | Google Gemini API |
+| **AI Model** | Groq API (GPT-OSS 120B & Qwen 3.8 27B Vision) |
 | **Styling** | Tailwind CSS + Shadcn UI |
 | **Deployment** | Vercel |
 | **Language** | TypeScript |
@@ -80,7 +80,7 @@ Built with **Next.js**, **Google Gemini AI**, and **NeonDB**, it provides real-t
 
 ## 🧩 Folder Structure
 
-nutrilens/
+aaharsnap/
 ├── prisma/
 │   └── schema.prisma
 ├── src/
@@ -108,8 +108,8 @@ nutrilens/
 
 ### 🪜 Step 1: Clone the Repo
 ```bash
-git clone https://github.com/NandCode24/nutrilens.git
-cd nutrilens
+git clone https://github.com/NandCode24/aaharsnap.git
+cd aaharsnap
 
 ⚙️ Step 2: Install Dependencies
 
@@ -122,8 +122,8 @@ Create a .env file in your project root:
 # Neon / Prisma
 DATABASE_URL="postgresql://<username>:<password>@<neon-host>/<db>?sslmode=require"
 
-# Gemini AI
-GEMINI_API_KEY=your_gemini_api_key
+# Groq AI
+GROQ_API_KEY=your_groq_api_key
 
 # Firebase Auth
 FIREBASE_API_KEY=your_firebase_api_key
@@ -135,7 +135,7 @@ FIREBASE_APP_ID=your_app_id
 
 # NextAuth & Deployment URLs
 NEXTAUTH_URL=http://localhost:3000
-NEXT_PUBLIC_APP_URL=https://nutrilens-yourproject.vercel.app
+NEXT_PUBLIC_APP_URL=https://aaharsnap-yourproject.vercel.app
 
 ⚙️ Step 4: Setup Database
 
@@ -214,8 +214,8 @@ See LICENSE for details.
 
 💚 Acknowledgements
 
-Our gratitude to the technologies that power NutriLens
-Next.js · Google Gemini API · NeonDB · Firebase · Prisma · Tailwind CSS · Vercel
+Our gratitude to the technologies that power AaharSnap
+Next.js · Groq · NeonDB · Firebase · Prisma · Tailwind CSS · Vercel
 
 ⸻
 

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { calculateAge } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Please enter your name" }),
@@ -14,9 +15,7 @@ const formSchema = z.object({
     .refine((val) => val === "Male" || val === "Female", {
       message: "Select gender",
     }),
-  age: z.union([z.string(), z.number()]).refine((val) => Number(val) > 0, {
-    message: "Enter valid age",
-  }),
+  dob: z.string().min(1, { message: "Please select your date of birth" }),
   height: z.union([z.string(), z.number()]).refine((val) => Number(val) >= 50, {
     message: "Enter valid height",
   }),
@@ -49,7 +48,7 @@ export default function OnboardingPage() {
 
   const weight = watch("weight");
   const height = watch("height");
-  const age = watch("age");
+  const dob = watch("dob");
   const gender = watch("gender");
 
   useEffect(() => {
@@ -57,7 +56,7 @@ export default function OnboardingPage() {
     if (!user) {
       localStorage.setItem(
         "user",
-        JSON.stringify({ name: "Guest User", email: "guest@nutrilens.ai" })
+        JSON.stringify({ name: "Guest User", email: "guest@aaharsnap.ai" })
       );
     }
   }, []);
@@ -69,25 +68,29 @@ export default function OnboardingPage() {
       setValue("email", user.email || "");
       setValue("name", user.name || "");
     } else {
-      setValue("email", "guest@nutrilens.ai");
+      setValue("email", "guest@aaharsnap.ai");
       setValue("name", "Guest User");
     }
   }, [setValue]);
 
   useEffect(() => {
-    if (weight && height && age && gender) {
+    if (weight && height && dob && gender) {
       const w = Number(weight);
       const h = Number(height);
-      const a = Number(age);
-      const calc =
-        gender === "Male"
-          ? 10 * w + 6.25 * h - 5 * a + 5
-          : 10 * w + 6.25 * h - 5 * a - 161;
-      setBmr(Math.round(calc));
+      const calculatedAge = calculateAge(dob);
+      if (calculatedAge !== null && calculatedAge >= 0) {
+        const calc =
+          gender === "Male"
+            ? 10 * w + 6.25 * h - 5 * calculatedAge + 5
+            : 10 * w + 6.25 * h - 5 * calculatedAge - 161;
+        setBmr(Math.round(calc));
+      } else {
+        setBmr(null);
+      }
     } else {
       setBmr(null);
     }
-  }, [weight, height, age, gender]);
+  }, [weight, height, dob, gender]);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -100,7 +103,7 @@ export default function OnboardingPage() {
         body: JSON.stringify({
           email: data.email,
           name: data.name,
-          age: Number(data.age),
+          dob: data.dob,
           gender: data.gender,
           heightCm: Number(data.height),
           weightKg: Number(data.weight),
@@ -119,9 +122,11 @@ export default function OnboardingPage() {
       if (!res.ok)
         throw new Error(result.error || "Failed to save onboarding details");
 
+      const dynamicAge = calculateAge(data.dob);
       const profileData = {
         name: data.name,
-        age: Number(data.age),
+        dob: data.dob,
+        age: dynamicAge,
         gender: data.gender,
         heightCm: Number(data.height),
         weightKg: Number(data.weight),
@@ -150,7 +155,7 @@ export default function OnboardingPage() {
     if (!localStorage.getItem("user")) {
       localStorage.setItem(
         "user",
-        JSON.stringify({ name: "Guest User", email: "guest@nutrilens.ai" })
+        JSON.stringify({ name: "Guest User", email: "guest@aaharsnap.ai" })
       );
     }
     router.push("/dashboard");
@@ -213,18 +218,30 @@ export default function OnboardingPage() {
             </div>
           </div>
 
-          {/* Age + Gender */}
+          {/* Date of Birth + Gender */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-foreground mb-1 block">
-                Age
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-foreground">
+                  Date of Birth
+                </label>
+                {dob && calculateAge(dob) !== null && (
+                  <span className="text-xs font-semibold text-primary">
+                    ({calculateAge(dob)} yrs)
+                  </span>
+                )}
+              </div>
               <input
-                type="number"
-                {...register("age")}
-                placeholder="Enter your age"
+                type="date"
+                max={new Date().toISOString().split("T")[0]}
+                {...register("dob")}
                 className="w-full border border-border rounded-md px-3 py-2 bg-card text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/60 focus:outline-none"
               />
+              {errors.dob && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.dob.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="text-sm font-medium text-foreground mb-1 block">

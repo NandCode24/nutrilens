@@ -1,4 +1,4 @@
-└── 📁 nutrilens
+└── 📁 aaharsnap
     ├── 📁 .next
     │   ├── 📄 app-build-manifest.json
     │   ├── 📁 cache
@@ -601,7 +601,7 @@
     │   │       ├── 📄 7178b3e590c64307-s.b97b3418.woff2
     │   │       ├── 📄 797e433ab948586e-s.p.dbea232f.woff2
     │   │       ├── 📄 8a480f0b521d4e75-s.8e0177b5.woff2
-    │   │       ├── 📄 NutriLens.f7807c11.png
+    │   │       ├── 📄 AaharSnap.f7807c11.png
     │   │       ├── 📄 bbc41e54d2fcbd21-s.799d8ef8.woff2
     │   │       ├── 📄 caa3a2e1cccd8315-s.p.853070df.woff2
     │   │       └── 📄 favicon.0b3bf435.ico
@@ -609,9 +609,9 @@
     │   └── 📁 types
     │       ├── 📄 routes.d.ts
     │       └── 📄 validator.ts
-    ├── 📄 NutriLens_Project_Documentation_TM180.pdf
-    ├── 📄 Nutrilens.pptx
-    ├── 📁 Nutrilens_Designs
+    ├── 📄 AaharSnap_Project_Documentation_TM180.pdf
+    ├── 📄 AaharSnap.pptx
+    ├── 📁 AaharSnap_Designs
     │   ├── 📁 authentication_sign_up
     │   │   ├── 📄 code.html
     │   │   └── 📄 screen.png
@@ -628,13 +628,13 @@
     │   ├── 📁 library_screen
     │   │   ├── 📄 code.html
     │   │   └── 📄 screen.png
-    │   ├── 📁 nutrilens_landing_page
+    │   ├── 📁 aaharsnap_landing_page
     │   │   ├── 📄 code.html
     │   │   └── 📄 screen.png
-    │   ├── 📁 nutrilens_profile_page
+    │   ├── 📁 aaharsnap_profile_page
     │   │   ├── 📄 code.html
     │   │   └── 📄 screen.png
-    │   ├── 📁 nutrilens_splash_screen
+    │   ├── 📁 aaharsnap_splash_screen
     │   │   ├── 📄 code.html
     │   │   └── 📄 screen.png
     │   ├── 📁 onboarding_scan_ingredients
@@ -685,7 +685,7 @@
     │   │   └── 📄 migration_lock.toml
     │   └── 📄 schema.prisma
     ├── 📁 public
-    │   ├── 📄 NutriLens.png
+    │   ├── 📄 AaharSnap.png
     │   ├── 📄 file.svg
     │   ├── 📄 globe.svg
     │   ├── 📄 next.svg

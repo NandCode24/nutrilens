@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { groq, GROQ_VISION_MODEL } from "@/lib/groq";
 import crypto from "crypto";
+import { calculateAge } from "@/lib/utils";
 
 export const runtime = "nodejs";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +12,7 @@ export async function POST(req: Request) {
     const form = await req.formData();
     const file = form.get("file") as Blob | null;
     const profileStr = form.get("profile")?.toString() || "{}";
-    const email = form.get("email")?.toString() || "guest@nutrilens.ai";
+    const email = form.get("email")?.toString() || "guest@aaharsnap.ai";
 
     if (!file) {
       return NextResponse.json(
@@ -29,18 +28,18 @@ export async function POST(req: Request) {
       );
     }
 
-const user = await prisma.user.findUnique({
-  where: { email },
-  select: { id: true, preferredLanguage: true },
-});
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true, preferredLanguage: true },
+    });
 
-if (!user) {
-  return NextResponse.json({ error: "User not found" }, { status: 404 });
-}
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
-const preferredLanguage = user.preferredLanguage || "English";
+    const preferredLanguage = user.preferredLanguage || "English";
+    console.log("🌍 Preferred Language (from DB):", preferredLanguage);
 
-console.log("🌍 Preferred Language (from DB):", preferredLanguage);
     // 🧠 Parse user profile safely
     let profile: Record<string, any> = {};
     try {
@@ -74,33 +73,15 @@ console.log("🌍 Preferred Language (from DB):", preferredLanguage);
     });
 
     if (existing) {
-      console.log("⚡ Returning cached Gemini result...");
+      console.log("⚡ Returning cached scan result...");
       return NextResponse.json(existing.nutritionData);
     }
 
-    console.log("🧠 Sending image to Gemini for OCR + nutrition analysis...");
+    console.log("🧠 Sending image to Groq for OCR + nutrition analysis...");
 
-    // 🧩 Prepare Gemini model
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
-      generationConfig: { temperature: 0, topP: 0.1, topK: 1 },
-    });
-
-    // 🧬 Personalized context
-    const personalization = `
-User profile:
-- Age: ${profile.age ?? "N/A"}
-- Gender: ${profile.gender ?? "N/A"}
-- Height: ${profile.heightCm ?? "N/A"} cm
-- Weight: ${profile.weightKg ?? "N/A"} kg
-- Allergies: ${Array.isArray(profile.allergies) ? profile.allergies.join(", ") : "None"}
-- Health Goal: ${profile.healthGoals ?? "General wellness"}
-- Medical Conditions: ${Array.isArray(profile.medicalConditions) ? profile.medicalConditions.join(", ") : "None"}
-    `;
-
-    // 🧾 Gemini prompt
+    // 🧾 Prompt
     const prompt = `
-You are NutriLens — an expert multilingual AI nutritionist.
+You are AaharSnap — an expert multilingual AI nutritionist.
 
 The user's preferred language is **${preferredLanguage}**.
 ⚠️ All explanations, summaries, and recommendations must be written **completely in ${preferredLanguage} only**.
@@ -119,7 +100,7 @@ Tasks:
 8. Write all summaries and text fields in ${preferredLanguage}.
 
 User profile:
-- Age: ${profile.age ?? "N/A"}
+- Age: ${profile.dob ? calculateAge(profile.dob) : (profile.age ?? "N/A")}
 - Gender: ${profile.gender ?? "N/A"}
 - Height: ${profile.heightCm ?? "N/A"} cm
 - Weight: ${profile.weightKg ?? "N/A"} kg
@@ -129,39 +110,54 @@ User profile:
 
 Return only valid JSON in this format:
 {
-  "ingredients": ["ingredient1", "ingredient2", ...] in ${preferredLanguage},
+  "ingredients": ["ingredient1", "ingredient2"],
   "additives_info": [
     { "name": "INS 471", "purpose": "emulsifier", "side_effect": "..." }
   ],
-  "allergens": ["allergen1", "allergen2"] in ${preferredLanguage},
+  "allergens": ["allergen1", "allergen2"],
   "nutrition_summary": "Written fully in ${preferredLanguage}",
-  "personalized_score": 0–10,
+  "personalized_score": 8,
   "reasoning": "Written fully in ${preferredLanguage}",
   "recommendation": "Written fully in ${preferredLanguage}"
 }
 `.trim();
-    // 🚀 Send to Gemini with image + prompt
-    const result = await model.generateContent([
-      { inlineData: { data: base64Image, mimeType } },
-      { text: prompt },
-      {
-        text: `Ensure your response text is in ${preferredLanguage}. Do not use English.`,
-      },
-    ]);
 
-    const text = result.response.text().trim();
+    // 🚀 Send to Groq Vision model
+    const completion = await groq.chat.completions.create({
+      model: GROQ_VISION_MODEL,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `${prompt}\n\nEnsure your response text is in ${preferredLanguage}. Do not use English. Return only valid JSON object.`,
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:${mimeType};base64,${base64Image}`,
+              },
+            },
+          ],
+        },
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.1,
+    });
+
+    const text = completion.choices[0]?.message?.content?.trim() || "{}";
 
     // 🧩 Parse JSON safely
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : { raw_output: text };
 
-    console.log("✅ Gemini response parsed successfully.");
+    console.log("✅ Groq response parsed successfully.");
 
     // 🗄️ Save to Prisma (FoodScan)
-    const newScan = await prisma.foodScan.create({
+    await prisma.foodScan.create({
       data: {
         userId: user.id,
-        // ✅ Now we store the *actual* Base64 image
         imageUrl: `data:${mimeType};base64,${base64Image}`,
         ingredientsText: imageHash.slice(0, 64),
         ingredients: parsed.ingredients || [],
@@ -184,7 +180,6 @@ Return only valid JSON in this format:
     });
 
     console.log("📜 Saved scan result to History.");
-    console.log("🌍 Preferred Language:", profile.preferredLanguage);
 
     return NextResponse.json(parsed);
   } catch (err: any) {

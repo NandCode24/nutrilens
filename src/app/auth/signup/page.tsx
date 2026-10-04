@@ -6,7 +6,7 @@ import { FaGithub } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import logo from "../../../../public/NutriLens.png";
+import logo from "../../../../public/logo.svg";
 import {
   signInWithPopup,
   fetchSignInMethodsForEmail,
@@ -188,7 +188,7 @@ export default function RegisterPage() {
           </h1>
           <p className="text-center text-muted-foreground mb-6 text-sm">
             Start your journey with{" "}
-            <span className="font-medium text-primary">NutriLens</span>
+            <span className="font-medium text-primary">AaharSnap</span>
           </p>
 
           {/* Form */}
@@ -331,7 +331,7 @@ export default function RegisterPage() {
             >
               <Image
                 src={logo}
-                alt="NutriLens Logo"
+                alt="AaharSnap Logo"
                 width={80}
                 height={80}
                 className="rounded-full object-contain"

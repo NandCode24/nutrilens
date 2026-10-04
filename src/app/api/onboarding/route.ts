@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     const {
       email,
       name,
-      age,
+      dob,
       gender,
       heightCm,
       weightKg,
@@ -24,6 +24,8 @@ export async function POST(req: Request) {
       );
     }
 
+    const parsedDob = dob ? new Date(dob) : null;
+
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -33,7 +35,7 @@ export async function POST(req: Request) {
           where: { email },
           data: {
             name,
-            age,
+            dob: parsedDob,
             gender,
             heightCm,
             weightKg,
@@ -47,7 +49,7 @@ export async function POST(req: Request) {
           data: {
             email,
             name,
-            age,
+            dob: parsedDob,
             gender,
             heightCm,
             weightKg,
@@ -63,10 +65,10 @@ export async function POST(req: Request) {
       message: existingUser ? "User onboarding updated" : "User created",
       user,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("❌ Error saving onboarding data:", error);
     return NextResponse.json(
-      { error: "Failed to save onboarding details" },
+      { error: error?.message || "Failed to save onboarding details" },
       { status: 500 }
     );
   }

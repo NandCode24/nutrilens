@@ -8,6 +8,7 @@ import BackButton from "@/components/BackButton";
 import ApiLoader from "@/components/ApiLoader";
 import { useLoading } from "@/context/LoadingContext";
 import { useRouter } from "next/navigation";
+import { calculateAge } from "@/lib/utils";
 
 export default function MedicineLookup() {
   const [image, setImage] = useState<string | null>(null);
@@ -32,7 +33,12 @@ export default function MedicineLookup() {
       }
 
       if (storedProfile) {
-        setProfile(JSON.parse(storedProfile));
+        const parsed = JSON.parse(storedProfile);
+        const dynamicAge = parsed.dob ? calculateAge(parsed.dob) : parsed.age;
+        setProfile({
+          ...parsed,
+          age: dynamicAge !== null && dynamicAge !== undefined ? `${dynamicAge}` : "N/A",
+        });
       } else {
         setProfile({
           age: "N/A",
@@ -141,11 +147,13 @@ export default function MedicineLookup() {
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-10 bg-card flex justify-between items-center px-8 py-4 border-b border-border shadow-sm transition-colors duration-300">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold">
-              N
-            </div>
+            <img
+              src="/logo.svg"
+              alt="AaharSnap Logo"
+              className="w-8 h-8 rounded-full object-contain"
+            />
             <span className="text-lg font-semibold text-foreground">
-              NutriLens
+              AaharSnap
             </span>
           </div>
           <div className="flex items-center space-x-4">

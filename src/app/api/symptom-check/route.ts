@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { geminiModel } from "@/lib/gemini";
+import { groq, GROQ_TEXT_MODEL } from "@/lib/groq";
 import { buildSymptomPrompt } from "@/lib/symptomPrompt";
 import { safeJsonParse } from "@/lib/utils";
 
@@ -15,18 +15,21 @@ export async function POST(req: Request) {
     }
 
     const prompt = buildSymptomPrompt(symptoms);
-    const result = await geminiModel.generateContent(prompt);
+    const completion = await groq.chat.completions.create({
+      model: GROQ_TEXT_MODEL,
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      response_format: { type: "json_object" },
+    });
 
-    // ✅ Add debug here:
-    if (!result?.response) {
-      console.error("❌ Gemini returned no response:", result);
-      throw new Error("No response from Gemini API");
-    }
+    const text = completion.choices[0]?.message?.content || "{}";
+    console.log("✅ Raw Groq response:", text);
 
-    const text = result.response.text();
-    console.log("✅ Raw Gemini response:", text);
-
-    const parsed = safeJsonParse(text,{});
+    const parsed = safeJsonParse(text, {});
 
     return NextResponse.json(parsed);
   } catch (error: any) {

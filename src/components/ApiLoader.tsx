@@ -65,7 +65,7 @@ const messages = useMemo(
 
     // ✨ Finisher nudges
     "🌈 Consistency > perfection — tiny steps win.",
-    "💚 NutriLens: one scan, smarter choices.",
+    "💚 AaharSnap: one scan, smarter choices.",
   ],
   []
 );

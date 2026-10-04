@@ -54,7 +54,10 @@ export async function PATCH(req: Request) {
       );
     }
 
-    // console.log("✏️ [Profile API] Updating user:", email, updateData);
+    if (updateData.dob) {
+      updateData.dob = new Date(updateData.dob);
+    }
+    delete updateData.age;
 
     // ✅ Update existing user in database
     const updatedUser = await prisma.user.update({

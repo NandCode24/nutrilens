@@ -123,8 +123,8 @@ export default function DashboardPage() {
             transition={{ duration: 0.6 }}
           >
             <motion.img
-              src="/NutriLens.png"
-              alt="NutriLens Logo"
+              src="/logo.svg"
+              alt="AaharSnap Logo"
               initial={{ scale: 0 }}
               animate={{ scale: 1.2, rotate: 360 }}
               transition={{ duration: 1, ease: "easeInOut" }}

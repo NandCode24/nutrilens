@@ -2,7 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import logo from "../../public/NutriLens.png";
+import logo from "../../public/aahar-snap.svg";
+import logoDark from "../../public/aahar-snap-dark.svg";
 
 export default function Page() {
   return (
@@ -15,8 +16,13 @@ export default function Page() {
             <Link href="/" className="flex items-center gap-3 group">
               <img
                 src={logo.src}
-                alt="NutriLens Logo"
-                className="h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                alt="AaharSnap Logo"
+                className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105 block dark:hidden"
+              />
+              <img
+                src={logoDark.src}
+                alt="AaharSnap Logo"
+                className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105 hidden dark:block drop-shadow-[0_2px_10px_rgba(34,197,94,0.2)]"
               />
             </Link>
 
@@ -64,7 +70,7 @@ export default function Page() {
               </h1>
 
               <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-                NutriLens uses AI to analyze your food intake, providing
+                AaharSnap uses AI to analyze your food intake, providing
                 personalized insights and recommendations to help you achieve
                 your health goals.
               </p>
@@ -146,7 +152,7 @@ export default function Page() {
               Your All-in-One Nutrition Companion
             </h2>
             <p className="mt-4 text-muted-foreground text-lg">
-              NutriLens offers a comprehensive suite of tools to help you manage
+              AaharSnap offers a comprehensive suite of tools to help you manage
               your nutrition and wellness effectively.
             </p>
           </div>
@@ -167,7 +173,7 @@ export default function Page() {
               },
               {
                 title: "Data Privacy & Security",
-                desc: "Your data is securely encrypted and never shared. NutriLens ensures total privacy with industry-leading protection.",
+                desc: "Your data is securely encrypted and never shared. AaharSnap ensures total privacy with industry-leading protection.",
               },
             ].map((item, i) => (
               <div
@@ -222,7 +228,7 @@ export default function Page() {
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground">
                     {i === 0
-                      ? "Take a picture of your meal or snack using the NutriLens app."
+                      ? "Take a picture of your meal or snack using the AaharSnap app."
                       : i === 1
                         ? "Our AI identifies the food and provides detailed nutritional information."
                         : "Track your progress, adjust your diet, and reach your wellness objectives."}
@@ -241,7 +247,7 @@ export default function Page() {
             Ready to Transform Your Health?
           </h3>
           <p className="mt-3 text-muted-foreground">
-            Create your free account and start using NutriLens today.
+            Create your free account and start using AaharSnap today.
           </p>
           <div className="mt-6">
             <Link
@@ -259,10 +265,20 @@ export default function Page() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
+              <img
+                src={logo.src}
+                alt="AaharSnap Logo"
+                className="h-8 w-auto object-contain block dark:hidden"
+              />
+              <img
+                src={logoDark.src}
+                alt="AaharSnap Logo"
+                className="h-8 w-auto object-contain hidden dark:block drop-shadow-[0_1px_6px_rgba(34,197,94,0.2)]"
+              />
               <div>
-                <div className="font-semibold text-foreground">NutriLens</div>
+                <div className="font-semibold text-foreground">AaharSnap</div>
                 <div className="text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} NutriLens. All rights reserved.
+                  © {new Date().getFullYear()} AaharSnap. All rights reserved.
                 </div>
               </div>
             </div>

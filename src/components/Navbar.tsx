@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import logo from "../../public/NutriLens.png";
+import logo from "../../public/aahar-snap.svg";
+import logoDark from "../../public/aahar-snap-dark.svg";
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
@@ -65,25 +66,49 @@ export default function Navbar() {
 
   return (
     <header className="w-full bg-background/90 border-b border-border sticky top-0 z-50 backdrop-blur-md transition-colors duration-300">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-2.5">
         {/* ---------- Left: Logo ---------- */}
         <Link
           href="/dashboard"
           className="flex items-center gap-3 group transition-transform duration-300 hover:scale-[1.02]"
         >
+          {/* Light Mode Logo */}
           <Image
             src={logo}
-            alt="NutriLens Logo"
-            className="object-contain w-auto h-14"
+            alt="AaharSnap Logo"
+            priority
+            className="object-contain w-auto h-16 sm:h-20 max-h-20 block dark:hidden"
+          />
+          {/* Dark Mode Logo (High-contrast with bright text) */}
+          <Image
+            src={logoDark}
+            alt="AaharSnap Logo"
+            priority
+            className="object-contain w-auto h-16 sm:h-20 max-h-20 hidden dark:block drop-shadow-[0_2px_12px_rgba(34,197,94,0.18)]"
           />
         </Link>
 
-        {/* ---------- Right: Profile Dropdown ---------- */}
-        <div className="relative" ref={dropdownRef}>
+        {/* ---------- Right: Theme Toggle + Profile Dropdown ---------- */}
+        <div className="flex items-center gap-3">
+          {/* Dark/Light Mode Toggle (Left of Username) */}
           <button
-            onClick={() => setDropdownOpen((prev) => !prev)}
-            className="flex items-center gap-2 bg-card border border-border rounded-full px-3 py-1.5 hover:shadow-md transition-all duration-200"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="p-2.5 rounded-full border border-border bg-card hover:bg-accent text-foreground transition-all duration-200 shadow-sm hover:shadow flex items-center justify-center cursor-pointer"
+            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            aria-label="Toggle dark/light mode"
           >
+            {theme === "dark" ? (
+              <Sun className="w-5 h-5 text-yellow-400 transition-transform hover:rotate-45" />
+            ) : (
+              <Moon className="w-5 h-5 text-slate-700 dark:text-slate-200 transition-transform hover:-rotate-12" />
+            )}
+          </button>
+
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setDropdownOpen((prev) => !prev)}
+              className="flex items-center gap-2 bg-card border border-border rounded-full px-3 py-1.5 hover:shadow-md transition-all duration-200 cursor-pointer"
+            >
             <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/20 bg-background flex items-center justify-center shadow-sm">
               {/* Profile Icon */}
               <svg
@@ -162,6 +187,7 @@ export default function Navbar() {
               </button>
             </div>
           )}
+        </div>
         </div>
       </div>
     </header>

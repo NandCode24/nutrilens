@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import ApiLoader from "@/components/ApiLoader";
+import { calculateAge } from "@/lib/utils";
 
 export default function ScanIngredient() {
   const [image, setImage] = useState<string | null>(null);
@@ -29,9 +30,14 @@ export default function ScanIngredient() {
 
       if (storedProfile) {
         const parsedProfile = JSON.parse(storedProfile);
+        const dynamicAge = parsedProfile.dob
+          ? calculateAge(parsedProfile.dob)
+          : parsedProfile.age;
+
         const completeProfile = {
           name: parsedProfile.name || "User",
-          age: parsedProfile.age || "N/A",
+          dob: parsedProfile.dob || null,
+          age: dynamicAge !== null && dynamicAge !== undefined ? `${dynamicAge}` : "N/A",
           gender: parsedProfile.gender || "N/A",
           heightCm: parsedProfile.heightCm || "N/A",
           weightKg: parsedProfile.weightKg || "N/A",

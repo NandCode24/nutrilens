@@ -1,7 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import logo from "../../public/NutriLens.png";
+import logo from "../../public/logo.svg";
 
 export default function GlobalLoader({ visible }: { visible: boolean }) {
   return (
@@ -23,7 +23,7 @@ export default function GlobalLoader({ visible }: { visible: boolean }) {
           >
             <Image
               src={logo}
-              alt="NutriLens Logo"
+              alt="AaharSnap Logo"
               width={80}
               height={80}
               className="rounded-full object-contain"

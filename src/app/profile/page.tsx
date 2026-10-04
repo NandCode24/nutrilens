@@ -2,12 +2,13 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import logo from "../../../public/NutriLens.png";
+import logo from "../../../public/logo.svg";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import { useTheme } from "next-themes";
+import { calculateAge } from "@/lib/utils";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
@@ -112,7 +113,7 @@ export default function ProfilePage() {
           >
             <Image
               src={logo}
-              alt="NutriLens Logo"
+              alt="AaharSnap Logo"
               width={80}
               height={80}
               className="rounded-full object-contain"
@@ -175,7 +176,28 @@ export default function ProfilePage() {
         <h3 className="text-lg font-semibold mb-4">Personal Details</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3">
           <Detail label="Name" value={user.name || "None"} />
-          <Detail label="Age" value={user.age || "None"} />
+          <Detail
+            label="Date of Birth"
+            value={
+              user.dob
+                ? new Date(user.dob).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })
+                : "None"
+            }
+          />
+          <Detail
+            label="Age"
+            value={
+              user.dob && calculateAge(user.dob) !== null
+                ? `${calculateAge(user.dob)} yrs`
+                : user.age
+                ? `${user.age} yrs`
+                : "None"
+            }
+          />
           <Detail label="Gender" value={user.gender || "None"} />
           <Detail
             label="Height"
@@ -301,7 +323,7 @@ export default function ProfilePage() {
 
       {/* Footer */}
       <footer className="text-center text-muted-foreground text-xs mt-10 space-x-1">
-        © 2025 <span className="font-semibold text-primary">NutriLens</span> —
+        © 2025 <span className="font-semibold text-primary">AaharSnap</span> —
         Empowering Smarter Nutrition. <br />
         <br />
         <a

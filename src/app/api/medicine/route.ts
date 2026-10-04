@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { groq, GROQ_TEXT_MODEL, GROQ_VISION_MODEL } from "@/lib/groq";
 import prisma from "@/lib/prisma";
+import { calculateAge } from "@/lib/utils";
 
 export const runtime = "nodejs";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
@@ -18,45 +17,39 @@ export async function POST(req: Request) {
 
     // 🧩 Handle multipart form-data (for image upload)
     if (contentType.includes("multipart/form-data")) {
-      const form = await req.formData();
-      const file = form.get("file") as Blob | null;
-      const profileStr = form.get("profile") as string | null;
-      email = form.get("email") as string | null;
+      const formData = await req.formData();
+      const file = formData.get("file") as Blob | null;
+      email = formData.get("email")?.toString() || null;
+      const profileStr = formData.get("profile")?.toString() || "{}";
 
-      if (profileStr) {
-        try {
-          profile = JSON.parse(profileStr);
-        } catch {
-          profile = {};
-        }
+      try {
+        profile = JSON.parse(profileStr);
+      } catch {
+        profile = {};
       }
 
       if (file) {
-        const bytes = await file.arrayBuffer();
-        imageBase64 = Buffer.from(bytes).toString("base64");
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        imageBase64 = buffer.toString("base64");
         mimeType = (file as any).type || "image/jpeg";
       }
     }
-    // 🧩 Handle JSON input (manual text search)
+    // 🧩 Handle application/json (for manual medicine name search)
     else if (contentType.includes("application/json")) {
       const body = await req.json();
-      medicineName = body.medicineName || null;
-      profile = body.profile || {};
+      medicineName = body.medicineName || body.name || null;
       email = body.email || null;
+      profile = body.profile || {};
+    }
 
-      if (!medicineName)
-        return NextResponse.json(
-          { error: "No medicine name provided" },
-          { status: 400 }
-        );
-    } else {
+    if (!imageBase64 && !medicineName) {
       return NextResponse.json(
-        { error: "Unsupported request type" },
+        { error: "Provide either a medicine label image or a medicine name" },
         { status: 400 }
       );
     }
 
-    // 🧍 Validate user
     if (!email) {
       return NextResponse.json(
         { error: "Missing user email" },
@@ -64,7 +57,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🧠 Fetch user + language preference
+    // 🔍 Find user in DB to get their preferred language
     const user = await prisma.user.findUnique({
       where: { email },
       select: { id: true, preferredLanguage: true },
@@ -77,16 +70,9 @@ export async function POST(req: Request) {
     const preferredLanguage = user.preferredLanguage || "English";
     console.log("🌍 Preferred Language (from DB):", preferredLanguage);
 
-    // ⚙️ Prepare Gemini model
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
-      generationConfig: { temperature: 0, topP: 0.1, topK: 1 },
-    });
-
     // 🧠 Prompt with personalization + language and non-medicine detection
-    // IMPORTANT: we instruct the model to return a specific JSON shape in either case.
     const prompt = `
-You are NutriLens — an expert multilingual AI health assistant.
+You are AaharSnap — an expert multilingual AI health assistant.
 
 The user's preferred language is **${preferredLanguage}**.
 Write all textual parts (uses, reasoning, recommendations, etc.) **completely in ${preferredLanguage} only**.
@@ -105,7 +91,7 @@ ${
 }
 
 User profile:
-- Age: ${profile.age ?? "N/A"}
+- Age: ${profile.dob ? calculateAge(profile.dob) : (profile.age ?? "N/A")}
 - Gender: ${profile.gender ?? "N/A"}
 - Allergies: ${Array.isArray(profile.allergies) ? profile.allergies.join(", ") : "None"}
 - Medical conditions: ${Array.isArray(profile.medicalConditions) ? profile.medicalConditions.join(", ") : "None"}
@@ -119,7 +105,7 @@ User profile:
   "uses": "short summary written fully in ${preferredLanguage}",
   "side_effects": ["string values in ${preferredLanguage}"],
   "precautions": ["string values in ${preferredLanguage}"],
-  "compatibility_score": 0,
+  "compatibility_score": 8,
   "reasoning": "short reasoning in ${preferredLanguage}",
   "recommendation": "personalized advice in ${preferredLanguage}"
 }
@@ -135,24 +121,53 @@ User profile:
 Do NOT include any additional keys. Do NOT return HTML or plain text. Return only valid JSON object.
 `.trim();
 
-    const input = imageBase64
-      ? [{ inlineData: { data: imageBase64, mimeType } }, { text: prompt }]
-      : [{ text: prompt }];
+    // 🚀 Send to Groq (Vision model if image, Text model if text)
+    const messages: any[] = imageBase64
+      ? [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `${prompt}\n\nReturn only valid JSON object.`,
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: `data:${mimeType};base64,${imageBase64}`,
+                },
+              },
+            ],
+          },
+        ]
+      : [
+          {
+            role: "user",
+            content: `${prompt}\n\nReturn only valid JSON object.`,
+          },
+        ];
 
-    // 🚀 Send to Gemini
-    const result = await model.generateContent(input);
-    const text = result.response.text().trim();
+    const modelToUse = imageBase64 ? GROQ_VISION_MODEL : GROQ_TEXT_MODEL;
+
+    const completion = await groq.chat.completions.create({
+      model: modelToUse,
+      messages,
+      response_format: { type: "json_object" },
+      temperature: 0.1,
+    });
+
+    const text = completion.choices[0]?.message?.content?.trim() || "{}";
 
     // Defensive: reject HTML responses
     if (text.startsWith("<!DOCTYPE") || text.startsWith("<html")) {
-      console.warn("⚠️ Gemini returned HTML instead of JSON");
+      console.warn("⚠️ Groq returned HTML instead of JSON");
       return NextResponse.json(
-        { error: "Invalid response from Gemini (HTML detected)" },
+        { error: "Invalid response from AI (HTML detected)" },
         { status: 502 }
       );
     }
 
-    // 🧩 Parse Gemini output safely
+    // 🧩 Parse Groq output safely
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed: any = jsonMatch
       ? JSON.parse(jsonMatch[0])
@@ -163,16 +178,12 @@ Do NOT include any additional keys. Do NOT return HTML or plain text. Return onl
       console.log(
         "ℹ️ Medicine endpoint detected a non-medicine input. Returning suggestion."
       );
-      // Ensure suggestion/reason exist, but don't save to DB
       return NextResponse.json(parsed);
     }
 
     // Validate presence of expected medicine keys
     if (!parsed || !parsed.medicine_name || !parsed.active_ingredients) {
-      console.warn(
-        "⚠️ Gemini did not return expected medicine structure:",
-        parsed
-      );
+      console.warn("⚠️ Groq did not return expected medicine structure:", parsed);
       return NextResponse.json(
         { error: "Model did not return valid medicine data" },
         { status: 502 }
@@ -193,7 +204,7 @@ Do NOT include any additional keys. Do NOT return HTML or plain text. Return onl
       },
     });
 
-    // 🧠 Save complete Gemini response in History table
+    // 🧠 Save complete Groq response in History table
     await prisma.history.create({
       data: {
         email,

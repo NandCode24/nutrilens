@@ -17,7 +17,7 @@ export default function TermsPage() {
         </h1>
 
         <p className="text-muted-foreground mb-4 leading-relaxed">
-          Welcome to <span className="text-primary font-medium">NutriLens</span>
+          Welcome to <span className="text-primary font-medium">AaharSnap</span>
           . By accessing or using our platform, you agree to comply with these
           terms and conditions.
         </p>
@@ -25,7 +25,7 @@ export default function TermsPage() {
         <p className="text-muted-foreground mb-4 leading-relaxed">
           Our app provides health and nutrition-related insights for educational
           purposes only.{" "}
-          <span className="text-primary font-medium">NutriLens</span> does not
+          <span className="text-primary font-medium">AaharSnap</span> does not
           replace professional medical advice, diagnosis, or treatment.
         </p>
 

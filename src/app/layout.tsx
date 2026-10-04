@@ -17,8 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NutriLens",
+  title: "AaharSnap",
   description: "AI-powered nutrition and wellness companion",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

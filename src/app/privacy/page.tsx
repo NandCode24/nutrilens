@@ -10,7 +10,7 @@ export default function PrivacyPage() {
         </h1>
 
         <p className="text-muted-foreground mb-4 leading-relaxed">
-          At <span className="text-primary font-medium">NutriLens</span>, your
+          At <span className="text-primary font-medium">AaharSnap</span>, your
           privacy is our top priority. We collect and process only essential
           information to improve your experience, such as nutritional data and
           profile preferences.
