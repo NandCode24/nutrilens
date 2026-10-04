@@ -24,7 +24,8 @@ export async function POST(req: Request) {
       );
     }
 
-    const parsedDob = dob ? new Date(dob) : null;
+    const parsedDob =
+      dob && !isNaN(new Date(dob).getTime()) ? new Date(dob) : null;
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -65,12 +66,11 @@ export async function POST(req: Request) {
       message: existingUser ? "User onboarding updated" : "User created",
       user,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Failed to save onboarding details";
     console.error("❌ Error saving onboarding data:", error);
-    return NextResponse.json(
-      { error: error?.message || "Failed to save onboarding details" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
